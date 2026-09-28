@@ -42,13 +42,16 @@
 
     <!-- User / Auth Profile Widget -->
     <div class="nav-actions">
-      <div class="user-profile-badge" id="btnSwitchRole" title="Click to Sign In or Switch Account">
+      <div class="user-profile-badge" id="btnUserMenu" title="Active Account">
         <div class="avatar" id="userAvatar">V</div>
         <div class="user-meta">
           <span class="user-name" id="displayUserName">Vinay (Admin)</span>
-          <span class="user-role" id="displayUserRole">Super Administrator ▾</span>
+          <span class="user-role" id="displayUserRole">Super Administrator</span>
         </div>
       </div>
+      <button type="button" class="btn btn-sm btn-primary" id="btnSwitchRole" title="Sign In or Switch User">
+        🔑 Sign In / Switch Account
+      </button>
       <a href="https://github.com/vinayaktripathi1279/log-check" target="_blank" class="btn btn-outline" id="githubRepoLink" title="View Source on GitHub">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
       </a>
@@ -66,10 +69,10 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3>🔐 Enterprise Sign In & Role Switcher</h3>
-        <button class="modal-close" id="btnCloseModal">&times;</button>
+        <button type="button" class="modal-close" id="btnCloseModal">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-sub">Sign in with different accounts to test role-based access: Admins can inspect everyone's reports and logs, while Analysts only see their own.</p>
+        <p class="modal-sub">Click any account below to sign in immediately and test role-based access:</p>
         <div class="role-cards-grid">
           <!-- Admin Account -->
           <div class="role-card active" data-user="vinay_admin">
@@ -79,7 +82,7 @@
               <span class="badge badge-critical" style="margin: 0.2rem 0;">Super Administrator</span>
               <p>Full permissions: Inspect any analyst's raw logs, download all CSV reports, view system audit trail.</p>
             </div>
-            <button class="btn btn-xs btn-primary">Sign In as Admin</button>
+            <button type="button" class="btn btn-xs btn-primary btn-login-select" data-user="vinay_admin">Sign In as Admin</button>
           </div>
 
           <!-- Non-Admin Analyst 1 -->
@@ -90,7 +93,7 @@
               <span class="badge badge-info" style="margin: 0.2rem 0;">Senior SOC Analyst</span>
               <p>Analyst role: Ingest server logs, flag brute force, submit audits for Bastion hosts.</p>
             </div>
-            <button class="btn btn-xs btn-outline">Sign In as Sarah</button>
+            <button type="button" class="btn btn-xs btn-outline btn-login-select" data-user="sarah_soc">Sign In as Sarah</button>
           </div>
 
           <!-- Non-Admin Analyst 2 -->
@@ -101,7 +104,7 @@
               <span class="badge badge-medium" style="margin: 0.2rem 0;">DevOps & Cloud Lead</span>
               <p>Auditor role: Manages Kubernetes ingress clusters and cloud workloads.</p>
             </div>
-            <button class="btn btn-xs btn-outline">Sign In as Rahul</button>
+            <button type="button" class="btn btn-xs btn-outline btn-login-select" data-user="rahul_devops">Sign In as Rahul</button>
           </div>
         </div>
 

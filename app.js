@@ -830,14 +830,37 @@ document.getElementById("tabBtnAuditHub").addEventListener("click", () => switch
 document.getElementById("tabBtnAuditTrail").addEventListener("click", () => switchToTab("AUDIT_TRAIL"));
 
 // Modal & User switching
-document.getElementById("btnSwitchRole").addEventListener("click", () => {
+function openRoleModal() {
   document.getElementById("roleModal").classList.add("active");
-});
-document.getElementById("btnCloseModal").addEventListener("click", () => {
+}
+function closeRoleModal() {
   document.getElementById("roleModal").classList.remove("active");
-});
-document.querySelectorAll(".role-card").forEach(card => {
-  card.addEventListener("click", () => setCurrentUser(card.dataset.user));
+}
+
+const btnSwitch = document.getElementById("btnSwitchRole");
+const btnMenu = document.getElementById("btnUserMenu");
+if (btnSwitch) btnSwitch.addEventListener("click", openRoleModal);
+if (btnMenu) btnMenu.addEventListener("click", openRoleModal);
+
+const btnClose = document.getElementById("btnCloseModal");
+if (btnClose) btnClose.addEventListener("click", closeRoleModal);
+
+const roleModal = document.getElementById("roleModal");
+if (roleModal) {
+  roleModal.addEventListener("click", (e) => {
+    if (e.target === roleModal) closeRoleModal();
+  });
+}
+
+document.querySelectorAll(".role-card, .btn-login-select").forEach(el => {
+  el.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const user = el.dataset.user || el.closest(".role-card")?.dataset.user;
+    if (user) {
+      setCurrentUser(user);
+      closeRoleModal();
+    }
+  });
 });
 
 document.getElementById("btnSignInCustom").addEventListener("click", () => {
