@@ -712,33 +712,94 @@ function switchToTab(tabName) {
   }
 }
 
+// User Management & Modal Handlers
+function openRoleModal() {
+  const modal = document.getElementById("roleModal");
+  if (modal) {
+    modal.classList.add("active");
+    const input = document.getElementById("inputCustomUser");
+    if (input) setTimeout(() => input.focus(), 150);
+  }
+}
+
+function closeRoleModal() {
+  const modal = document.getElementById("roleModal");
+  if (modal) {
+    modal.classList.remove("active");
+  }
+}
+
 function setCurrentUser(userKey, customObj = null) {
   if (customObj) {
     currentUser = customObj;
+  } else if (USERS[userKey]) {
+    currentUser = USERS[userKey];
   } else {
-    currentUser = USERS[userKey] || USERS["vinay_admin"];
+    currentUser = {
+      id: userKey,
+      name: userKey,
+      role: "Security Analyst",
+      avatar: userKey.charAt(0).toUpperCase(),
+      isAdmin: false
+    };
   }
 
-  document.getElementById("userAvatar").textContent = currentUser.avatar;
-  document.getElementById("displayUserName").textContent = currentUser.name;
-  document.getElementById("displayUserRole").textContent = currentUser.role + " ▾";
+  const avatarEl = document.getElementById("userAvatar");
+  const nameEl = document.getElementById("displayUserName");
+  const roleEl = document.getElementById("displayUserRole");
+
+  if (avatarEl) avatarEl.textContent = currentUser.avatar;
+  if (nameEl) nameEl.textContent = currentUser.name;
+  if (roleEl) roleEl.textContent = currentUser.role + " ▾";
 
   document.querySelectorAll(".role-card").forEach(c => {
     c.classList.toggle("active", c.dataset.user === currentUser.id);
   });
 
-  document.getElementById("roleModal").classList.remove("active");
+  closeRoleModal();
 
   recordAuditLog("USER_LOGIN", "session_auth", "SUCCESS", `User ${currentUser.name} signed in as ${currentUser.role}`);
 
   if (currentUser.isAdmin) {
-    showNotification(`Logged in as Administrator (${currentUser.name}). Full audit access granted.`, "success");
+    showNotification(`Admin Session: Vinay (Administrator). Full cross-team audit access enabled.`, "success");
   } else {
-    showNotification(`Logged in as ${currentUser.name} (${currentUser.role}). Viewing your audits.`, "success");
+    showNotification(`Analyst Session: ${currentUser.name} (${currentUser.role}). Viewing your audits.`, "success");
   }
 
   renderAuditHub();
+  renderSystemAuditScreen();
 }
+
+function handleCustomSignIn() {
+  const input = document.getElementById("inputCustomUser");
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) {
+    showNotification("Please enter a username or analyst ID!", "warning");
+    return;
+  }
+  const customUser = {
+    id: val.toLowerCase().replace(/\s+/g, "_"),
+    name: val,
+    role: "Security Analyst",
+    avatar: val.charAt(0).toUpperCase(),
+    isAdmin: false
+  };
+  setCurrentUser(customUser.id, customUser);
+  input.value = "";
+}
+
+// Make functions globally available for inline onclick and external calls
+window.openRoleModal = openRoleModal;
+window.closeRoleModal = closeRoleModal;
+window.setCurrentUser = setCurrentUser;
+window.handleCustomSignIn = handleCustomSignIn;
+window.switchToTab = switchToTab;
+window.exportCsv = exportCsv;
+window.saveCurrentToAuditHub = saveCurrentToAuditHub;
+window.inspectAuditReport = inspectAuditReport;
+window.renderAuditHub = renderAuditHub;
+window.renderSystemAuditScreen = renderSystemAuditScreen;
 
 // File upload handler
 function handleFileUpload(file) {
@@ -754,46 +815,57 @@ function handleFileUpload(file) {
   reader.readAsText(file);
 }
 
-// Setup Event Listeners
-const dropzone = document.getElementById("logDropzone");
-const fileInput = document.getElementById("fileInput");
+// Safe listener helper to prevent any uncaught null TypeError
+function safeOn(idOrEl, event, handler) {
+  let el = typeof idOrEl === "string" ? document.getElementById(idOrEl) : idOrEl;
+  if (el) {
+    el.addEventListener(event, handler);
+  }
+}
 
+// Setup Event Listeners safely
 window.addEventListener("dragover", (e) => e.preventDefault(), false);
 window.addEventListener("drop", (e) => e.preventDefault(), false);
 
-dropzone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  dropzone.classList.add("dragover");
-});
+const dropzone = document.getElementById("logDropzone");
+if (dropzone) {
+  dropzone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropzone.classList.add("dragover");
+  });
 
-dropzone.addEventListener("dragleave", () => {
-  dropzone.classList.remove("dragover");
-});
+  dropzone.addEventListener("dragleave", () => {
+    dropzone.classList.remove("dragover");
+  });
 
-dropzone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  dropzone.classList.remove("dragover");
-  if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
-    handleFileUpload(e.dataTransfer.files[0]);
-  }
-});
+  dropzone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropzone.classList.remove("dragover");
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileUpload(e.dataTransfer.files[0]);
+    }
+  });
+}
 
-fileInput.addEventListener("change", (e) => {
-  if (e.target.files && e.target.files[0]) {
-    handleFileUpload(e.target.files[0]);
-    fileInput.value = "";
-  }
-});
+const fileInput = document.getElementById("fileInput");
+if (fileInput) {
+  fileInput.addEventListener("change", (e) => {
+    if (e.target.files && e.target.files[0]) {
+      handleFileUpload(e.target.files[0]);
+      fileInput.value = "";
+    }
+  });
+}
 
 // Quick Scenarios
-document.getElementById("btnLoadSampleAttack").addEventListener("click", () => {
+safeOn("btnLoadSampleAttack", "click", () => {
   currentLogEvents = parseRawLogText(SAMPLE_ATTACK_TEXT, "sample_attack.log");
   runAnalysis(true);
   recordAuditLog("PRESET_LOAD", "sample_attack.log", "SUCCESS", "Loaded 3-attacker scenario");
   showNotification("Loaded 'sample_attack.log': 3 external attackers detected!", "success");
 });
 
-document.getElementById("btnLoadSimulatedLog").addEventListener("click", () => {
+safeOn("btnLoadSimulatedLog", "click", () => {
   let generatedText = "";
   for (let i = 0; i < 200; i++) {
     generatedText += `Sep 28 12:00:${String(i%60).padStart(2, "0")} server sshd[${10000+i}]: Failed password for root from 203.0.113.45 port ${30000+i} ssh2\n`;
@@ -804,16 +876,16 @@ document.getElementById("btnLoadSimulatedLog").addEventListener("click", () => {
   showNotification("Loaded enterprise simulated dataset.", "success");
 });
 
-// Analysis Controls
-document.getElementById("btnExportCsv").addEventListener("click", () => exportCsv());
-document.getElementById("btnSaveToAuditHub").addEventListener("click", saveCurrentToAuditHub);
-document.getElementById("btnRunAnalysis").addEventListener("click", () => {
+// Analysis & Export Controls
+safeOn("btnExportCsv", "click", () => exportCsv());
+safeOn("btnSaveToAuditHub", "click", saveCurrentToAuditHub);
+safeOn("btnRunAnalysis", "click", () => {
   runAnalysis(false);
   recordAuditLog("THREAT_ANALYSIS", "sliding_window", "SUCCESS", `Evaluated ${currentLogEvents.length} log events`);
 });
-document.getElementById("inputThreshold").addEventListener("input", () => runAnalysis(false));
-document.getElementById("inputWindow").addEventListener("input", () => runAnalysis(false));
-document.getElementById("checkOnlyFailures").addEventListener("change", renderConsoleStream);
+safeOn("inputThreshold", "input", () => runAnalysis(false));
+safeOn("inputWindow", "input", () => runAnalysis(false));
+safeOn("checkOnlyFailures", "change", renderConsoleStream);
 
 document.querySelectorAll("#severityFilterGroup .pill").forEach(btn => {
   btn.addEventListener("click", (e) => {
@@ -825,30 +897,19 @@ document.querySelectorAll("#severityFilterGroup .pill").forEach(btn => {
 });
 
 // Navigation Tabs
-document.getElementById("tabBtnAnalyzer").addEventListener("click", () => switchToTab("ANALYZER"));
-document.getElementById("tabBtnAuditHub").addEventListener("click", () => switchToTab("AUDIT_HUB"));
-document.getElementById("tabBtnAuditTrail").addEventListener("click", () => switchToTab("AUDIT_TRAIL"));
+safeOn("tabBtnAnalyzer", "click", () => switchToTab("ANALYZER"));
+safeOn("tabBtnAuditHub", "click", () => switchToTab("AUDIT_HUB"));
+safeOn("tabBtnAuditTrail", "click", () => switchToTab("AUDIT_TRAIL"));
 
-// Modal & User switching
-function openRoleModal() {
-  document.getElementById("roleModal").classList.add("active");
-}
-function closeRoleModal() {
-  document.getElementById("roleModal").classList.remove("active");
-}
+// Modal & User Account Controls
+safeOn("btnSwitchRole", "click", openRoleModal);
+safeOn("btnUserMenu", "click", openRoleModal);
+safeOn("btnCloseModal", "click", closeRoleModal);
 
-const btnSwitch = document.getElementById("btnSwitchRole");
-const btnMenu = document.getElementById("btnUserMenu");
-if (btnSwitch) btnSwitch.addEventListener("click", openRoleModal);
-if (btnMenu) btnMenu.addEventListener("click", openRoleModal);
-
-const btnClose = document.getElementById("btnCloseModal");
-if (btnClose) btnClose.addEventListener("click", closeRoleModal);
-
-const roleModal = document.getElementById("roleModal");
-if (roleModal) {
-  roleModal.addEventListener("click", (e) => {
-    if (e.target === roleModal) closeRoleModal();
+const roleModalEl = document.getElementById("roleModal");
+if (roleModalEl) {
+  roleModalEl.addEventListener("click", (e) => {
+    if (e.target === roleModalEl) closeRoleModal();
   });
 }
 
@@ -858,31 +919,21 @@ document.querySelectorAll(".role-card, .btn-login-select").forEach(el => {
     const user = el.dataset.user || el.closest(".role-card")?.dataset.user;
     if (user) {
       setCurrentUser(user);
-      closeRoleModal();
     }
   });
 });
 
-document.getElementById("btnSignInCustom").addEventListener("click", () => {
-  const val = document.getElementById("inputCustomUser").value.trim();
-  if (!val) {
-    alert("Please enter a username or analyst ID!");
-    return;
-  }
-  const customUser = {
-    id: val.toLowerCase().replace(/\s+/g, "_"),
-    name: val,
-    role: "Security Analyst",
-    avatar: val.charAt(0).toUpperCase(),
-    isAdmin: false
-  };
-  setCurrentUser(customUser.id, customUser);
-  document.getElementById("inputCustomUser").value = "";
-});
+safeOn("btnSignInCustom", "click", handleCustomSignIn);
+const customInput = document.getElementById("inputCustomUser");
+if (customInput) {
+  customInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") handleCustomSignIn();
+  });
+}
 
 // Audit Hub controls
-document.getElementById("inputAuditSearch").addEventListener("input", renderAuditHub);
-document.getElementById("btnSeedSampleReports").addEventListener("click", () => {
+safeOn("inputAuditSearch", "input", renderAuditHub);
+safeOn("btnSeedSampleReports", "click", () => {
   auditReports = [...DEFAULT_AUDIT_REPORTS];
   saveAuditReports();
   renderAuditHub();
@@ -898,17 +949,18 @@ document.querySelectorAll(".audit-filter-tags .pill").forEach(btn => {
   });
 });
 
-document.getElementById("btnCloseDrawer").addEventListener("click", () => {
-  document.getElementById("auditDetailDrawer").style.display = "none";
+safeOn("btnCloseDrawer", "click", () => {
+  const drawer = document.getElementById("auditDetailDrawer");
+  if (drawer) drawer.style.display = "none";
 });
 
-document.getElementById("btnDownloadAuditCsv").addEventListener("click", () => {
+safeOn("btnDownloadAuditCsv", "click", () => {
   if (currentInspectedAudit) {
     exportCsv(currentInspectedAudit.suspects, `${currentInspectedAudit.id}_audit_report.csv`);
   }
 });
 
-document.getElementById("btnLoadAuditIntoAnalyzer").addEventListener("click", () => {
+safeOn("btnLoadAuditIntoAnalyzer", "click", () => {
   if (currentInspectedAudit) {
     currentLogEvents = parseRawLogText(currentInspectedAudit.rawLog, `${currentInspectedAudit.server}.log`);
     switchToTab("ANALYZER");
@@ -918,7 +970,7 @@ document.getElementById("btnLoadAuditIntoAnalyzer").addEventListener("click", ()
   }
 });
 
-document.getElementById("btnDownloadSystemAuditLog").addEventListener("click", () => {
+safeOn("btnDownloadSystemAuditLog", "click", () => {
   const blob = new Blob([systemAuditLogs.join("\n")], { type: "text/plain;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -930,7 +982,7 @@ document.getElementById("btnDownloadSystemAuditLog").addEventListener("click", (
   recordAuditLog("AUDIT_EXPORT", "system_audit.log", "SUCCESS", "Exported system audit trail");
 });
 
-// Initial startup
+// Initial startup execution
 currentLogEvents = parseRawLogText(SAMPLE_ATTACK_TEXT, "sample_attack.log");
 runAnalysis(false);
 renderAuditHub();

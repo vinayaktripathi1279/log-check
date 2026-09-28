@@ -26,15 +26,15 @@
 
     <!-- Center Tab Switcher: Analyzer vs Audit Reports vs System Audit Trail -->
     <div class="nav-tabs">
-      <button class="nav-tab active" id="tabBtnAnalyzer">
+      <button type="button" class="nav-tab active" id="tabBtnAnalyzer" onclick="switchToTab('ANALYZER')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Log Analyzer
       </button>
-      <button class="nav-tab" id="tabBtnAuditHub">
+      <button type="button" class="nav-tab" id="tabBtnAuditHub" onclick="switchToTab('AUDIT_HUB')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         Audit Reports <span class="badge badge-counter" id="auditReportCounter">4</span>
       </button>
-      <button class="nav-tab" id="tabBtnAuditTrail">
+      <button type="button" class="nav-tab" id="tabBtnAuditTrail" onclick="switchToTab('AUDIT_TRAIL')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         System Audit Trail (Log)
       </button>
@@ -42,14 +42,14 @@
 
     <!-- User / Auth Profile Widget -->
     <div class="nav-actions">
-      <div class="user-profile-badge" id="btnUserMenu" title="Active Account">
+      <div class="user-profile-badge" id="btnUserMenu" title="Active Account - Click to Switch Role" onclick="openRoleModal()" style="cursor: pointer;">
         <div class="avatar" id="userAvatar">V</div>
         <div class="user-meta">
           <span class="user-name" id="displayUserName">Vinay (Admin)</span>
-          <span class="user-role" id="displayUserRole">Super Administrator</span>
+          <span class="user-role" id="displayUserRole">Super Administrator ▾</span>
         </div>
       </div>
-      <button type="button" class="btn btn-sm btn-primary" id="btnSwitchRole" title="Sign In or Switch User">
+      <button type="button" class="btn btn-sm btn-primary" id="btnSwitchRole" title="Sign In or Switch User" onclick="openRoleModal()">
         🔑 Sign In / Switch Account
       </button>
       <a href="https://github.com/vinayaktripathi1279/log-check" target="_blank" class="btn btn-outline" id="githubRepoLink" title="View Source on GitHub">
@@ -65,55 +65,55 @@
   </div>
 
   <!-- Sign In / Role Selection Modal -->
-  <div class="modal-overlay" id="roleModal">
+  <div class="modal-overlay" id="roleModal" onclick="if(event.target===this) closeRoleModal()">
     <div class="modal-card">
       <div class="modal-header">
         <h3>🔐 Enterprise Sign In & Role Switcher</h3>
-        <button type="button" class="modal-close" id="btnCloseModal">&times;</button>
+        <button type="button" class="modal-close" id="btnCloseModal" onclick="closeRoleModal()">&times;</button>
       </div>
       <div class="modal-body">
         <p class="modal-sub">Click any account below to sign in immediately and test role-based access:</p>
         <div class="role-cards-grid">
           <!-- Admin Account -->
-          <div class="role-card active" data-user="vinay_admin">
+          <div class="role-card active" data-user="vinay_admin" onclick="setCurrentUser('vinay_admin')">
             <div class="role-icon">👑</div>
             <div class="role-details">
               <strong>Vinay Tripathi (Admin)</strong>
               <span class="badge badge-critical" style="margin: 0.2rem 0;">Super Administrator</span>
               <p>Full permissions: Inspect any analyst's raw logs, download all CSV reports, view system audit trail.</p>
             </div>
-            <button type="button" class="btn btn-xs btn-primary btn-login-select" data-user="vinay_admin">Sign In as Admin</button>
+            <button type="button" class="btn btn-xs btn-primary btn-login-select" data-user="vinay_admin" onclick="setCurrentUser('vinay_admin'); event.stopPropagation();">Sign In as Admin</button>
           </div>
 
           <!-- Non-Admin Analyst 1 -->
-          <div class="role-card" data-user="sarah_soc">
+          <div class="role-card" data-user="sarah_soc" onclick="setCurrentUser('sarah_soc')">
             <div class="role-icon">👩‍💻</div>
             <div class="role-details">
               <strong>Sarah Jenkins</strong>
               <span class="badge badge-info" style="margin: 0.2rem 0;">Senior SOC Analyst</span>
               <p>Analyst role: Ingest server logs, flag brute force, submit audits for Bastion hosts.</p>
             </div>
-            <button type="button" class="btn btn-xs btn-outline btn-login-select" data-user="sarah_soc">Sign In as Sarah</button>
+            <button type="button" class="btn btn-xs btn-outline btn-login-select" data-user="sarah_soc" onclick="setCurrentUser('sarah_soc'); event.stopPropagation();">Sign In as Sarah</button>
           </div>
 
           <!-- Non-Admin Analyst 2 -->
-          <div class="role-card" data-user="rahul_devops">
+          <div class="role-card" data-user="rahul_devops" onclick="setCurrentUser('rahul_devops')">
             <div class="role-icon">⚙️</div>
             <div class="role-details">
               <strong>Rahul Sharma</strong>
               <span class="badge badge-medium" style="margin: 0.2rem 0;">DevOps & Cloud Lead</span>
               <p>Auditor role: Manages Kubernetes ingress clusters and cloud workloads.</p>
             </div>
-            <button type="button" class="btn btn-xs btn-outline btn-login-select" data-user="rahul_devops">Sign In as Rahul</button>
+            <button type="button" class="btn btn-xs btn-outline btn-login-select" data-user="rahul_devops" onclick="setCurrentUser('rahul_devops'); event.stopPropagation();">Sign In as Rahul</button>
           </div>
         </div>
 
         <!-- Custom Username Sign In -->
         <div class="custom-signin-box">
-          <label>Or Sign In as Any Custom User ID:</label>
+          <label for="inputCustomUser">Or Sign In as Any Custom User ID:</label>
           <div class="custom-signin-inputs">
-            <input type="text" id="inputCustomUser" placeholder="e.g. alex_intern or security_analyst_2">
-            <button type="button" class="btn btn-secondary btn-sm" id="btnSignInCustom">Sign In</button>
+            <input type="text" id="inputCustomUser" placeholder="e.g. alex_intern or security_analyst_2" onkeydown="if(event.key==='Enter') handleCustomSignIn()">
+            <button type="button" class="btn btn-secondary btn-sm" id="btnSignInCustom" onclick="handleCustomSignIn()">Sign In</button>
           </div>
         </div>
       </div>
