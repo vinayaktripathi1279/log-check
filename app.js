@@ -1,58 +1,209 @@
 /**
- * app.js - CyberGuard Web Demo Engine
+ * app.js - CyberGuard Web Demo Engine & Enterprise Audit Hub
  * Implements:
- *   - Raw log file upload (drag & drop or file picker) from anywhere
- *   - Synthetic log generator for demonstration
- *   - Regex parsing of SSH authentication lines
+ *   - Raw log file upload & parsing
  *   - Sliding window brute-force detection
- *   - Low, Medium, High, and Critical severity categorization
- *   - CSV export directly in the browser
+ *   - Role-Based Access Control (Admin vs SOC Analyst)
+ *   - Centralized Admin Security Audit Hub with cross-team inspection & CSV export
  */
 
-// Preset Attackers & Legitimate IPs for the synthetic generator
-const ATTACKERS = [
-  { ip: "203.0.113.45", attempts: 25, burstMinutes: 3, label: "Critical Attacker" },
-  { ip: "198.51.100.89", attempts: 14, burstMinutes: 2.5, label: "High Attacker" },
-  { ip: "192.0.2.14",   attempts: 7,  burstMinutes: 1.5, label: "Medium Attacker" }
+// Users & Roles
+const USERS = {
+  "vinay_admin": {
+    id: "vinay_admin",
+    name: "Vinay Tripathi",
+    role: "Super Administrator",
+    avatar: "V",
+    isAdmin: true
+  },
+  "sarah_soc": {
+    id: "sarah_soc",
+    name: "Sarah Jenkins",
+    role: "Senior SOC Analyst",
+    avatar: "S",
+    isAdmin: false
+  },
+  "rahul_devops": {
+    id: "rahul_devops",
+    name: "Rahul Sharma",
+    role: "Cloud Infrastructure Lead",
+    avatar: "R",
+    isAdmin: false
+  }
+};
+
+let currentUser = USERS["vinay_admin"];
+
+// Default Seed Audit Reports
+const DEFAULT_AUDIT_REPORTS = [
+  {
+    id: "AUD-2026-0891",
+    submitter: "Sarah Jenkins",
+    submitterId: "sarah_soc",
+    server: "production-bastion-01",
+    timestamp: "2026-09-28 14:15 UTC",
+    lineCount: 49,
+    threatCount: 3,
+    peakSeverity: "Critical",
+    status: "Incident Escalated",
+    suspects: [
+      { ip: "185.220.101.5", failed_attempts: 22, burst_count: 22, first_seen: "Sep 28 10:01:05", last_seen: "Sep 28 10:02:40", severity: "Critical" },
+      { ip: "45.33.32.156", failed_attempts: 12, burst_count: 12, first_seen: "Sep 28 10:05:10", last_seen: "Sep 28 10:06:05", severity: "High" },
+      { ip: "194.26.29.112", failed_attempts: 6, burst_count: 6, first_seen: "Sep 28 10:12:00", last_seen: "Sep 28 10:12:38", severity: "Medium" }
+    ],
+    rawLog: `Sep 28 10:01:05 production-srv sshd[20105]: Failed password for root from 185.220.101.5 port 41001 ssh2
+Sep 28 10:01:09 production-srv sshd[20106]: Failed password for root from 185.220.101.5 port 41002 ssh2
+Sep 28 10:01:14 production-srv sshd[20107]: Failed password for admin from 185.220.101.5 port 41003 ssh2
+Sep 28 10:05:10 production-srv sshd[20140]: Failed password for root from 45.33.32.156 port 38101 ssh2
+Sep 28 10:12:00 production-srv sshd[20170]: Failed password for admin from 194.26.29.112 port 52101 ssh2`
+  },
+  {
+    id: "AUD-2026-0890",
+    submitter: "Rahul Sharma",
+    submitterId: "rahul_devops",
+    server: "k8s-ingress-cluster-ap-south",
+    timestamp: "2026-09-28 12:40 UTC",
+    lineCount: 180,
+    threatCount: 2,
+    peakSeverity: "High",
+    status: "Firewall Rule Applied",
+    suspects: [
+      { ip: "198.51.100.89", failed_attempts: 14, burst_count: 14, first_seen: "Sep 28 11:20:00", last_seen: "Sep 28 11:22:45", severity: "High" },
+      { ip: "192.0.2.14", failed_attempts: 7, burst_count: 7, first_seen: "Sep 28 11:35:10", last_seen: "Sep 28 11:36:20", severity: "Medium" }
+    ],
+    rawLog: `Sep 28 11:20:00 k8s-ingress sshd[4401]: Failed password for root from 198.51.100.89 port 52100 ssh2
+Sep 28 11:20:12 k8s-ingress sshd[4402]: Failed password for deploy from 198.51.100.89 port 52101 ssh2
+Sep 28 11:35:10 k8s-ingress sshd[4410]: Failed password for admin from 192.0.2.14 port 43010 ssh2`
+  },
+  {
+    id: "AUD-2026-0889",
+    submitter: "Intern Analyst (Alex)",
+    submitterId: "alex_intern",
+    server: "staging-api-server",
+    timestamp: "2026-09-27 18:22 UTC",
+    lineCount: 95,
+    threatCount: 1,
+    peakSeverity: "Medium",
+    status: "Under Triage",
+    suspects: [
+      { ip: "192.0.2.77", failed_attempts: 6, burst_count: 6, first_seen: "Sep 27 18:10:04", last_seen: "Sep 27 18:11:15", severity: "Medium" }
+    ],
+    rawLog: `Sep 27 18:10:04 staging-api sshd[102]: Failed password for ubuntu from 192.0.2.77 port 39100 ssh2
+Sep 27 18:10:15 staging-api sshd[103]: Failed password for ubuntu from 192.0.2.77 port 39101 ssh2`
+  },
+  {
+    id: "AUD-2026-0888",
+    submitter: "DevSecOps Bot",
+    submitterId: "bot",
+    server: "db-secondary-replica",
+    timestamp: "2026-09-27 09:10 UTC",
+    lineCount: 220,
+    threatCount: 0,
+    peakSeverity: "Low",
+    status: "Resolved",
+    suspects: [
+      { ip: "192.168.1.15", failed_attempts: 2, burst_count: 1, first_seen: "Sep 27 09:05:00", last_seen: "Sep 27 09:05:12", severity: "Low" }
+    ],
+    rawLog: `Sep 27 09:05:00 db-replica sshd[501]: Failed password for vinay from 192.168.1.15 port 41200 ssh2
+Sep 27 09:05:12 db-replica sshd[502]: Accepted password for vinay from 192.168.1.15 port 41201 ssh2`
+  }
 ];
 
-const LEGIT_IPS = [
-  "192.168.1.15", "192.168.1.42", "192.168.1.105",
-  "10.0.0.12", "10.0.0.55", "172.16.5.20"
-];
+// Persistent Reports in localStorage
+let auditReports = [];
+try {
+  const stored = localStorage.getItem("cyberguard_audit_reports");
+  auditReports = stored ? JSON.parse(stored) : [...DEFAULT_AUDIT_REPORTS];
+} catch (e) {
+  auditReports = [...DEFAULT_AUDIT_REPORTS];
+}
 
-const VALID_USERS = ["vinay", "ubuntu", "devops", "deploy", "alice", "bob"];
-const TARGET_USERS = ["root", "admin", "test", "oracle", "guest", "postgres", "user"];
+function saveAuditReports() {
+  try {
+    localStorage.setItem("cyberguard_audit_reports", JSON.stringify(auditReports));
+  } catch (e) {}
+}
 
-// Regex matching SSH authentication failure lines
-// Matches both standard syslog: "Oct 24 10:14:02 secure-srv01 sshd[14205]: Failed password for root from 203.0.113.45 port 42102 ssh2"
-// and optional ISO timestamps or missing hostname
+// Built-in Sample Attack Scenario
+const SAMPLE_ATTACK_TEXT = `Sep 28 10:00:01 production-srv sshd[20101]: Accepted publickey for vinay from 192.168.1.50 port 51234 ssh2: RSA SHA256:4a8b...
+Sep 28 10:00:15 production-srv sshd[20102]: Accepted publickey for deploy from 10.0.0.12 port 49120 ssh2: RSA SHA256:7c9d...
+Sep 28 10:01:05 production-srv sshd[20105]: Failed password for root from 185.220.101.5 port 41001 ssh2
+Sep 28 10:01:09 production-srv sshd[20106]: Failed password for root from 185.220.101.5 port 41002 ssh2
+Sep 28 10:01:14 production-srv sshd[20107]: Failed password for admin from 185.220.101.5 port 41003 ssh2
+Sep 28 10:01:18 production-srv sshd[20108]: Failed password for invalid user test from 185.220.101.5 port 41004 ssh2
+Sep 28 10:01:23 production-srv sshd[20109]: Failed password for invalid user guest from 185.220.101.5 port 41005 ssh2
+Sep 28 10:01:27 production-srv sshd[20110]: Failed password for oracle from 185.220.101.5 port 41006 ssh2
+Sep 28 10:01:31 production-srv sshd[20111]: Failed password for postgres from 185.220.101.5 port 41007 ssh2
+Sep 28 10:01:36 production-srv sshd[20112]: Failed password for root from 185.220.101.5 port 41008 ssh2
+Sep 28 10:01:40 production-srv sshd[20113]: Failed password for root from 185.220.101.5 port 41009 ssh2
+Sep 28 10:01:45 production-srv sshd[20114]: Failed password for admin from 185.220.101.5 port 41010 ssh2
+Sep 28 10:01:49 production-srv sshd[20115]: Failed password for invalid user devops from 185.220.101.5 port 41011 ssh2
+Sep 28 10:01:54 production-srv sshd[20116]: Failed password for root from 185.220.101.5 port 41012 ssh2
+Sep 28 10:01:59 production-srv sshd[20117]: Failed password for root from 185.220.101.5 port 41013 ssh2
+Sep 28 10:02:04 production-srv sshd[20118]: Failed password for admin from 185.220.101.5 port 41014 ssh2
+Sep 28 10:02:08 production-srv sshd[20119]: Failed password for user from 185.220.101.5 port 41015 ssh2
+Sep 28 10:02:13 production-srv sshd[20120]: Failed password for ftpuser from 185.220.101.5 port 41016 ssh2
+Sep 28 10:02:17 production-srv sshd[20121]: Failed password for root from 185.220.101.5 port 41017 ssh2
+Sep 28 10:02:22 production-srv sshd[20122]: Failed password for root from 185.220.101.5 port 41018 ssh2
+Sep 28 10:02:26 production-srv sshd[20123]: Failed password for admin from 185.220.101.5 port 41019 ssh2
+Sep 28 10:02:30 production-srv sshd[20124]: Failed password for root from 185.220.101.5 port 41020 ssh2
+Sep 28 10:02:35 production-srv sshd[20125]: Failed password for root from 185.220.101.5 port 41021 ssh2
+Sep 28 10:02:40 production-srv sshd[20126]: Failed password for invalid user support from 185.220.101.5 port 41022 ssh2
+Sep 28 10:03:00 production-srv sshd[20130]: Accepted password for alice from 192.168.1.100 port 55120 ssh2
+Sep 28 10:05:10 production-srv sshd[20140]: Failed password for root from 45.33.32.156 port 38101 ssh2
+Sep 28 10:05:15 production-srv sshd[20141]: Failed password for root from 45.33.32.156 port 38102 ssh2
+Sep 28 10:05:20 production-srv sshd[20142]: Failed password for root from 45.33.32.156 port 38103 ssh2
+Sep 28 10:05:25 production-srv sshd[20143]: Failed password for admin from 45.33.32.156 port 38104 ssh2
+Sep 28 10:05:30 production-srv sshd[20144]: Failed password for admin from 45.33.32.156 port 38105 ssh2
+Sep 28 10:05:35 production-srv sshd[20145]: Failed password for service from 45.33.32.156 port 38106 ssh2
+Sep 28 10:05:40 production-srv sshd[20146]: Failed password for root from 45.33.32.156 port 38107 ssh2
+Sep 28 10:05:45 production-srv sshd[20147]: Failed password for root from 45.33.32.156 port 38108 ssh2
+Sep 28 10:05:50 production-srv sshd[20148]: Failed password for test from 45.33.32.156 port 38109 ssh2
+Sep 28 10:05:55 production-srv sshd[20149]: Failed password for ubuntu from 45.33.32.156 port 38110 ssh2
+Sep 28 10:06:00 production-srv sshd[20150]: Failed password for deploy from 45.33.32.156 port 38111 ssh2
+Sep 28 10:06:05 production-srv sshd[20151]: Failed password for root from 45.33.32.156 port 38112 ssh2
+Sep 28 10:08:20 production-srv sshd[20160]: Failed password for bob from 192.168.1.75 port 42100 ssh2
+Sep 28 10:08:26 production-srv sshd[20161]: Accepted password for bob from 192.168.1.75 port 42101 ssh2
+Sep 28 10:12:00 production-srv sshd[20170]: Failed password for admin from 194.26.29.112 port 52101 ssh2
+Sep 28 10:12:08 production-srv sshd[20171]: Failed password for admin from 194.26.29.112 port 52102 ssh2
+Sep 28 10:12:15 production-srv sshd[20172]: Failed password for root from 194.26.29.112 port 52103 ssh2
+Sep 28 10:12:22 production-srv sshd[20173]: Failed password for root from 194.26.29.112 port 52104 ssh2
+Sep 28 10:12:30 production-srv sshd[20174]: Failed password for oracle from 194.26.29.112 port 52105 ssh2
+Sep 28 10:12:38 production-srv sshd[20175]: Failed password for test from 194.26.29.112 port 52106 ssh2
+Sep 28 10:15:00 production-srv sshd[20180]: Accepted publickey for devops from 10.0.0.55 port 48999 ssh2: RSA SHA256:91aa...
+Sep 28 10:20:10 production-srv sshd[20190]: Failed password for vinay from 192.168.1.15 port 39110 ssh2
+Sep 28 10:20:16 production-srv sshd[20191]: Accepted password for vinay from 192.168.1.15 port 39111 ssh2`;
+
+// Regex matching
 const SSH_FAILED_REGEX = /([A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2}|\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?).*?sshd\[\d+\]:\s+Failed password for\s+(?:invalid user\s+)?(\S+)\s+from\s+([0-9]{1,3}(?:\.[0-9]{1,3}){3})/;
-
-// Regex matching SSH success lines (for stats)
 const SSH_SUCCESS_REGEX = /([A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2}|\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?).*?sshd\[\d+\]:\s+Accepted (?:password|publickey) for\s+(\S+)\s+from\s+([0-9]{1,3}(?:\.[0-9]{1,3}){3})/;
 
-// Application State
+// State
 let currentLogEvents = [];
 let analyzedSuspects = [];
 let currentFilterSeverity = "ALL";
-let currentFileName = "Simulated auth.log";
+let currentFileName = "sample_attack.log";
+let currentRawText = SAMPLE_ATTACK_TEXT;
+let activeAuditFilter = "ALL";
+let currentInspectedAudit = null;
 
-// Helper: Format Month Day HH:MM:SS
-function formatSyslogTimestamp(date) {
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const m = months[date.getMonth()];
-  const d = String(date.getDate()).padStart(2, " ");
-  const h = String(date.getHours()).padStart(2, "0");
-  const min = String(date.getMinutes()).padStart(2, "0");
-  const s = String(date.getSeconds()).padStart(2, "0");
-  return `${m} ${d} ${h}:${min}:${s}`;
+// Helpers
+function showNotification(message, type = "success") {
+  const banner = document.getElementById("notifBanner");
+  const icon = document.getElementById("notifIcon");
+  const text = document.getElementById("notifText");
+  text.textContent = message;
+  if (type === "warning") {
+    banner.className = "notification-banner alert-warning";
+    icon.textContent = "⚠️";
+  } else {
+    banner.className = "notification-banner";
+    icon.textContent = "✅";
+  }
 }
 
-// Parse timestamp from raw string (syslog or ISO)
 function parseTimestamp(tsStr) {
   const currentYear = new Date().getFullYear();
-  // Try standard syslog: 'Sep 28 10:14:02'
   const syslogMatch = tsStr.match(/^([A-Z][a-z]{2})\s+(\d+)\s+(\d{2}):(\d{2}):(\d{2})$/);
   if (syslogMatch) {
     const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
@@ -63,102 +214,12 @@ function parseTimestamp(tsStr) {
     const sec = parseInt(syslogMatch[5], 10);
     return new Date(currentYear, month, day, hour, min, sec);
   }
-  // Try ISO or generic date
   const parsed = new Date(tsStr);
   return isNaN(parsed.getTime()) ? new Date() : parsed;
 }
 
-// Generate Realistic In-Memory Log Events for Demo
-function generateSyntheticLogs() {
-  const events = [];
-  const baseTime = new Date(Date.now() - 24 * 60 * 60 * 1000);
-  const hostname = "secure-srv01";
-  let pidCounter = 12000;
-
-  // 1. Inject Attacker Bursts
-  ATTACKERS.forEach((att, idx) => {
-    let t = new Date(baseTime.getTime() + (idx * 3 + 2) * 60 * 60 * 1000);
-    for (let i = 0; i < att.attempts; i++) {
-      t = new Date(t.getTime() + (Math.floor(Math.random() * 8) + 3) * 1000);
-      const user = TARGET_USERS[Math.floor(Math.random() * TARGET_USERS.length)];
-      const port = Math.floor(Math.random() * 30000) + 32000;
-      const pid = ++pidCounter;
-      const isInvalid = Math.random() > 0.5;
-      const msg = isInvalid
-        ? `Failed password for invalid user ${user} from ${att.ip} port ${port} ssh2`
-        : `Failed password for ${user} from ${att.ip} port ${port} ssh2`;
-
-      events.push({
-        timestamp: new Date(t),
-        rawTs: formatSyslogTimestamp(t),
-        line: `${formatSyslogTimestamp(t)} ${hostname} sshd[${pid}]: ${msg}`,
-        type: "failed",
-        isAttacker: true,
-        ip: att.ip,
-        user: user
-      });
-    }
-  });
-
-  // 2. Inject Normal Traffic (~450 lines)
-  let normalTime = new Date(baseTime);
-  for (let i = 0; i < 450; i++) {
-    normalTime = new Date(normalTime.getTime() + (Math.floor(Math.random() * 150) + 20) * 1000);
-    const ip = LEGIT_IPS[Math.floor(Math.random() * LEGIT_IPS.length)];
-    const user = VALID_USERS[Math.floor(Math.random() * VALID_USERS.length)];
-    const port = Math.floor(Math.random() * 20000) + 40000;
-    const pid = ++pidCounter;
-
-    const roll = Math.random();
-    if (roll < 0.45) {
-      events.push({
-        timestamp: new Date(normalTime),
-        rawTs: formatSyslogTimestamp(normalTime),
-        line: `${formatSyslogTimestamp(normalTime)} ${hostname} sshd[${pid}]: Accepted publickey for ${user} from ${ip} port ${port} ssh2: RSA SHA256:7f9a...`,
-        type: "success",
-        isAttacker: false,
-        ip: ip,
-        user: user
-      });
-    } else if (roll < 0.8) {
-      events.push({
-        timestamp: new Date(normalTime),
-        rawTs: formatSyslogTimestamp(normalTime),
-        line: `${formatSyslogTimestamp(normalTime)} ${hostname} sshd[${pid}]: Accepted password for ${user} from ${ip} port ${port} ssh2`,
-        type: "success",
-        isAttacker: false,
-        ip: ip,
-        user: user
-      });
-    } else {
-      events.push({
-        timestamp: new Date(normalTime),
-        rawTs: formatSyslogTimestamp(normalTime),
-        line: `${formatSyslogTimestamp(normalTime)} ${hostname} sshd[${pid}]: Failed password for ${user} from ${ip} port ${port} ssh2`,
-        type: "failed",
-        isAttacker: false,
-        ip: ip,
-        user: user
-      });
-      normalTime = new Date(normalTime.getTime() + 5000);
-      events.push({
-        timestamp: new Date(normalTime),
-        rawTs: formatSyslogTimestamp(normalTime),
-        line: `${formatSyslogTimestamp(normalTime)} ${hostname} sshd[${pid + 1}]: Accepted password for ${user} from ${ip} port ${port + 1} ssh2`,
-        type: "success",
-        isAttacker: false,
-        ip: ip,
-        user: user
-      });
-    }
-  }
-
-  events.sort((a, b) => a.timestamp - b.timestamp);
-  return events;
-}
-
-// Ingest and Parse any Raw User-Uploaded File
 function parseRawLogText(content, fileName) {
+  currentRawText = content;
   const lines = content.split(/\r?\n/);
   const events = [];
 
@@ -168,39 +229,32 @@ function parseRawLogText(content, fileName) {
 
     const failMatch = line.match(SSH_FAILED_REGEX);
     if (failMatch) {
-      const rawTs = failMatch[1];
-      const user = failMatch[2];
-      const ip = failMatch[3];
       events.push({
-        timestamp: parseTimestamp(rawTs),
-        rawTs: rawTs,
+        timestamp: parseTimestamp(failMatch[1]),
+        rawTs: failMatch[1],
         line: line,
         type: "failed",
-        isAttacker: false, // will be evaluated by velocity
-        ip: ip,
-        user: user
+        isAttacker: false,
+        ip: failMatch[3],
+        user: failMatch[2]
       });
       continue;
     }
 
     const successMatch = line.match(SSH_SUCCESS_REGEX);
     if (successMatch) {
-      const rawTs = successMatch[1];
-      const user = successMatch[2];
-      const ip = successMatch[3];
       events.push({
-        timestamp: parseTimestamp(rawTs),
-        rawTs: rawTs,
+        timestamp: parseTimestamp(successMatch[1]),
+        rawTs: successMatch[1],
         line: line,
         type: "success",
         isAttacker: false,
-        ip: ip,
-        user: user
+        ip: successMatch[3],
+        user: successMatch[2]
       });
       continue;
     }
 
-    // Other syslog line (e.g. session closed, disconnects, cron)
     events.push({
       timestamp: new Date(),
       rawTs: "syslog",
@@ -217,7 +271,6 @@ function parseRawLogText(content, fileName) {
   return events;
 }
 
-// Sliding Window Detection Algorithm
 function detectBruteForce(timestamps, windowMinutes) {
   if (!timestamps.length) return 0;
   let maxBurst = 0;
@@ -227,18 +280,14 @@ function detectBruteForce(timestamps, windowMinutes) {
     const windowEnd = timestamps[i].getTime() + windowMs;
     let burst = 0;
     for (let j = i; j < timestamps.length; j++) {
-      if (timestamps[j].getTime() <= windowEnd) {
-        burst++;
-      } else {
-        break;
-      }
+      if (timestamps[j].getTime() <= windowEnd) burst++;
+      else break;
     }
     if (burst > maxBurst) maxBurst = burst;
   }
   return maxBurst;
 }
 
-// Severity Calculation: Critical, High, Medium, Low
 function calculateSeverity(failures) {
   if (failures >= 20) return "Critical";
   if (failures >= 10) return "High";
@@ -246,10 +295,10 @@ function calculateSeverity(failures) {
   return "Low";
 }
 
-// Core Analysis Engine
-function runAnalysis() {
+function runAnalysis(autoScroll = false) {
   const threshold = parseInt(document.getElementById("inputThreshold").value) || 5;
   const windowMinutes = parseInt(document.getElementById("inputWindow").value) || 5;
+  document.getElementById("activeRuleBadge").textContent = `Rule: ≥ ${threshold} Failures / ${windowMinutes} Minutes`;
 
   const failedByIp = {};
   let totalFailures = 0;
@@ -269,7 +318,6 @@ function runAnalysis() {
     const timestamps = events.map(e => e.timestamp);
     const peakBurst = detectBruteForce(timestamps, windowMinutes);
 
-    // If threshold is lowered, or burst exceeds threshold, or filter is Low
     if (peakBurst >= threshold || threshold <= 1) {
       const targets = [...new Set(events.map(e => e.user))];
       suspects.push({
@@ -290,14 +338,27 @@ function runAnalysis() {
 
   analyzedSuspects = suspects;
 
-  // Update UI Elements
   updateKpis(currentLogEvents.length, totalFailures, suspects);
   renderSuspectsTable();
   renderConsoleStream();
   updateIntelMetrics(suspects);
+
+  document.querySelectorAll("#severityFilterGroup .pill").forEach(pill => {
+    const sev = pill.dataset.severity;
+    if (sev === "ALL") {
+      pill.textContent = `All (${suspects.length})`;
+    } else {
+      const count = suspects.filter(s => s.severity === sev).length;
+      pill.textContent = `${sev} (${count})`;
+    }
+  });
+
+  if (autoScroll) {
+    const el = document.getElementById("resultsSection");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
-// Update Top KPI Cards
 function updateKpis(totalEvents, totalFailures, suspects) {
   document.getElementById("kpiTotalEvents").textContent = totalEvents;
   document.getElementById("kpiFailedLogins").textContent = totalFailures;
@@ -308,10 +369,9 @@ function updateKpis(totalEvents, totalFailures, suspects) {
   const highestBurst = suspects.length ? Math.max(...suspects.map(s => s.peakBurst)) : 0;
   const highestIp = suspects.length ? suspects[0].ip : "None";
   document.getElementById("kpiPeakBurst").innerHTML = `${highestBurst} <span class="unit">/ window</span>`;
-  document.querySelector(".kpi-card.critical .kpi-sub").textContent = `Top: ${highestIp}`;
+  document.getElementById("kpiPeakIp").textContent = `Top: ${highestIp}`;
 }
 
-// Render Table
 function renderSuspectsTable() {
   const tbody = document.getElementById("suspectsTableBody");
   tbody.innerHTML = "";
@@ -323,13 +383,12 @@ function renderSuspectsTable() {
   document.getElementById("tableRecordCount").textContent = `Showing ${filtered.length} Flagged IPs`;
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-muted)">No suspects match the current threshold (${document.getElementById("inputThreshold").value}) or filter (${currentFilterSeverity}).</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-muted)">No suspects match current threshold or filter.</td></tr>`;
     return;
   }
 
   filtered.forEach(s => {
     const tr = document.createElement("tr");
-
     const targetBadges = s.targets.map(u => {
       const cls = u === "root" ? "target-badge root" : "target-badge";
       return `<span class="${cls}">${u}</span>`;
@@ -348,7 +407,6 @@ function renderSuspectsTable() {
   });
 }
 
-// Update Intel Breakdown
 function updateIntelMetrics(suspects) {
   const total = suspects.length || 1;
   const critical = suspects.filter(s => s.severity === "Critical").length;
@@ -359,9 +417,24 @@ function updateIntelMetrics(suspects) {
   document.getElementById("countCritical").textContent = `${critical} IP (${Math.round((critical / total) * 100)}%)`;
   document.getElementById("countHigh").textContent = `${high} IP (${Math.round((high / total) * 100)}%)`;
   document.getElementById("countMedium").textContent = `${medium} IP (${Math.round((medium / total) * 100)}%)`;
+  document.getElementById("countLow").textContent = `${low} IP (${Math.round((low / total) * 100)}%)`;
+
+  document.getElementById("barCritical").style.width = `${Math.round((critical / total) * 100)}%`;
+  document.getElementById("barHigh").style.width = `${Math.round((high / total) * 100)}%`;
+  document.getElementById("barMedium").style.width = `${Math.round((medium / total) * 100)}%`;
+  document.getElementById("barLow").style.width = `${Math.round((low / total) * 100)}%`;
+
+  const topAttacker = suspects.length ? suspects[0] : null;
+  const mitigationList = document.getElementById("mitigationList");
+  if (topAttacker) {
+    mitigationList.innerHTML = `
+      <li><strong>Immediate Null-Route:</strong> Block <code>${topAttacker.ip}</code> (Peak attacker).</li>
+      <li><strong>Targeted Accounts:</strong> ${topAttacker.targets.map(t => `<code>${t}</code>`).join(", ")}.</li>
+      <li><strong>Enforce Key-Only:</strong> Disable password login in <code>sshd_config</code>.</li>
+    `;
+  }
 }
 
-// Render Raw Log Stream Screen
 function renderConsoleStream() {
   const screen = document.getElementById("logStreamScreen");
   const onlyFailures = document.getElementById("checkOnlyFailures").checked;
@@ -373,7 +446,6 @@ function renderConsoleStream() {
 
   document.getElementById("logCounterDisplay").textContent = `Showing ${displayList.length} entries`;
 
-  // Render recent 200 items to keep DOM performant
   displayList.slice(-200).forEach(evt => {
     const div = document.createElement("div");
     let cls = "log-line";
@@ -386,55 +458,227 @@ function renderConsoleStream() {
   });
 }
 
-// Export CSV Functionality
-function exportCsv() {
-  if (!analyzedSuspects.length) {
+function exportCsv(data = analyzedSuspects, filename = "report.csv") {
+  if (!data.length) {
     alert("No flagged suspects to export!");
     return;
   }
-
   let csvContent = "IP,failed attempts,first seen,last seen,severity\r\n";
-  analyzedSuspects.forEach(s => {
-    csvContent += `${s.ip},${s.failedAttempts},${s.firstSeen},${s.lastSeen},${s.severity}\r\n`;
+  data.forEach(s => {
+    const attempts = s.failedAttempts || s.failed_attempts;
+    const firstSeen = s.firstSeen || s.first_seen;
+    const lastSeen = s.lastSeen || s.last_seen;
+    csvContent += `${s.ip},${attempts},${firstSeen},${lastSeen},${s.severity}\r\n`;
   });
-
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.setAttribute("href", url);
-  link.setAttribute("download", "report.csv");
+  link.setAttribute("download", filename);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
 
-// Handle File Processing
+// ==========================================
+// ADMIN AUDIT HUB FUNCTIONALITY
+// ==========================================
+function renderAuditHub() {
+  const tbody = document.getElementById("auditReportsTableBody");
+  tbody.innerHTML = "";
+
+  document.getElementById("auditReportCounter").textContent = auditReports.length;
+  document.getElementById("auditStatsBadge").textContent = `Showing ${auditReports.length} Total Submissions`;
+
+  let list = [...auditReports];
+
+  // Search filter
+  const query = document.getElementById("inputAuditSearch").value.toLowerCase().trim();
+  if (query) {
+    list = list.filter(r =>
+      r.submitter.toLowerCase().includes(query) ||
+      r.server.toLowerCase().includes(query) ||
+      r.id.toLowerCase().includes(query) ||
+      r.suspects.some(s => s.ip.includes(query))
+    );
+  }
+
+  // Tag filter
+  if (activeAuditFilter !== "ALL") {
+    if (activeAuditFilter === "Resolved") {
+      list = list.filter(r => r.status === "Resolved");
+    } else {
+      list = list.filter(r => r.peakSeverity === activeAuditFilter);
+    }
+  }
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 2rem; color: var(--text-muted)">No audit reports match your search criteria.</td></tr>`;
+    return;
+  }
+
+  list.forEach(rep => {
+    const tr = document.createElement("tr");
+    const sevBadge = `<span class="badge badge-${rep.peakSeverity.toLowerCase()}">${rep.peakSeverity}</span>`;
+    const statusBadge = rep.status === "Resolved"
+      ? `<span class="badge badge-success">Resolved</span>`
+      : rep.status === "Incident Escalated"
+      ? `<span class="badge badge-critical">Escalated</span>`
+      : `<span class="badge badge-high">${rep.status}</span>`;
+
+    tr.innerHTML = `
+      <td><strong>${rep.id}</strong></td>
+      <td>
+        <strong>${rep.submitter}</strong>
+        <span style="display:block; font-size: 0.7rem; color: var(--text-muted)">${rep.timestamp}</span>
+      </td>
+      <td><code>${rep.server}</code></td>
+      <td>${rep.lineCount} lines</td>
+      <td><strong>${rep.threatCount} Flagged</strong></td>
+      <td>${sevBadge}</td>
+      <td>${statusBadge}</td>
+      <td>
+        <div style="display:flex; gap: 0.35rem;">
+          <button class="btn btn-xs btn-outline btn-inspect" data-id="${rep.id}">Inspect Logs</button>
+          <button class="btn btn-xs btn-primary btn-download-csv" data-id="${rep.id}">Download CSV</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Attach inspection handlers
+  document.querySelectorAll(".btn-inspect").forEach(btn => {
+    btn.addEventListener("click", () => inspectAuditReport(btn.dataset.id));
+  });
+
+  document.querySelectorAll(".btn-download-csv").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const rep = auditReports.find(r => r.id === btn.dataset.id);
+      if (rep) {
+        exportCsv(rep.suspects, `${rep.id}_${rep.server}_report.csv`);
+      }
+    });
+  });
+}
+
+function inspectAuditReport(reportId) {
+  const rep = auditReports.find(r => r.id === reportId);
+  if (!rep) return;
+  currentInspectedAudit = rep;
+
+  const drawer = document.getElementById("auditDetailDrawer");
+  drawer.style.display = "block";
+
+  document.getElementById("drawerTitle").textContent = `Inspecting Audit Report: ${rep.id} (${rep.server})`;
+  document.getElementById("drawerSubmitter").textContent = `${rep.submitter} (${rep.submitterId})`;
+  document.getElementById("drawerServer").textContent = rep.server;
+  document.getElementById("drawerTime").textContent = rep.timestamp;
+  document.getElementById("drawerStatus").textContent = rep.status;
+
+  document.getElementById("drawerLogContent").textContent = rep.rawLog;
+
+  drawer.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function saveCurrentToAuditHub() {
+  if (!analyzedSuspects.length && currentLogEvents.length === 0) {
+    alert("Please analyze or upload a log file first!");
+    return;
+  }
+
+  const serverName = prompt("Enter Server / Cluster Identifier for this Audit Report:", "prod-bastion-gateway") || "unnamed-server";
+
+  const newId = `AUD-2026-0${Math.floor(100 + Math.random() * 900)}`;
+  const peakSev = analyzedSuspects.length ? analyzedSuspects[0].severity : "Low";
+
+  const newReport = {
+    id: newId,
+    submitter: currentUser.name,
+    submitterId: currentUser.id,
+    server: serverName,
+    timestamp: new Date().toLocaleString(),
+    lineCount: currentLogEvents.length,
+    threatCount: analyzedSuspects.length,
+    peakSeverity: peakSev,
+    status: peakSev === "Critical" ? "Incident Escalated" : "Under Triage",
+    suspects: analyzedSuspects.map(s => ({
+      ip: s.ip,
+      failed_attempts: s.failedAttempts,
+      burst_count: s.peakBurst,
+      first_seen: s.firstSeen,
+      last_seen: s.lastSeen,
+      severity: s.severity
+    })),
+    rawLog: currentRawText.slice(0, 5000)
+  };
+
+  auditReports.unshift(newReport);
+  saveAuditReports();
+  renderAuditHub();
+
+  showNotification(`✅ Successfully saved and submitted report ${newId} to Organization Audit Hub!`, "success");
+  switchToTab("AUDIT_HUB");
+}
+
+function switchToTab(tabName) {
+  const viewAnalyzer = document.getElementById("viewAnalyzer");
+  const viewAuditHub = document.getElementById("viewAuditHub");
+  const btnAnalyzer = document.getElementById("tabBtnAnalyzer");
+  const btnAuditHub = document.getElementById("tabBtnAuditHub");
+
+  if (tabName === "ANALYZER") {
+    viewAnalyzer.style.display = "flex";
+    viewAuditHub.style.display = "none";
+    btnAnalyzer.classList.add("active");
+    btnAuditHub.classList.remove("active");
+  } else {
+    viewAnalyzer.style.display = "none";
+    viewAuditHub.style.display = "flex";
+    btnAnalyzer.classList.remove("active");
+    btnAuditHub.classList.add("active");
+    renderAuditHub();
+  }
+}
+
+function setCurrentUser(userKey) {
+  currentUser = USERS[userKey] || USERS["vinay_admin"];
+  document.getElementById("userAvatar").textContent = currentUser.avatar;
+  document.getElementById("displayUserName").textContent = currentUser.name;
+  document.getElementById("displayUserRole").textContent = currentUser.role;
+
+  document.querySelectorAll(".role-card").forEach(c => {
+    c.classList.toggle("active", c.dataset.user === userKey);
+  });
+
+  document.getElementById("roleModal").classList.remove("active");
+
+  if (currentUser.isAdmin) {
+    showNotification(`Logged in as Administrator (${currentUser.name}). Full audit access granted.`, "success");
+  } else {
+    showNotification(`Logged in as ${currentUser.name} (${currentUser.role}).`, "success");
+  }
+}
+
+// File upload handler
 function handleFileUpload(file) {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(e) {
     const content = e.target.result;
     currentLogEvents = parseRawLogText(content, file.name);
-    runAnalysis();
+    runAnalysis(true);
+    showNotification(`Ingested '${file.name}' (${currentLogEvents.length} log lines). Flagged ${analyzedSuspects.length} brute-force attackers!`, "success");
   };
   reader.readAsText(file);
 }
 
-// Drag and Drop Event Listeners
+// Setup Event Listeners
 const dropzone = document.getElementById("logDropzone");
 const fileInput = document.getElementById("fileInput");
-const btnBrowse = document.getElementById("btnBrowseFile");
 
-btnBrowse.addEventListener("click", () => fileInput.click());
-dropzone.addEventListener("click", (e) => {
-  if (e.target !== btnBrowse) fileInput.click();
-});
-
-fileInput.addEventListener("change", (e) => {
-  if (e.target.files && e.target.files[0]) {
-    handleFileUpload(e.target.files[0]);
-  }
-});
+window.addEventListener("dragover", (e) => e.preventDefault(), false);
+window.addEventListener("drop", (e) => e.preventDefault(), false);
 
 dropzone.addEventListener("dragover", (e) => {
   e.preventDefault();
@@ -448,24 +692,43 @@ dropzone.addEventListener("dragleave", () => {
 dropzone.addEventListener("drop", (e) => {
   e.preventDefault();
   dropzone.classList.remove("dragover");
-  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+  if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
     handleFileUpload(e.dataTransfer.files[0]);
   }
 });
 
-// Event Listeners for Controls
-document.getElementById("btnExportCsv").addEventListener("click", exportCsv);
-document.getElementById("btnRunAnalysis").addEventListener("click", runAnalysis);
-document.getElementById("inputThreshold").addEventListener("input", runAnalysis);
-document.getElementById("inputWindow").addEventListener("input", runAnalysis);
-document.getElementById("checkOnlyFailures").addEventListener("change", renderConsoleStream);
-
-document.getElementById("btnRegenerateLogs").addEventListener("click", () => {
-  currentFileName = "Simulated auth.log";
-  document.getElementById("activeLogBadge").textContent = `Currently Active: Simulated auth.log`;
-  currentLogEvents = generateSyntheticLogs();
-  runAnalysis();
+fileInput.addEventListener("change", (e) => {
+  if (e.target.files && e.target.files[0]) {
+    handleFileUpload(e.target.files[0]);
+    fileInput.value = "";
+  }
 });
+
+// Quick Scenarios
+document.getElementById("btnLoadSampleAttack").addEventListener("click", () => {
+  currentLogEvents = parseRawLogText(SAMPLE_ATTACK_TEXT, "sample_attack.log");
+  runAnalysis(true);
+  showNotification("Loaded 'sample_attack.log': 3 external attackers detected!", "success");
+});
+
+document.getElementById("btnLoadSimulatedLog").addEventListener("click", () => {
+  // Generate on the fly
+  let generatedText = "";
+  for (let i = 0; i < 200; i++) {
+    generatedText += `Sep 28 12:00:${String(i%60).padStart(2, "0")} server sshd[${10000+i}]: Failed password for root from 203.0.113.45 port ${30000+i} ssh2\n`;
+  }
+  currentLogEvents = parseRawLogText(generatedText, "enterprise_simulated.log");
+  runAnalysis(true);
+  showNotification("Loaded enterprise simulated dataset.", "success");
+});
+
+// Analysis Controls
+document.getElementById("btnExportCsv").addEventListener("click", () => exportCsv());
+document.getElementById("btnSaveToAuditHub").addEventListener("click", saveCurrentToAuditHub);
+document.getElementById("btnRunAnalysis").addEventListener("click", () => runAnalysis(false));
+document.getElementById("inputThreshold").addEventListener("input", () => runAnalysis(false));
+document.getElementById("inputWindow").addEventListener("input", () => runAnalysis(false));
+document.getElementById("checkOnlyFailures").addEventListener("change", renderConsoleStream);
 
 document.querySelectorAll("#severityFilterGroup .pill").forEach(btn => {
   btn.addEventListener("click", (e) => {
@@ -476,6 +739,59 @@ document.querySelectorAll("#severityFilterGroup .pill").forEach(btn => {
   });
 });
 
-// Initial Run with Synthetic Demo Logs
-currentLogEvents = generateSyntheticLogs();
-runAnalysis();
+// Navigation Tabs
+document.getElementById("tabBtnAnalyzer").addEventListener("click", () => switchToTab("ANALYZER"));
+document.getElementById("tabBtnAuditHub").addEventListener("click", () => switchToTab("AUDIT_HUB"));
+
+// Modal & User switching
+document.getElementById("btnSwitchRole").addEventListener("click", () => {
+  document.getElementById("roleModal").classList.add("active");
+});
+document.getElementById("btnCloseModal").addEventListener("click", () => {
+  document.getElementById("roleModal").classList.remove("active");
+});
+document.querySelectorAll(".role-card").forEach(card => {
+  card.addEventListener("click", () => setCurrentUser(card.dataset.user));
+});
+
+// Audit Hub controls
+document.getElementById("inputAuditSearch").addEventListener("input", renderAuditHub);
+document.getElementById("btnSeedSampleReports").addEventListener("click", () => {
+  auditReports = [...DEFAULT_AUDIT_REPORTS];
+  saveAuditReports();
+  renderAuditHub();
+  showNotification("Reset Audit Hub to original organization reports.", "success");
+});
+
+document.querySelectorAll(".audit-filter-tags .pill").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    document.querySelectorAll(".audit-filter-tags .pill").forEach(p => p.classList.remove("active"));
+    e.target.classList.add("active");
+    activeAuditFilter = e.target.dataset.auditFilter;
+    renderAuditHub();
+  });
+});
+
+document.getElementById("btnCloseDrawer").addEventListener("click", () => {
+  document.getElementById("auditDetailDrawer").style.display = "none";
+});
+
+document.getElementById("btnDownloadAuditCsv").addEventListener("click", () => {
+  if (currentInspectedAudit) {
+    exportCsv(currentInspectedAudit.suspects, `${currentInspectedAudit.id}_audit_report.csv`);
+  }
+});
+
+document.getElementById("btnLoadAuditIntoAnalyzer").addEventListener("click", () => {
+  if (currentInspectedAudit) {
+    currentLogEvents = parseRawLogText(currentInspectedAudit.rawLog, `${currentInspectedAudit.server}.log`);
+    switchToTab("ANALYZER");
+    runAnalysis(true);
+    showNotification(`Loaded '${currentInspectedAudit.server}' logs from audit ${currentInspectedAudit.id} into Analyzer!`, "success");
+  }
+});
+
+// Initial startup
+currentLogEvents = parseRawLogText(SAMPLE_ATTACK_TEXT, "sample_attack.log");
+runAnalysis(false);
+renderAuditHub();

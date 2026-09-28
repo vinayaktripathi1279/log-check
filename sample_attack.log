@@ -1,0 +1,48 @@
+Sep 28 10:00:01 production-srv sshd[20101]: Accepted publickey for vinay from 192.168.1.50 port 51234 ssh2: RSA SHA256:4a8b...
+Sep 28 10:00:15 production-srv sshd[20102]: Accepted publickey for deploy from 10.0.0.12 port 49120 ssh2: RSA SHA256:7c9d...
+Sep 28 10:01:05 production-srv sshd[20105]: Failed password for root from 185.220.101.5 port 41001 ssh2
+Sep 28 10:01:09 production-srv sshd[20106]: Failed password for root from 185.220.101.5 port 41002 ssh2
+Sep 28 10:01:14 production-srv sshd[20107]: Failed password for admin from 185.220.101.5 port 41003 ssh2
+Sep 28 10:01:18 production-srv sshd[20108]: Failed password for invalid user test from 185.220.101.5 port 41004 ssh2
+Sep 28 10:01:23 production-srv sshd[20109]: Failed password for invalid user guest from 185.220.101.5 port 41005 ssh2
+Sep 28 10:01:27 production-srv sshd[20110]: Failed password for oracle from 185.220.101.5 port 41006 ssh2
+Sep 28 10:01:31 production-srv sshd[20111]: Failed password for postgres from 185.220.101.5 port 41007 ssh2
+Sep 28 10:01:36 production-srv sshd[20112]: Failed password for root from 185.220.101.5 port 41008 ssh2
+Sep 28 10:01:40 production-srv sshd[20113]: Failed password for root from 185.220.101.5 port 41009 ssh2
+Sep 28 10:01:45 production-srv sshd[20114]: Failed password for admin from 185.220.101.5 port 41010 ssh2
+Sep 28 10:01:49 production-srv sshd[20115]: Failed password for invalid user devops from 185.220.101.5 port 41011 ssh2
+Sep 28 10:01:54 production-srv sshd[20116]: Failed password for root from 185.220.101.5 port 41012 ssh2
+Sep 28 10:01:59 production-srv sshd[20117]: Failed password for root from 185.220.101.5 port 41013 ssh2
+Sep 28 10:02:04 production-srv sshd[20118]: Failed password for admin from 185.220.101.5 port 41014 ssh2
+Sep 28 10:02:08 production-srv sshd[20119]: Failed password for user from 185.220.101.5 port 41015 ssh2
+Sep 28 10:02:13 production-srv sshd[20120]: Failed password for ftpuser from 185.220.101.5 port 41016 ssh2
+Sep 28 10:02:17 production-srv sshd[20121]: Failed password for root from 185.220.101.5 port 41017 ssh2
+Sep 28 10:02:22 production-srv sshd[20122]: Failed password for root from 185.220.101.5 port 41018 ssh2
+Sep 28 10:02:26 production-srv sshd[20123]: Failed password for admin from 185.220.101.5 port 41019 ssh2
+Sep 28 10:02:30 production-srv sshd[20124]: Failed password for root from 185.220.101.5 port 41020 ssh2
+Sep 28 10:02:35 production-srv sshd[20125]: Failed password for root from 185.220.101.5 port 41021 ssh2
+Sep 28 10:02:40 production-srv sshd[20126]: Failed password for invalid user support from 185.220.101.5 port 41022 ssh2
+Sep 28 10:03:00 production-srv sshd[20130]: Accepted password for alice from 192.168.1.100 port 55120 ssh2
+Sep 28 10:05:10 production-srv sshd[20140]: Failed password for root from 45.33.32.156 port 38101 ssh2
+Sep 28 10:05:15 production-srv sshd[20141]: Failed password for root from 45.33.32.156 port 38102 ssh2
+Sep 28 10:05:20 production-srv sshd[20142]: Failed password for root from 45.33.32.156 port 38103 ssh2
+Sep 28 10:05:25 production-srv sshd[20143]: Failed password for admin from 45.33.32.156 port 38104 ssh2
+Sep 28 10:05:30 production-srv sshd[20144]: Failed password for admin from 45.33.32.156 port 38105 ssh2
+Sep 28 10:05:35 production-srv sshd[20145]: Failed password for service from 45.33.32.156 port 38106 ssh2
+Sep 28 10:05:40 production-srv sshd[20146]: Failed password for root from 45.33.32.156 port 38107 ssh2
+Sep 28 10:05:45 production-srv sshd[20147]: Failed password for root from 45.33.32.156 port 38108 ssh2
+Sep 28 10:05:50 production-srv sshd[20148]: Failed password for test from 45.33.32.156 port 38109 ssh2
+Sep 28 10:05:55 production-srv sshd[20149]: Failed password for ubuntu from 45.33.32.156 port 38110 ssh2
+Sep 28 10:06:00 production-srv sshd[20150]: Failed password for deploy from 45.33.32.156 port 38111 ssh2
+Sep 28 10:06:05 production-srv sshd[20151]: Failed password for root from 45.33.32.156 port 38112 ssh2
+Sep 28 10:08:20 production-srv sshd[20160]: Failed password for bob from 192.168.1.75 port 42100 ssh2
+Sep 28 10:08:26 production-srv sshd[20161]: Accepted password for bob from 192.168.1.75 port 42101 ssh2
+Sep 28 10:12:00 production-srv sshd[20170]: Failed password for admin from 194.26.29.112 port 52101 ssh2
+Sep 28 10:12:08 production-srv sshd[20171]: Failed password for admin from 194.26.29.112 port 52102 ssh2
+Sep 28 10:12:15 production-srv sshd[20172]: Failed password for root from 194.26.29.112 port 52103 ssh2
+Sep 28 10:12:22 production-srv sshd[20173]: Failed password for root from 194.26.29.112 port 52104 ssh2
+Sep 28 10:12:30 production-srv sshd[20174]: Failed password for oracle from 194.26.29.112 port 52105 ssh2
+Sep 28 10:12:38 production-srv sshd[20175]: Failed password for test from 194.26.29.112 port 52106 ssh2
+Sep 28 10:15:00 production-srv sshd[20180]: Accepted publickey for devops from 10.0.0.55 port 48999 ssh2: RSA SHA256:91aa...
+Sep 28 10:20:10 production-srv sshd[20190]: Failed password for vinay from 192.168.1.15 port 39110 ssh2
+Sep 28 10:20:16 production-srv sshd[20191]: Accepted password for vinay from 192.168.1.15 port 39111 ssh2
