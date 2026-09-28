@@ -1,0 +1,573 @@
+Sep 27 15:01:23 secure-srv01 sshd[33534]: Accepted publickey for alice from 10.0.0.12 port 56201 ssh2: RSA SHA256:b8af7a2c2b091137
+Sep 27 15:02:45 secure-srv01 sshd[13812]: Accepted publickey for deploy from 10.0.0.12 port 40450 ssh2: RSA SHA256:924a884d4bee0d78
+Sep 27 15:04:26 secure-srv01 sshd[46151]: Accepted publickey for devops from 172.16.5.20 port 45440 ssh2: RSA SHA256:0f5411654b2702ff
+Sep 27 15:05:40 secure-srv01 sshd[29481]: Accepted password for deploy from 192.168.1.15 port 49813 ssh2
+Sep 27 15:06:58 secure-srv01 sshd[36718]: Accepted publickey for deploy from 10.0.0.55 port 40007 ssh2: RSA SHA256:51caa1119afb4d9c
+Sep 27 15:09:12 secure-srv01 sshd[14161]: Accepted password for devops from 192.168.1.105 port 42078 ssh2
+Sep 27 15:10:29 secure-srv01 sshd[31452]: Failed password for vinay from 192.168.1.15 port 40005 ssh2
+Sep 27 15:10:36 secure-srv01 sshd[31453]: Accepted password for vinay from 192.168.1.15 port 40006 ssh2
+Sep 27 15:13:31 secure-srv01 sshd[33407]: Accepted publickey for devops from 10.0.0.55 port 59066 ssh2: RSA SHA256:ba8b96c945ccd44a
+Sep 27 15:15:51 secure-srv01 sshd[39003]: Failed password for devops from 192.168.1.42 port 59287 ssh2
+Sep 27 15:16:02 secure-srv01 sshd[39004]: Accepted password for devops from 192.168.1.42 port 59288 ssh2
+Sep 27 15:16:46 secure-srv01 sshd[44838]: Accepted publickey for deploy from 10.0.0.55 port 41786 ssh2: RSA SHA256:82e19ced4342d6c9
+Sep 27 15:19:00 secure-srv01 sshd[11495]: Received disconnect from 10.0.0.55 port 45504:11: disconnected by user
+Sep 27 15:20:54 secure-srv01 sshd[12438]: Accepted password for bob from 10.0.0.12 port 54890 ssh2
+Sep 27 15:22:56 secure-srv01 sshd[20246]: Accepted password for vinay from 192.168.1.15 port 47799 ssh2
+Sep 27 15:24:02 secure-srv01 sshd[20226]: Received disconnect from 192.168.1.42 port 40023:11: disconnected by user
+Sep 27 15:24:51 secure-srv01 sshd[46164]: Accepted publickey for vinay from 192.168.1.15 port 50825 ssh2: RSA SHA256:a458156baed2a66e
+Sep 27 15:27:32 secure-srv01 sshd[27060]: Accepted password for vinay from 192.168.1.105 port 46516 ssh2
+Sep 27 15:30:18 secure-srv01 sshd[24425]: Accepted publickey for deploy from 192.168.1.105 port 56468 ssh2: RSA SHA256:bcda7bd735750c94
+Sep 27 15:31:16 secure-srv01 sshd[43296]: Accepted password for alice from 192.168.1.15 port 54137 ssh2
+Sep 27 15:32:38 secure-srv01 sshd[33412]: Accepted password for ubuntu from 192.168.1.42 port 56197 ssh2
+Sep 27 15:33:02 secure-srv01 sshd[16571]: Accepted password for alice from 192.168.1.42 port 56281 ssh2
+Sep 27 15:35:31 secure-srv01 sshd[49698]: Accepted password for ubuntu from 192.168.1.15 port 48493 ssh2
+Sep 27 15:37:16 secure-srv01 sshd[21041]: Accepted publickey for ubuntu from 192.168.1.42 port 53954 ssh2: RSA SHA256:f255b335d75aeea6
+Sep 27 15:39:52 secure-srv01 sshd[45234]: Accepted password for bob from 172.16.5.20 port 49827 ssh2
+Sep 27 15:42:14 secure-srv01 sshd[12278]: Accepted password for bob from 172.16.5.20 port 44035 ssh2
+Sep 27 15:43:06 secure-srv01 sshd[30425]: Failed password for devops from 192.168.1.105 port 56711 ssh2
+Sep 27 15:43:14 secure-srv01 sshd[30426]: Accepted password for devops from 192.168.1.105 port 56712 ssh2
+Sep 27 15:45:48 secure-srv01 sshd[34902]: Accepted password for alice from 192.168.1.42 port 56268 ssh2
+Sep 27 15:47:04 secure-srv01 sshd[23697]: Accepted password for devops from 192.168.1.42 port 56425 ssh2
+Sep 27 15:50:02 secure-srv01 sshd[47802]: Failed password for deploy from 192.168.1.42 port 50757 ssh2
+Sep 27 15:50:12 secure-srv01 sshd[47803]: Accepted password for deploy from 192.168.1.42 port 50758 ssh2
+Sep 27 15:52:49 secure-srv01 sshd[20407]: Failed password for devops from 192.168.1.42 port 43620 ssh2
+Sep 27 15:52:55 secure-srv01 sshd[20408]: Accepted password for devops from 192.168.1.42 port 43621 ssh2
+Sep 27 15:54:43 secure-srv01 sshd[42891]: Accepted publickey for devops from 172.16.5.20 port 47246 ssh2: RSA SHA256:29bf47c6c1b354cd
+Sep 27 15:57:42 secure-srv01 sshd[40023]: Accepted publickey for bob from 10.0.0.12 port 50315 ssh2: RSA SHA256:b910c4a93667962b
+Sep 27 15:59:44 secure-srv01 sshd[34074]: Accepted password for devops from 10.0.0.12 port 52187 ssh2
+Sep 27 16:02:10 secure-srv01 sshd[46102]: Accepted password for bob from 10.0.0.55 port 48291 ssh2
+Sep 27 16:03:14 secure-srv01 sshd[10923]: Received disconnect from 192.168.1.42 port 40943:11: disconnected by user
+Sep 27 16:05:48 secure-srv01 sshd[12869]: Accepted password for vinay from 192.168.1.42 port 48370 ssh2
+Sep 27 16:06:48 secure-srv01 sshd[47676]: Received disconnect from 192.168.1.15 port 41939:11: disconnected by user
+Sep 27 16:07:41 secure-srv01 sshd[22278]: Received disconnect from 192.168.1.42 port 59291:11: disconnected by user
+Sep 27 16:08:13 secure-srv01 sshd[27531]: Accepted password for devops from 172.16.5.20 port 51478 ssh2
+Sep 27 16:10:13 secure-srv01 sshd[30904]: Accepted password for bob from 192.168.1.42 port 53138 ssh2
+Sep 27 16:10:45 secure-srv01 sshd[44178]: Received disconnect from 10.0.0.12 port 48145:11: disconnected by user
+Sep 27 16:12:21 secure-srv01 sshd[30851]: Accepted password for alice from 192.168.1.15 port 53471 ssh2
+Sep 27 16:14:43 secure-srv01 sshd[21895]: Accepted password for alice from 192.168.1.15 port 43026 ssh2
+Sep 27 16:15:36 secure-srv01 sshd[35921]: Accepted password for ubuntu from 192.168.1.15 port 52025 ssh2
+Sep 27 16:16:23 secure-srv01 sshd[40497]: Received disconnect from 172.16.5.20 port 51425:11: disconnected by user
+Sep 27 16:17:35 secure-srv01 sshd[40051]: Accepted password for vinay from 10.0.0.12 port 53113 ssh2
+Sep 27 16:19:56 secure-srv01 sshd[47786]: Accepted publickey for vinay from 192.168.1.105 port 55422 ssh2: RSA SHA256:5ccce16963f55ce7
+Sep 27 16:20:54 secure-srv01 sshd[13392]: Accepted password for alice from 192.168.1.42 port 51229 ssh2
+Sep 27 16:23:14 secure-srv01 sshd[49660]: Failed password for ubuntu from 172.16.5.20 port 55641 ssh2
+Sep 27 16:23:22 secure-srv01 sshd[49661]: Accepted password for ubuntu from 172.16.5.20 port 55642 ssh2
+Sep 27 16:24:18 secure-srv01 sshd[11461]: Accepted password for bob from 10.0.0.55 port 49045 ssh2
+Sep 27 16:26:41 secure-srv01 sshd[17784]: Accepted password for devops from 192.168.1.15 port 54842 ssh2
+Sep 27 16:27:49 secure-srv01 sshd[16213]: Received disconnect from 192.168.1.15 port 49370:11: disconnected by user
+Sep 27 16:30:22 secure-srv01 sshd[44839]: Accepted password for deploy from 192.168.1.15 port 53694 ssh2
+Sep 27 16:31:05 secure-srv01 sshd[21778]: Failed password for ubuntu from 192.168.1.15 port 47220 ssh2
+Sep 27 16:31:10 secure-srv01 sshd[21779]: Accepted password for ubuntu from 192.168.1.15 port 47221 ssh2
+Sep 27 16:33:29 secure-srv01 sshd[15110]: Accepted password for devops from 192.168.1.105 port 46240 ssh2
+Sep 27 16:34:18 secure-srv01 sshd[46955]: Accepted password for devops from 192.168.1.15 port 43082 ssh2
+Sep 27 16:36:41 secure-srv01 sshd[16637]: Accepted publickey for alice from 192.168.1.42 port 53269 ssh2: RSA SHA256:ca18076b5d406a62
+Sep 27 16:39:22 secure-srv01 sshd[35206]: Accepted publickey for vinay from 172.16.5.20 port 52662 ssh2: RSA SHA256:581229bc10fab5ac
+Sep 27 16:40:49 secure-srv01 sshd[19696]: Accepted publickey for devops from 10.0.0.12 port 45091 ssh2: RSA SHA256:2ee413d83d7efa33
+Sep 27 16:42:03 secure-srv01 sshd[13987]: Failed password for vinay from 10.0.0.12 port 43034 ssh2
+Sep 27 16:42:08 secure-srv01 sshd[13988]: Accepted password for vinay from 10.0.0.12 port 43035 ssh2
+Sep 27 16:42:46 secure-srv01 sshd[18251]: Accepted password for vinay from 192.168.1.15 port 42081 ssh2
+Sep 27 16:43:46 secure-srv01 sshd[45167]: Failed password for devops from 192.168.1.42 port 51571 ssh2
+Sep 27 16:43:56 secure-srv01 sshd[45168]: Accepted password for devops from 192.168.1.42 port 51572 ssh2
+Sep 27 16:46:32 secure-srv01 sshd[43078]: Accepted password for deploy from 172.16.5.20 port 42437 ssh2
+Sep 27 16:48:00 secure-srv01 sshd[19466]: Accepted password for bob from 192.168.1.42 port 45039 ssh2
+Sep 27 16:49:13 secure-srv01 sshd[35269]: Accepted publickey for alice from 172.16.5.20 port 57105 ssh2: RSA SHA256:f2847c9d6947cf30
+Sep 27 16:49:32 secure-srv01 sshd[14681]: Received disconnect from 192.168.1.15 port 53849:11: disconnected by user
+Sep 27 16:50:34 secure-srv01 sshd[15374]: Accepted password for vinay from 192.168.1.105 port 54433 ssh2
+Sep 27 16:52:32 secure-srv01 sshd[49260]: Accepted password for devops from 192.168.1.15 port 55558 ssh2
+Sep 27 16:53:51 secure-srv01 sshd[31569]: Accepted publickey for ubuntu from 172.16.5.20 port 57379 ssh2: RSA SHA256:e75a95c3b8ddb7ff
+Sep 27 16:54:17 secure-srv01 sshd[29475]: Received disconnect from 192.168.1.42 port 53051:11: disconnected by user
+Sep 27 16:56:41 secure-srv01 sshd[29426]: Received disconnect from 172.16.5.20 port 57045:11: disconnected by user
+Sep 27 16:56:56 secure-srv01 sshd[17155]: Accepted publickey for ubuntu from 192.168.1.42 port 55798 ssh2: RSA SHA256:f53d5915dcec7999
+Sep 27 16:58:06 secure-srv01 sshd[27307]: Failed password for ubuntu from 10.0.0.55 port 44179 ssh2
+Sep 27 16:58:12 secure-srv01 sshd[27308]: Accepted password for ubuntu from 10.0.0.55 port 44180 ssh2
+Sep 27 16:59:17 secure-srv01 sshd[12544]: Accepted publickey for devops from 10.0.0.55 port 58254 ssh2: RSA SHA256:491400d5cc8d63b2
+Sep 27 17:01:23 secure-srv01 sshd[42606]: Received disconnect from 192.168.1.105 port 44698:11: disconnected by user
+Sep 27 17:02:51 secure-srv01 sshd[32047]: Received disconnect from 10.0.0.55 port 54886:11: disconnected by user
+Sep 27 17:04:49 secure-srv01 sshd[36918]: Accepted password for devops from 172.16.5.20 port 57825 ssh2
+Sep 27 17:07:32 secure-srv01 sshd[23451]: Accepted publickey for bob from 192.168.1.42 port 42756 ssh2: RSA SHA256:6926c7d99967b268
+Sep 27 17:09:18 secure-srv01 sshd[29592]: Failed password for vinay from 10.0.0.55 port 55337 ssh2
+Sep 27 17:09:30 secure-srv01 sshd[29593]: Accepted password for vinay from 10.0.0.55 port 55338 ssh2
+Sep 27 17:10:28 secure-srv01 sshd[26714]: Received disconnect from 192.168.1.15 port 59448:11: disconnected by user
+Sep 27 17:11:01 secure-srv01 sshd[28562]: Accepted publickey for alice from 192.168.1.42 port 57981 ssh2: RSA SHA256:5d472e1421b1c016
+Sep 27 17:11:21 secure-srv01 sshd[23156]: Accepted password for bob from 172.16.5.20 port 57208 ssh2
+Sep 27 17:11:47 secure-srv01 sshd[15443]: Failed password for vinay from 192.168.1.42 port 43170 ssh2
+Sep 27 17:11:58 secure-srv01 sshd[15444]: Accepted password for vinay from 192.168.1.42 port 43171 ssh2
+Sep 27 17:13:40 secure-srv01 sshd[23158]: Accepted publickey for alice from 192.168.1.105 port 51936 ssh2: RSA SHA256:01c72cc50742e747
+Sep 27 17:14:28 secure-srv01 sshd[26552]: Failed password for deploy from 10.0.0.12 port 41532 ssh2
+Sep 27 17:14:40 secure-srv01 sshd[26553]: Accepted password for deploy from 10.0.0.12 port 41533 ssh2
+Sep 27 17:15:03 secure-srv01 sshd[14947]: Failed password for admin from 203.0.113.45 port 51235 ssh2
+Sep 27 17:15:08 secure-srv01 sshd[14948]: Failed password for invalid user user from 203.0.113.45 port 60408 ssh2
+Sep 27 17:15:18 secure-srv01 sshd[14949]: Failed password for invalid user ftpuser from 203.0.113.45 port 64383 ssh2
+Sep 27 17:15:28 secure-srv01 sshd[14950]: Failed password for ftpuser from 203.0.113.45 port 38983 ssh2
+Sep 27 17:15:37 secure-srv01 sshd[14951]: Failed password for invalid user postgres from 203.0.113.45 port 61698 ssh2
+Sep 27 17:15:45 secure-srv01 sshd[14952]: Failed password for user from 203.0.113.45 port 40295 ssh2
+Sep 27 17:15:55 secure-srv01 sshd[14953]: Failed password for invalid user test from 203.0.113.45 port 54191 ssh2
+Sep 27 17:15:58 secure-srv01 sshd[14954]: Failed password for invalid user test from 203.0.113.45 port 63884 ssh2
+Sep 27 17:16:01 secure-srv01 sshd[14955]: Failed password for invalid user root from 203.0.113.45 port 36768 ssh2
+Sep 27 17:16:08 secure-srv01 sshd[14956]: Failed password for ftpuser from 203.0.113.45 port 62663 ssh2
+Sep 27 17:16:13 secure-srv01 sshd[14957]: Failed password for ftpuser from 203.0.113.45 port 62517 ssh2
+Sep 27 17:16:19 secure-srv01 sshd[14958]: Failed password for test from 203.0.113.45 port 57392 ssh2
+Sep 27 17:16:22 secure-srv01 sshd[14959]: Failed password for invalid user ftpuser from 203.0.113.45 port 36324 ssh2
+Sep 27 17:16:26 secure-srv01 sshd[14960]: Failed password for admin from 203.0.113.45 port 40421 ssh2
+Sep 27 17:16:35 secure-srv01 sshd[14961]: Failed password for oracle from 203.0.113.45 port 34394 ssh2
+Sep 27 17:16:43 secure-srv01 sshd[14962]: Failed password for invalid user root from 203.0.113.45 port 41983 ssh2
+Sep 27 17:16:51 secure-srv01 sshd[14963]: Failed password for guest from 203.0.113.45 port 39927 ssh2
+Sep 27 17:16:55 secure-srv01 sshd[14964]: Failed password for test from 203.0.113.45 port 60853 ssh2
+Sep 27 17:17:02 secure-srv01 sshd[14965]: Failed password for invalid user ftpuser from 203.0.113.45 port 51726 ssh2
+Sep 27 17:17:08 secure-srv01 sshd[14966]: Failed password for ftpuser from 203.0.113.45 port 50750 ssh2
+Sep 27 17:17:12 secure-srv01 sshd[14967]: Failed password for invalid user user from 203.0.113.45 port 42141 ssh2
+Sep 27 17:17:17 secure-srv01 sshd[23172]: Accepted password for alice from 192.168.1.42 port 56636 ssh2
+Sep 27 17:17:21 secure-srv01 sshd[14968]: Failed password for invalid user test from 203.0.113.45 port 32647 ssh2
+Sep 27 17:17:25 secure-srv01 sshd[14969]: Failed password for ftpuser from 203.0.113.45 port 42954 ssh2
+Sep 27 17:17:33 secure-srv01 sshd[14970]: Failed password for oracle from 203.0.113.45 port 54316 ssh2
+Sep 27 17:17:42 secure-srv01 sshd[14971]: Failed password for invalid user ftpuser from 203.0.113.45 port 41528 ssh2
+Sep 27 17:19:01 secure-srv01 sshd[47017]: Accepted publickey for devops from 192.168.1.15 port 48574 ssh2: RSA SHA256:75ac14478ce44214
+Sep 27 17:21:40 secure-srv01 sshd[47686]: Accepted password for deploy from 192.168.1.105 port 44127 ssh2
+Sep 27 17:22:07 secure-srv01 sshd[18361]: Accepted password for devops from 192.168.1.105 port 55340 ssh2
+Sep 27 17:24:55 secure-srv01 sshd[25921]: Accepted publickey for devops from 192.168.1.42 port 59240 ssh2: RSA SHA256:57ce9dfbd8b44ba9
+Sep 27 17:27:06 secure-srv01 sshd[27380]: Failed password for bob from 10.0.0.55 port 45256 ssh2
+Sep 27 17:27:13 secure-srv01 sshd[27381]: Accepted password for bob from 10.0.0.55 port 45257 ssh2
+Sep 27 17:28:06 secure-srv01 sshd[34734]: Accepted publickey for deploy from 10.0.0.12 port 59445 ssh2: RSA SHA256:112d8b602923a203
+Sep 27 17:29:46 secure-srv01 sshd[18707]: Accepted publickey for alice from 192.168.1.15 port 50208 ssh2: RSA SHA256:6400ea43cd7cdb85
+Sep 27 17:32:08 secure-srv01 sshd[46713]: Accepted password for ubuntu from 10.0.0.12 port 43003 ssh2
+Sep 27 17:34:01 secure-srv01 sshd[19796]: Accepted publickey for vinay from 192.168.1.105 port 49253 ssh2: RSA SHA256:0ec401cb98318b31
+Sep 27 17:36:49 secure-srv01 sshd[30124]: Accepted publickey for alice from 192.168.1.105 port 57671 ssh2: RSA SHA256:257182b2aa57f4da
+Sep 27 17:37:08 secure-srv01 sshd[28078]: Accepted publickey for ubuntu from 10.0.0.55 port 51976 ssh2: RSA SHA256:0adb91e348cb5117
+Sep 27 17:38:02 secure-srv01 sshd[39771]: Accepted password for bob from 10.0.0.55 port 47694 ssh2
+Sep 27 17:39:05 secure-srv01 sshd[17059]: Received disconnect from 10.0.0.12 port 54379:11: disconnected by user
+Sep 27 17:39:53 secure-srv01 sshd[24513]: Failed password for devops from 10.0.0.12 port 51761 ssh2
+Sep 27 17:39:57 secure-srv01 sshd[24514]: Accepted password for devops from 10.0.0.12 port 51762 ssh2
+Sep 27 17:41:57 secure-srv01 sshd[26269]: Accepted publickey for ubuntu from 192.168.1.105 port 56115 ssh2: RSA SHA256:f5f974736ea8b7d4
+Sep 27 17:44:32 secure-srv01 sshd[49079]: Accepted publickey for bob from 192.168.1.42 port 43385 ssh2: RSA SHA256:ebe3b883ac7eeece
+Sep 27 17:46:41 secure-srv01 sshd[36580]: Accepted password for vinay from 10.0.0.12 port 52415 ssh2
+Sep 27 17:47:38 secure-srv01 sshd[42048]: Accepted publickey for deploy from 10.0.0.55 port 56675 ssh2: RSA SHA256:814e6ab8ea4956c9
+Sep 27 17:48:07 secure-srv01 sshd[41271]: Accepted publickey for ubuntu from 10.0.0.55 port 48627 ssh2: RSA SHA256:77700c99ae2c9efc
+Sep 27 17:48:44 secure-srv01 sshd[47410]: Accepted publickey for bob from 10.0.0.55 port 44084 ssh2: RSA SHA256:95f1ccf9912427da
+Sep 27 17:50:00 secure-srv01 sshd[34541]: Accepted publickey for vinay from 192.168.1.105 port 58060 ssh2: RSA SHA256:dc9b5dfce3f80e43
+Sep 27 17:52:59 secure-srv01 sshd[17260]: Accepted publickey for vinay from 192.168.1.105 port 59153 ssh2: RSA SHA256:6e59829b8075c5e3
+Sep 27 17:54:07 secure-srv01 sshd[31314]: Accepted password for ubuntu from 192.168.1.42 port 51289 ssh2
+Sep 27 17:55:49 secure-srv01 sshd[31202]: Accepted password for devops from 10.0.0.55 port 59912 ssh2
+Sep 27 17:58:40 secure-srv01 sshd[42800]: Accepted publickey for ubuntu from 192.168.1.15 port 56504 ssh2: RSA SHA256:925c9c6a55505c3d
+Sep 27 18:01:37 secure-srv01 sshd[18936]: Accepted password for ubuntu from 192.168.1.42 port 46720 ssh2
+Sep 27 18:02:52 secure-srv01 sshd[47619]: Accepted publickey for ubuntu from 192.168.1.42 port 43830 ssh2: RSA SHA256:74e4067120fa5da9
+Sep 27 18:04:42 secure-srv01 sshd[34062]: Accepted password for vinay from 192.168.1.105 port 46681 ssh2
+Sep 27 18:07:30 secure-srv01 sshd[41996]: Received disconnect from 10.0.0.12 port 50974:11: disconnected by user
+Sep 27 18:09:41 secure-srv01 sshd[19365]: Accepted publickey for vinay from 192.168.1.105 port 59454 ssh2: RSA SHA256:6e112dc56b68617c
+Sep 27 18:10:33 secure-srv01 sshd[30306]: Accepted password for devops from 172.16.5.20 port 49149 ssh2
+Sep 27 18:12:36 secure-srv01 sshd[27714]: Accepted password for devops from 192.168.1.15 port 42825 ssh2
+Sep 27 18:14:31 secure-srv01 sshd[19883]: Accepted password for vinay from 192.168.1.42 port 54003 ssh2
+Sep 27 18:15:55 secure-srv01 sshd[36193]: Received disconnect from 172.16.5.20 port 47288:11: disconnected by user
+Sep 27 18:17:01 secure-srv01 sshd[18210]: Accepted password for deploy from 10.0.0.12 port 58556 ssh2
+Sep 27 18:18:28 secure-srv01 sshd[27746]: Accepted password for devops from 10.0.0.55 port 43726 ssh2
+Sep 27 18:18:58 secure-srv01 sshd[14487]: Accepted password for alice from 192.168.1.15 port 54426 ssh2
+Sep 27 18:21:21 secure-srv01 sshd[22114]: Accepted password for devops from 172.16.5.20 port 51460 ssh2
+Sep 27 18:21:48 secure-srv01 sshd[44453]: Accepted publickey for devops from 172.16.5.20 port 55190 ssh2: RSA SHA256:11149c2485f355e4
+Sep 27 18:24:23 secure-srv01 sshd[44239]: Accepted password for devops from 172.16.5.20 port 53427 ssh2
+Sep 27 18:25:17 secure-srv01 sshd[26173]: Accepted publickey for vinay from 10.0.0.12 port 46047 ssh2: RSA SHA256:6a03dcf3f3de20d5
+Sep 27 18:26:30 secure-srv01 sshd[14348]: Accepted password for ubuntu from 172.16.5.20 port 58510 ssh2
+Sep 27 18:29:05 secure-srv01 sshd[31217]: Accepted publickey for ubuntu from 10.0.0.12 port 52726 ssh2: RSA SHA256:7f4c5aefbe307ad7
+Sep 27 18:29:36 secure-srv01 sshd[44481]: Failed password for alice from 10.0.0.55 port 40964 ssh2
+Sep 27 18:29:40 secure-srv01 sshd[44482]: Accepted password for alice from 10.0.0.55 port 40965 ssh2
+Sep 27 18:30:47 secure-srv01 sshd[19826]: Failed password for bob from 192.168.1.15 port 41158 ssh2
+Sep 27 18:30:54 secure-srv01 sshd[19827]: Accepted password for bob from 192.168.1.15 port 41159 ssh2
+Sep 27 18:32:31 secure-srv01 sshd[44086]: Accepted publickey for ubuntu from 10.0.0.12 port 42321 ssh2: RSA SHA256:65a3ea86f054ac4e
+Sep 27 18:34:06 secure-srv01 sshd[44851]: Accepted password for vinay from 192.168.1.42 port 50717 ssh2
+Sep 27 18:35:39 secure-srv01 sshd[10416]: Accepted password for bob from 172.16.5.20 port 51035 ssh2
+Sep 27 18:36:10 secure-srv01 sshd[40952]: Accepted publickey for alice from 10.0.0.55 port 43419 ssh2: RSA SHA256:a68b1cd2b2262565
+Sep 27 18:37:59 secure-srv01 sshd[28863]: Received disconnect from 172.16.5.20 port 58010:11: disconnected by user
+Sep 27 18:40:33 secure-srv01 sshd[19675]: Failed password for deploy from 192.168.1.105 port 54793 ssh2
+Sep 27 18:40:38 secure-srv01 sshd[19676]: Accepted password for deploy from 192.168.1.105 port 54794 ssh2
+Sep 27 18:43:04 secure-srv01 sshd[34117]: Accepted publickey for alice from 10.0.0.12 port 58896 ssh2: RSA SHA256:85f11a7291c42d76
+Sep 27 18:45:02 secure-srv01 sshd[38151]: Accepted publickey for vinay from 10.0.0.12 port 41931 ssh2: RSA SHA256:13bc507d4994a32a
+Sep 27 18:47:31 secure-srv01 sshd[24991]: Accepted publickey for ubuntu from 172.16.5.20 port 50529 ssh2: RSA SHA256:b509deed1eb04cc3
+Sep 27 18:50:03 secure-srv01 sshd[12655]: Accepted password for alice from 192.168.1.42 port 44636 ssh2
+Sep 27 18:52:05 secure-srv01 sshd[15754]: Failed password for deploy from 10.0.0.55 port 45508 ssh2
+Sep 27 18:52:12 secure-srv01 sshd[15755]: Accepted password for deploy from 10.0.0.55 port 45509 ssh2
+Sep 27 18:54:13 secure-srv01 sshd[11843]: Received disconnect from 10.0.0.55 port 46277:11: disconnected by user
+Sep 27 18:56:28 secure-srv01 sshd[33606]: Accepted password for devops from 172.16.5.20 port 51577 ssh2
+Sep 27 18:57:19 secure-srv01 sshd[40040]: Failed password for alice from 172.16.5.20 port 59686 ssh2
+Sep 27 18:57:23 secure-srv01 sshd[40041]: Accepted password for alice from 172.16.5.20 port 59687 ssh2
+Sep 27 18:59:41 secure-srv01 sshd[37003]: Accepted password for deploy from 10.0.0.55 port 52738 ssh2
+Sep 27 19:00:44 secure-srv01 sshd[31645]: Accepted publickey for vinay from 10.0.0.12 port 46291 ssh2: RSA SHA256:1dbac4ec6b3968f1
+Sep 27 19:02:56 secure-srv01 sshd[44415]: Accepted publickey for alice from 192.168.1.105 port 51218 ssh2: RSA SHA256:1fb9d89cbce98ac0
+Sep 27 19:05:51 secure-srv01 sshd[30809]: Accepted publickey for deploy from 10.0.0.55 port 58975 ssh2: RSA SHA256:262c654146000d48
+Sep 27 19:06:19 secure-srv01 sshd[47325]: Received disconnect from 192.168.1.105 port 41072:11: disconnected by user
+Sep 27 19:08:52 secure-srv01 sshd[21354]: Failed password for bob from 192.168.1.15 port 46456 ssh2
+Sep 27 19:08:57 secure-srv01 sshd[21355]: Accepted password for bob from 192.168.1.15 port 46457 ssh2
+Sep 27 19:10:55 secure-srv01 sshd[36469]: Accepted publickey for vinay from 10.0.0.55 port 40529 ssh2: RSA SHA256:ccc77bf2951ea322
+Sep 27 19:11:18 secure-srv01 sshd[22212]: Failed password for alice from 192.168.1.105 port 52833 ssh2
+Sep 27 19:11:26 secure-srv01 sshd[22213]: Accepted password for alice from 192.168.1.105 port 52834 ssh2
+Sep 27 19:14:22 secure-srv01 sshd[25176]: Failed password for ubuntu from 192.168.1.105 port 55198 ssh2
+Sep 27 19:14:27 secure-srv01 sshd[25177]: Accepted password for ubuntu from 192.168.1.105 port 55199 ssh2
+Sep 27 19:15:44 secure-srv01 sshd[22251]: Accepted password for alice from 10.0.0.55 port 45611 ssh2
+Sep 27 19:17:56 secure-srv01 sshd[30928]: Accepted password for ubuntu from 192.168.1.42 port 53876 ssh2
+Sep 27 19:20:49 secure-srv01 sshd[16207]: Accepted password for vinay from 172.16.5.20 port 50962 ssh2
+Sep 27 19:22:53 secure-srv01 sshd[41179]: Failed password for alice from 192.168.1.15 port 51153 ssh2
+Sep 27 19:23:03 secure-srv01 sshd[41180]: Accepted password for alice from 192.168.1.15 port 51154 ssh2
+Sep 27 19:23:54 secure-srv01 sshd[39100]: Failed password for deploy from 192.168.1.42 port 52243 ssh2
+Sep 27 19:24:05 secure-srv01 sshd[39101]: Accepted password for deploy from 192.168.1.42 port 52244 ssh2
+Sep 27 19:24:47 secure-srv01 sshd[25957]: Received disconnect from 192.168.1.15 port 52578:11: disconnected by user
+Sep 27 19:27:22 secure-srv01 sshd[12437]: Received disconnect from 192.168.1.105 port 55874:11: disconnected by user
+Sep 27 19:29:55 secure-srv01 sshd[27157]: Failed password for devops from 192.168.1.15 port 48097 ssh2
+Sep 27 19:30:02 secure-srv01 sshd[27158]: Accepted password for devops from 192.168.1.15 port 48098 ssh2
+Sep 27 19:32:04 secure-srv01 sshd[30416]: Accepted publickey for alice from 192.168.1.42 port 56911 ssh2: RSA SHA256:0ad652cf8a01a334
+Sep 27 19:34:34 secure-srv01 sshd[27725]: Failed password for deploy from 172.16.5.20 port 56230 ssh2
+Sep 27 19:34:45 secure-srv01 sshd[27726]: Accepted password for deploy from 172.16.5.20 port 56231 ssh2
+Sep 27 19:36:17 secure-srv01 sshd[14992]: Failed password for bob from 10.0.0.55 port 58520 ssh2
+Sep 27 19:36:22 secure-srv01 sshd[14993]: Accepted password for bob from 10.0.0.55 port 58521 ssh2
+Sep 27 19:38:36 secure-srv01 sshd[42144]: Accepted password for vinay from 172.16.5.20 port 50986 ssh2
+Sep 27 19:39:25 secure-srv01 sshd[42565]: Failed password for bob from 10.0.0.55 port 44592 ssh2
+Sep 27 19:39:30 secure-srv01 sshd[42566]: Accepted password for bob from 10.0.0.55 port 44593 ssh2
+Sep 27 19:40:15 secure-srv01 sshd[31907]: Accepted password for ubuntu from 10.0.0.55 port 59078 ssh2
+Sep 27 19:42:59 secure-srv01 sshd[18435]: Received disconnect from 10.0.0.12 port 50181:11: disconnected by user
+Sep 27 19:44:17 secure-srv01 sshd[46814]: Accepted publickey for vinay from 10.0.0.55 port 58161 ssh2: RSA SHA256:cdec36f651d6b38f
+Sep 27 19:45:20 secure-srv01 sshd[25469]: Accepted publickey for bob from 10.0.0.55 port 50723 ssh2: RSA SHA256:5fe7773812d19ce9
+Sep 27 19:47:35 secure-srv01 sshd[25723]: Failed password for alice from 10.0.0.55 port 45327 ssh2
+Sep 27 19:47:39 secure-srv01 sshd[25724]: Accepted password for alice from 10.0.0.55 port 45328 ssh2
+Sep 27 19:48:28 secure-srv01 sshd[43819]: Accepted publickey for ubuntu from 192.168.1.15 port 46660 ssh2: RSA SHA256:c731b8308315319c
+Sep 27 19:50:11 secure-srv01 sshd[41041]: Accepted publickey for bob from 192.168.1.105 port 57637 ssh2: RSA SHA256:6174bd945d139a51
+Sep 27 19:51:49 secure-srv01 sshd[36883]: Accepted password for alice from 172.16.5.20 port 55971 ssh2
+Sep 27 19:53:21 secure-srv01 sshd[17464]: Accepted publickey for devops from 192.168.1.105 port 43534 ssh2: RSA SHA256:0bc2c0b8641939f3
+Sep 27 19:56:04 secure-srv01 sshd[15467]: Accepted password for ubuntu from 10.0.0.12 port 42475 ssh2
+Sep 27 19:58:33 secure-srv01 sshd[14337]: Accepted password for bob from 10.0.0.55 port 44986 ssh2
+Sep 27 20:01:07 secure-srv01 sshd[43263]: Accepted password for vinay from 192.168.1.42 port 42152 ssh2
+Sep 27 20:01:31 secure-srv01 sshd[17358]: Accepted publickey for bob from 10.0.0.55 port 42265 ssh2: RSA SHA256:de4fafe98f19f524
+Sep 27 20:02:33 secure-srv01 sshd[39290]: Failed password for vinay from 10.0.0.55 port 51342 ssh2
+Sep 27 20:02:45 secure-srv01 sshd[39291]: Accepted password for vinay from 10.0.0.55 port 51343 ssh2
+Sep 27 20:04:32 secure-srv01 sshd[20549]: Received disconnect from 192.168.1.105 port 42696:11: disconnected by user
+Sep 27 20:05:27 secure-srv01 sshd[45774]: Accepted password for vinay from 10.0.0.55 port 50915 ssh2
+Sep 27 20:06:13 secure-srv01 sshd[46656]: Accepted password for deploy from 192.168.1.42 port 51561 ssh2
+Sep 27 20:06:56 secure-srv01 sshd[39104]: Accepted publickey for alice from 172.16.5.20 port 46841 ssh2: RSA SHA256:a1485683666ce325
+Sep 27 20:07:30 secure-srv01 sshd[36129]: Accepted password for bob from 10.0.0.12 port 56965 ssh2
+Sep 27 20:10:06 secure-srv01 sshd[35110]: Accepted publickey for vinay from 192.168.1.42 port 44407 ssh2: RSA SHA256:22b5eda56e9cf830
+Sep 27 20:10:44 secure-srv01 sshd[37381]: Accepted publickey for ubuntu from 172.16.5.20 port 44707 ssh2: RSA SHA256:5ccff7a47bb9590c
+Sep 27 20:11:56 secure-srv01 sshd[27768]: Accepted publickey for vinay from 192.168.1.15 port 55541 ssh2: RSA SHA256:c6d30ffe0c574604
+Sep 27 20:12:40 secure-srv01 sshd[49800]: Failed password for ubuntu from 192.168.1.42 port 53463 ssh2
+Sep 27 20:12:47 secure-srv01 sshd[49801]: Accepted password for ubuntu from 192.168.1.42 port 53464 ssh2
+Sep 27 20:13:35 secure-srv01 sshd[45000]: Accepted password for deploy from 172.16.5.20 port 58615 ssh2
+Sep 27 20:14:14 secure-srv01 sshd[30779]: Accepted password for devops from 192.168.1.15 port 58775 ssh2
+Sep 27 20:14:50 secure-srv01 sshd[16063]: Received disconnect from 192.168.1.105 port 54987:11: disconnected by user
+Sep 27 20:16:20 secure-srv01 sshd[17555]: Accepted password for deploy from 192.168.1.15 port 41824 ssh2
+Sep 27 20:18:26 secure-srv01 sshd[17240]: Accepted password for vinay from 10.0.0.12 port 40287 ssh2
+Sep 27 20:21:19 secure-srv01 sshd[29989]: Accepted password for deploy from 10.0.0.55 port 47580 ssh2
+Sep 27 20:23:15 secure-srv01 sshd[24369]: Accepted publickey for vinay from 172.16.5.20 port 43404 ssh2: RSA SHA256:4439c49c5dd10d90
+Sep 27 20:23:55 secure-srv01 sshd[33317]: Accepted publickey for bob from 192.168.1.105 port 40340 ssh2: RSA SHA256:5ee7de8835079569
+Sep 27 20:25:51 secure-srv01 sshd[41599]: Accepted password for vinay from 172.16.5.20 port 48933 ssh2
+Sep 27 20:28:35 secure-srv01 sshd[35411]: Accepted publickey for deploy from 192.168.1.105 port 50768 ssh2: RSA SHA256:4f4f145c0f688a8f
+Sep 27 20:29:54 secure-srv01 sshd[44792]: Accepted publickey for vinay from 192.168.1.42 port 50357 ssh2: RSA SHA256:776ae22f3509d21a
+Sep 27 20:30:47 secure-srv01 sshd[29866]: Accepted password for devops from 192.168.1.15 port 48421 ssh2
+Sep 27 20:31:03 secure-srv01 sshd[27385]: Accepted publickey for vinay from 10.0.0.55 port 47883 ssh2: RSA SHA256:9ecd37fe3e82ed9e
+Sep 27 20:33:39 secure-srv01 sshd[16422]: Failed password for devops from 192.168.1.42 port 46896 ssh2
+Sep 27 20:33:48 secure-srv01 sshd[16423]: Accepted password for devops from 192.168.1.42 port 46897 ssh2
+Sep 27 20:35:43 secure-srv01 sshd[28803]: Received disconnect from 192.168.1.105 port 57612:11: disconnected by user
+Sep 27 20:37:27 secure-srv01 sshd[31765]: Accepted password for deploy from 192.168.1.105 port 45257 ssh2
+Sep 27 20:40:08 secure-srv01 sshd[10527]: Failed password for invalid user test from 198.51.100.89 port 48009 ssh2
+Sep 27 20:40:14 secure-srv01 sshd[10528]: Failed password for oracle from 198.51.100.89 port 63738 ssh2
+Sep 27 20:40:15 secure-srv01 sshd[47020]: Accepted publickey for alice from 192.168.1.15 port 50288 ssh2: RSA SHA256:119869e60f1a1d62
+Sep 27 20:40:21 secure-srv01 sshd[10529]: Failed password for postgres from 198.51.100.89 port 46378 ssh2
+Sep 27 20:40:26 secure-srv01 sshd[10530]: Failed password for guest from 198.51.100.89 port 38668 ssh2
+Sep 27 20:40:30 secure-srv01 sshd[10531]: Failed password for invalid user oracle from 198.51.100.89 port 34593 ssh2
+Sep 27 20:40:37 secure-srv01 sshd[10532]: Failed password for invalid user postgres from 198.51.100.89 port 40632 ssh2
+Sep 27 20:40:44 secure-srv01 sshd[10533]: Failed password for root from 198.51.100.89 port 46756 ssh2
+Sep 27 20:40:52 secure-srv01 sshd[10534]: Failed password for oracle from 198.51.100.89 port 49876 ssh2
+Sep 27 20:41:02 secure-srv01 sshd[10535]: Failed password for invalid user test from 198.51.100.89 port 34656 ssh2
+Sep 27 20:41:11 secure-srv01 sshd[10536]: Failed password for invalid user ftpuser from 198.51.100.89 port 48784 ssh2
+Sep 27 20:41:16 secure-srv01 sshd[10537]: Failed password for invalid user postgres from 198.51.100.89 port 48569 ssh2
+Sep 27 20:41:24 secure-srv01 sshd[10538]: Failed password for test from 198.51.100.89 port 53100 ssh2
+Sep 27 20:41:34 secure-srv01 sshd[10539]: Failed password for root from 198.51.100.89 port 57930 ssh2
+Sep 27 20:41:38 secure-srv01 sshd[10540]: Failed password for invalid user oracle from 198.51.100.89 port 43525 ssh2
+Sep 27 20:42:48 secure-srv01 sshd[14253]: Accepted password for ubuntu from 192.168.1.15 port 48175 ssh2
+Sep 27 20:43:50 secure-srv01 sshd[18462]: Accepted publickey for vinay from 192.168.1.105 port 45193 ssh2: RSA SHA256:00ebdb4997b6ccdb
+Sep 27 20:45:29 secure-srv01 sshd[18869]: Accepted publickey for ubuntu from 192.168.1.15 port 56601 ssh2: RSA SHA256:93c561fde16f6349
+Sep 27 20:46:32 secure-srv01 sshd[11193]: Received disconnect from 10.0.0.12 port 41236:11: disconnected by user
+Sep 27 20:48:56 secure-srv01 sshd[39987]: Accepted publickey for vinay from 10.0.0.55 port 41126 ssh2: RSA SHA256:785134c6b64d7948
+Sep 27 20:49:17 secure-srv01 sshd[36536]: Received disconnect from 192.168.1.105 port 49049:11: disconnected by user
+Sep 27 20:50:26 secure-srv01 sshd[10623]: Accepted password for ubuntu from 10.0.0.55 port 47813 ssh2
+Sep 27 20:53:11 secure-srv01 sshd[29352]: Accepted password for deploy from 172.16.5.20 port 45484 ssh2
+Sep 27 20:54:55 secure-srv01 sshd[38517]: Failed password for devops from 172.16.5.20 port 44684 ssh2
+Sep 27 20:55:03 secure-srv01 sshd[38518]: Accepted password for devops from 172.16.5.20 port 44685 ssh2
+Sep 27 20:57:27 secure-srv01 sshd[10642]: Accepted password for vinay from 172.16.5.20 port 54674 ssh2
+Sep 27 20:59:47 secure-srv01 sshd[18629]: Received disconnect from 10.0.0.55 port 57968:11: disconnected by user
+Sep 27 21:00:28 secure-srv01 sshd[42125]: Failed password for bob from 10.0.0.55 port 58300 ssh2
+Sep 27 21:00:35 secure-srv01 sshd[42126]: Accepted password for bob from 10.0.0.55 port 58301 ssh2
+Sep 27 21:03:01 secure-srv01 sshd[18445]: Received disconnect from 192.168.1.42 port 55664:11: disconnected by user
+Sep 27 21:04:56 secure-srv01 sshd[21592]: Accepted publickey for ubuntu from 10.0.0.12 port 54807 ssh2: RSA SHA256:95cb6bc838c76ef6
+Sep 27 21:05:49 secure-srv01 sshd[35336]: Accepted publickey for bob from 10.0.0.55 port 42577 ssh2: RSA SHA256:a8985f116564d904
+Sep 27 21:07:42 secure-srv01 sshd[11346]: Accepted publickey for alice from 10.0.0.55 port 48168 ssh2: RSA SHA256:ac8f461c6a8cb9a6
+Sep 27 21:09:16 secure-srv01 sshd[21872]: Accepted publickey for alice from 192.168.1.15 port 48282 ssh2: RSA SHA256:3bc01350b03275fb
+Sep 27 21:11:51 secure-srv01 sshd[45006]: Accepted password for bob from 192.168.1.15 port 57070 ssh2
+Sep 27 21:12:09 secure-srv01 sshd[47371]: Accepted publickey for devops from 192.168.1.15 port 40054 ssh2: RSA SHA256:c4b1096550d7643c
+Sep 27 21:12:53 secure-srv01 sshd[11334]: Accepted password for vinay from 172.16.5.20 port 56942 ssh2
+Sep 27 21:13:30 secure-srv01 sshd[20591]: Accepted publickey for bob from 192.168.1.42 port 41690 ssh2: RSA SHA256:5c121360a9db738d
+Sep 27 21:15:09 secure-srv01 sshd[32313]: Failed password for bob from 192.168.1.105 port 46409 ssh2
+Sep 27 21:15:20 secure-srv01 sshd[32314]: Accepted password for bob from 192.168.1.105 port 46410 ssh2
+Sep 27 21:16:29 secure-srv01 sshd[26734]: Accepted publickey for deploy from 192.168.1.15 port 55959 ssh2: RSA SHA256:c5be2c1d16c71829
+Sep 27 21:18:01 secure-srv01 sshd[11104]: Accepted password for vinay from 192.168.1.15 port 41130 ssh2
+Sep 27 21:18:31 secure-srv01 sshd[22847]: Accepted password for ubuntu from 192.168.1.42 port 51007 ssh2
+Sep 27 21:21:29 secure-srv01 sshd[46442]: Accepted publickey for bob from 192.168.1.42 port 41856 ssh2: RSA SHA256:f05e5f6bb01d2ebf
+Sep 27 21:22:19 secure-srv01 sshd[48851]: Accepted password for alice from 192.168.1.42 port 46060 ssh2
+Sep 27 21:24:47 secure-srv01 sshd[29494]: Accepted password for vinay from 172.16.5.20 port 49197 ssh2
+Sep 27 21:27:47 secure-srv01 sshd[22700]: Accepted publickey for vinay from 192.168.1.105 port 47194 ssh2: RSA SHA256:2f6ccea00b372e41
+Sep 27 21:30:09 secure-srv01 sshd[18459]: Accepted publickey for deploy from 192.168.1.15 port 47267 ssh2: RSA SHA256:4f021e6e05c84017
+Sep 27 21:30:44 secure-srv01 sshd[26989]: Accepted publickey for deploy from 192.168.1.42 port 40252 ssh2: RSA SHA256:60b1c9aeb1e79e45
+Sep 27 21:32:07 secure-srv01 sshd[25545]: Accepted password for ubuntu from 192.168.1.42 port 57454 ssh2
+Sep 27 21:33:36 secure-srv01 sshd[11001]: Accepted publickey for alice from 192.168.1.15 port 40429 ssh2: RSA SHA256:6f6e259061672504
+Sep 27 21:34:39 secure-srv01 sshd[30776]: Accepted password for devops from 10.0.0.55 port 55075 ssh2
+Sep 27 21:36:22 secure-srv01 sshd[48038]: Accepted password for deploy from 192.168.1.105 port 50830 ssh2
+Sep 27 21:37:13 secure-srv01 sshd[11726]: Accepted publickey for bob from 192.168.1.42 port 49613 ssh2: RSA SHA256:e1991b2fd5fc4728
+Sep 27 21:38:15 secure-srv01 sshd[32626]: Accepted password for vinay from 192.168.1.105 port 51054 ssh2
+Sep 27 21:39:08 secure-srv01 sshd[37398]: Accepted publickey for ubuntu from 172.16.5.20 port 51311 ssh2: RSA SHA256:6a591c1f7d33d771
+Sep 27 21:41:45 secure-srv01 sshd[45916]: Failed password for alice from 192.168.1.42 port 40388 ssh2
+Sep 27 21:41:57 secure-srv01 sshd[45917]: Accepted password for alice from 192.168.1.42 port 40389 ssh2
+Sep 27 21:42:12 secure-srv01 sshd[44960]: Accepted password for deploy from 192.168.1.105 port 42507 ssh2
+Sep 27 21:44:08 secure-srv01 sshd[28387]: Accepted password for deploy from 172.16.5.20 port 59580 ssh2
+Sep 27 21:46:59 secure-srv01 sshd[43708]: Accepted password for devops from 10.0.0.12 port 41673 ssh2
+Sep 27 21:48:23 secure-srv01 sshd[12928]: Accepted publickey for alice from 192.168.1.105 port 52085 ssh2: RSA SHA256:972351571573c043
+Sep 27 21:49:33 secure-srv01 sshd[34402]: Accepted password for deploy from 10.0.0.12 port 40828 ssh2
+Sep 27 21:50:17 secure-srv01 sshd[29380]: Accepted password for vinay from 172.16.5.20 port 47667 ssh2
+Sep 27 21:51:42 secure-srv01 sshd[49290]: Received disconnect from 192.168.1.105 port 44602:11: disconnected by user
+Sep 27 21:52:52 secure-srv01 sshd[24282]: Accepted publickey for ubuntu from 10.0.0.12 port 41738 ssh2: RSA SHA256:3ad22783a5f9d962
+Sep 27 21:54:39 secure-srv01 sshd[45124]: Accepted publickey for bob from 172.16.5.20 port 48165 ssh2: RSA SHA256:a2f4468d9fa6c361
+Sep 27 21:55:18 secure-srv01 sshd[16687]: Received disconnect from 192.168.1.42 port 51289:11: disconnected by user
+Sep 27 21:56:25 secure-srv01 sshd[38122]: Accepted password for bob from 10.0.0.55 port 51178 ssh2
+Sep 27 21:58:50 secure-srv01 sshd[37298]: Accepted publickey for vinay from 10.0.0.55 port 43269 ssh2: RSA SHA256:60e8a766f0b8f0ee
+Sep 27 21:59:13 secure-srv01 sshd[48763]: Accepted password for devops from 192.168.1.42 port 53737 ssh2
+Sep 27 21:59:40 secure-srv01 sshd[30908]: Accepted publickey for bob from 192.168.1.15 port 49459 ssh2: RSA SHA256:c22e025177d0bb8f
+Sep 27 22:00:52 secure-srv01 sshd[20083]: Accepted password for vinay from 192.168.1.42 port 55404 ssh2
+Sep 27 22:01:30 secure-srv01 sshd[21711]: Accepted password for alice from 10.0.0.12 port 51887 ssh2
+Sep 27 22:02:23 secure-srv01 sshd[14475]: Accepted publickey for bob from 192.168.1.42 port 46014 ssh2: RSA SHA256:5d66fa78abe6f43f
+Sep 27 22:02:46 secure-srv01 sshd[43690]: Failed password for alice from 10.0.0.12 port 52829 ssh2
+Sep 27 22:02:50 secure-srv01 sshd[43691]: Accepted password for alice from 10.0.0.12 port 52830 ssh2
+Sep 27 22:03:57 secure-srv01 sshd[17851]: Accepted publickey for deploy from 192.168.1.15 port 45134 ssh2: RSA SHA256:0c2cbf8aa87fa9b6
+Sep 27 22:05:58 secure-srv01 sshd[11452]: Failed password for deploy from 192.168.1.42 port 49604 ssh2
+Sep 27 22:06:04 secure-srv01 sshd[11453]: Accepted password for deploy from 192.168.1.42 port 49605 ssh2
+Sep 27 22:06:19 secure-srv01 sshd[47490]: Received disconnect from 192.168.1.42 port 42059:11: disconnected by user
+Sep 27 22:08:30 secure-srv01 sshd[48132]: Received disconnect from 192.168.1.105 port 51538:11: disconnected by user
+Sep 27 22:11:14 secure-srv01 sshd[12721]: Accepted publickey for devops from 10.0.0.12 port 59781 ssh2: RSA SHA256:5ea1cd865d8e111d
+Sep 27 22:14:11 secure-srv01 sshd[46114]: Accepted password for devops from 192.168.1.15 port 59317 ssh2
+Sep 27 22:16:46 secure-srv01 sshd[29540]: Accepted publickey for deploy from 192.168.1.42 port 53862 ssh2: RSA SHA256:5a2ab77dd928b181
+Sep 27 22:18:55 secure-srv01 sshd[29030]: Accepted publickey for bob from 10.0.0.12 port 47425 ssh2: RSA SHA256:9648d11378b3d045
+Sep 27 22:19:28 secure-srv01 sshd[35105]: Accepted publickey for ubuntu from 10.0.0.12 port 51228 ssh2: RSA SHA256:a6fe659f117ae2a8
+Sep 27 22:21:50 secure-srv01 sshd[40767]: Accepted publickey for bob from 192.168.1.15 port 57932 ssh2: RSA SHA256:756025801fe487eb
+Sep 27 22:22:14 secure-srv01 sshd[47406]: Accepted password for deploy from 192.168.1.42 port 55061 ssh2
+Sep 27 22:23:04 secure-srv01 sshd[46583]: Failed password for ubuntu from 10.0.0.12 port 49846 ssh2
+Sep 27 22:23:16 secure-srv01 sshd[46584]: Accepted password for ubuntu from 10.0.0.12 port 49847 ssh2
+Sep 27 22:25:32 secure-srv01 sshd[27571]: Accepted publickey for vinay from 192.168.1.105 port 59881 ssh2: RSA SHA256:77629ee4140a1bed
+Sep 27 22:28:07 secure-srv01 sshd[25618]: Failed password for vinay from 172.16.5.20 port 51100 ssh2
+Sep 27 22:28:16 secure-srv01 sshd[25619]: Accepted password for vinay from 172.16.5.20 port 51101 ssh2
+Sep 27 22:28:33 secure-srv01 sshd[41133]: Accepted password for ubuntu from 192.168.1.105 port 48345 ssh2
+Sep 27 22:29:43 secure-srv01 sshd[12763]: Failed password for vinay from 172.16.5.20 port 51533 ssh2
+Sep 27 22:29:54 secure-srv01 sshd[12764]: Accepted password for vinay from 172.16.5.20 port 51534 ssh2
+Sep 27 22:32:04 secure-srv01 sshd[42316]: Failed password for ubuntu from 10.0.0.55 port 47830 ssh2
+Sep 27 22:32:10 secure-srv01 sshd[42317]: Accepted password for ubuntu from 10.0.0.55 port 47831 ssh2
+Sep 27 22:33:01 secure-srv01 sshd[16867]: Failed password for alice from 10.0.0.55 port 59316 ssh2
+Sep 27 22:33:09 secure-srv01 sshd[16868]: Accepted password for alice from 10.0.0.55 port 59317 ssh2
+Sep 27 22:33:33 secure-srv01 sshd[27748]: Accepted publickey for devops from 10.0.0.55 port 47243 ssh2: RSA SHA256:1b6289d9009dbec7
+Sep 27 22:35:36 secure-srv01 sshd[26629]: Failed password for vinay from 10.0.0.12 port 59125 ssh2
+Sep 27 22:35:42 secure-srv01 sshd[26630]: Accepted password for vinay from 10.0.0.12 port 59126 ssh2
+Sep 27 22:37:17 secure-srv01 sshd[36284]: Accepted publickey for bob from 192.168.1.15 port 47828 ssh2: RSA SHA256:b153faefb2b826d3
+Sep 27 22:38:16 secure-srv01 sshd[27943]: Accepted publickey for vinay from 192.168.1.105 port 53847 ssh2: RSA SHA256:42cff8dbd589d911
+Sep 27 22:40:13 secure-srv01 sshd[45321]: Accepted password for bob from 10.0.0.12 port 47245 ssh2
+Sep 27 22:41:07 secure-srv01 sshd[14557]: Accepted publickey for alice from 192.168.1.42 port 48943 ssh2: RSA SHA256:4b505717a0232606
+Sep 27 22:41:37 secure-srv01 sshd[40629]: Accepted password for deploy from 192.168.1.15 port 40881 ssh2
+Sep 27 22:43:09 secure-srv01 sshd[42822]: Accepted password for vinay from 192.168.1.105 port 58576 ssh2
+Sep 27 22:45:14 secure-srv01 sshd[44146]: Accepted password for deploy from 192.168.1.105 port 50349 ssh2
+Sep 27 22:46:02 secure-srv01 sshd[31138]: Received disconnect from 172.16.5.20 port 50248:11: disconnected by user
+Sep 27 22:47:10 secure-srv01 sshd[15577]: Accepted password for deploy from 10.0.0.55 port 41547 ssh2
+Sep 27 22:48:20 secure-srv01 sshd[16126]: Failed password for ubuntu from 10.0.0.12 port 59797 ssh2
+Sep 27 22:48:24 secure-srv01 sshd[16127]: Accepted password for ubuntu from 10.0.0.12 port 59798 ssh2
+Sep 27 22:51:01 secure-srv01 sshd[39096]: Accepted password for vinay from 192.168.1.105 port 46943 ssh2
+Sep 27 22:52:10 secure-srv01 sshd[42376]: Accepted password for deploy from 192.168.1.15 port 49812 ssh2
+Sep 27 22:53:31 secure-srv01 sshd[26513]: Accepted publickey for ubuntu from 10.0.0.55 port 57616 ssh2: RSA SHA256:aca1e23521236401
+Sep 27 22:55:44 secure-srv01 sshd[12398]: Accepted password for ubuntu from 192.168.1.42 port 48230 ssh2
+Sep 27 22:58:41 secure-srv01 sshd[36113]: Accepted publickey for devops from 10.0.0.12 port 41344 ssh2: RSA SHA256:2688ed9b7f7e9309
+Sep 27 23:01:18 secure-srv01 sshd[39859]: Received disconnect from 172.16.5.20 port 54540:11: disconnected by user
+Sep 27 23:03:35 secure-srv01 sshd[18970]: Accepted publickey for deploy from 172.16.5.20 port 44775 ssh2: RSA SHA256:47dd74452b73f2ba
+Sep 27 23:03:55 secure-srv01 sshd[48332]: Accepted password for devops from 10.0.0.12 port 43155 ssh2
+Sep 27 23:04:38 secure-srv01 sshd[18409]: Accepted publickey for bob from 192.168.1.105 port 58680 ssh2: RSA SHA256:fab57faa18e25211
+Sep 27 23:06:18 secure-srv01 sshd[35289]: Failed password for devops from 192.168.1.42 port 40558 ssh2
+Sep 27 23:06:23 secure-srv01 sshd[35290]: Accepted password for devops from 192.168.1.42 port 40559 ssh2
+Sep 27 23:07:27 secure-srv01 sshd[27739]: Accepted publickey for deploy from 192.168.1.42 port 45657 ssh2: RSA SHA256:087f016fb00d0cf0
+Sep 27 23:08:58 secure-srv01 sshd[10054]: Accepted publickey for devops from 192.168.1.15 port 58877 ssh2: RSA SHA256:841ee72b0c5abbb5
+Sep 27 23:10:08 secure-srv01 sshd[23773]: Failed password for invalid user ftpuser from 192.0.2.14 port 55544 ssh2
+Sep 27 23:10:11 secure-srv01 sshd[23774]: Failed password for invalid user test from 192.0.2.14 port 38467 ssh2
+Sep 27 23:10:20 secure-srv01 sshd[23775]: Failed password for invalid user user from 192.0.2.14 port 60289 ssh2
+Sep 27 23:10:25 secure-srv01 sshd[23776]: Failed password for root from 192.0.2.14 port 52863 ssh2
+Sep 27 23:10:33 secure-srv01 sshd[23777]: Failed password for ftpuser from 192.0.2.14 port 60780 ssh2
+Sep 27 23:10:38 secure-srv01 sshd[23778]: Failed password for ftpuser from 192.0.2.14 port 52605 ssh2
+Sep 27 23:10:42 secure-srv01 sshd[23779]: Failed password for ftpuser from 192.0.2.14 port 62970 ssh2
+Sep 27 23:11:01 secure-srv01 sshd[14776]: Accepted password for bob from 10.0.0.12 port 42615 ssh2
+Sep 27 23:12:39 secure-srv01 sshd[49668]: Failed password for vinay from 192.168.1.105 port 50821 ssh2
+Sep 27 23:12:45 secure-srv01 sshd[49669]: Accepted password for vinay from 192.168.1.105 port 50822 ssh2
+Sep 27 23:15:00 secure-srv01 sshd[19083]: Accepted password for bob from 172.16.5.20 port 50864 ssh2
+Sep 27 23:16:36 secure-srv01 sshd[23450]: Accepted publickey for devops from 192.168.1.42 port 43643 ssh2: RSA SHA256:69a882c67641263c
+Sep 27 23:16:54 secure-srv01 sshd[14400]: Received disconnect from 192.168.1.105 port 56335:11: disconnected by user
+Sep 27 23:17:51 secure-srv01 sshd[31876]: Accepted publickey for vinay from 192.168.1.105 port 43379 ssh2: RSA SHA256:51fa93c99a6cfae0
+Sep 27 23:18:22 secure-srv01 sshd[16703]: Failed password for ubuntu from 10.0.0.55 port 55603 ssh2
+Sep 27 23:18:30 secure-srv01 sshd[16704]: Accepted password for ubuntu from 10.0.0.55 port 55604 ssh2
+Sep 27 23:19:20 secure-srv01 sshd[12331]: Accepted publickey for alice from 192.168.1.42 port 42366 ssh2: RSA SHA256:3aa49214e7e7b994
+Sep 27 23:19:51 secure-srv01 sshd[38223]: Accepted password for alice from 192.168.1.105 port 46424 ssh2
+Sep 27 23:20:16 secure-srv01 sshd[39849]: Accepted password for devops from 192.168.1.42 port 56958 ssh2
+Sep 27 23:22:42 secure-srv01 sshd[36654]: Failed password for devops from 192.168.1.42 port 57512 ssh2
+Sep 27 23:22:46 secure-srv01 sshd[36655]: Accepted password for devops from 192.168.1.42 port 57513 ssh2
+Sep 27 23:24:53 secure-srv01 sshd[21610]: Accepted publickey for alice from 192.168.1.15 port 42832 ssh2: RSA SHA256:909e90360263067d
+Sep 27 23:25:16 secure-srv01 sshd[32390]: Accepted password for alice from 172.16.5.20 port 56544 ssh2
+Sep 27 23:26:52 secure-srv01 sshd[21718]: Received disconnect from 172.16.5.20 port 41112:11: disconnected by user
+Sep 27 23:29:49 secure-srv01 sshd[36325]: Accepted password for alice from 10.0.0.55 port 53113 ssh2
+Sep 27 23:31:49 secure-srv01 sshd[42607]: Accepted publickey for vinay from 192.168.1.42 port 50596 ssh2: RSA SHA256:cbb8c59e86aabd1e
+Sep 27 23:32:23 secure-srv01 sshd[25554]: Accepted publickey for ubuntu from 172.16.5.20 port 52303 ssh2: RSA SHA256:e3036770bab6f20e
+Sep 27 23:35:12 secure-srv01 sshd[41400]: Accepted publickey for devops from 10.0.0.55 port 58289 ssh2: RSA SHA256:34b716d88555ac63
+Sep 27 23:37:20 secure-srv01 sshd[32868]: Accepted password for deploy from 192.168.1.105 port 51971 ssh2
+Sep 27 23:39:18 secure-srv01 sshd[15226]: Accepted password for vinay from 192.168.1.42 port 59837 ssh2
+Sep 27 23:40:45 secure-srv01 sshd[24867]: Accepted password for devops from 172.16.5.20 port 42188 ssh2
+Sep 27 23:41:29 secure-srv01 sshd[35203]: Accepted publickey for ubuntu from 192.168.1.42 port 44816 ssh2: RSA SHA256:3695d5cad0dec115
+Sep 27 23:42:07 secure-srv01 sshd[36853]: Accepted password for vinay from 10.0.0.55 port 49890 ssh2
+Sep 27 23:44:37 secure-srv01 sshd[17109]: Accepted password for alice from 192.168.1.15 port 57231 ssh2
+Sep 27 23:46:50 secure-srv01 sshd[28440]: Accepted publickey for ubuntu from 10.0.0.55 port 53572 ssh2: RSA SHA256:3c28b8badf6c9b60
+Sep 27 23:49:16 secure-srv01 sshd[45999]: Accepted password for vinay from 192.168.1.105 port 41061 ssh2
+Sep 27 23:52:13 secure-srv01 sshd[13931]: Accepted password for alice from 192.168.1.15 port 42363 ssh2
+Sep 27 23:53:07 secure-srv01 sshd[10272]: Accepted publickey for ubuntu from 192.168.1.105 port 58134 ssh2: RSA SHA256:92da049ad826c4a1
+Sep 27 23:53:28 secure-srv01 sshd[12953]: Received disconnect from 192.168.1.42 port 44291:11: disconnected by user
+Sep 27 23:54:41 secure-srv01 sshd[47108]: Accepted password for deploy from 10.0.0.55 port 48493 ssh2
+Sep 27 23:54:56 secure-srv01 sshd[43338]: Accepted publickey for deploy from 10.0.0.55 port 47409 ssh2: RSA SHA256:1b690c1152a8ded5
+Sep 27 23:57:52 secure-srv01 sshd[43415]: Failed password for ubuntu from 192.168.1.42 port 55703 ssh2
+Sep 27 23:58:00 secure-srv01 sshd[43416]: Accepted password for ubuntu from 192.168.1.42 port 55704 ssh2
+Sep 27 23:58:37 secure-srv01 sshd[42454]: Accepted publickey for bob from 10.0.0.12 port 44799 ssh2: RSA SHA256:528c86db90fae361
+Sep 28 00:01:25 secure-srv01 sshd[25889]: Accepted publickey for deploy from 10.0.0.55 port 47595 ssh2: RSA SHA256:7834fc1421cf1a91
+Sep 28 00:02:07 secure-srv01 sshd[15821]: Accepted password for alice from 10.0.0.12 port 58864 ssh2
+Sep 28 00:04:43 secure-srv01 sshd[27724]: Accepted publickey for vinay from 192.168.1.105 port 49831 ssh2: RSA SHA256:91e316d87254180b
+Sep 28 00:05:19 secure-srv01 sshd[48242]: Accepted publickey for alice from 192.168.1.15 port 41902 ssh2: RSA SHA256:0d99599e7016b05f
+Sep 28 00:05:48 secure-srv01 sshd[14950]: Accepted publickey for bob from 172.16.5.20 port 45230 ssh2: RSA SHA256:6d2fb007ec3a19af
+Sep 28 00:07:20 secure-srv01 sshd[47351]: Failed password for devops from 192.168.1.42 port 40885 ssh2
+Sep 28 00:07:30 secure-srv01 sshd[47352]: Accepted password for devops from 192.168.1.42 port 40886 ssh2
+Sep 28 00:09:34 secure-srv01 sshd[39780]: Accepted publickey for alice from 10.0.0.12 port 47815 ssh2: RSA SHA256:e35922a397cadc17
+Sep 28 00:11:22 secure-srv01 sshd[36813]: Accepted password for bob from 10.0.0.55 port 43973 ssh2
+Sep 28 00:12:40 secure-srv01 sshd[45015]: Accepted password for ubuntu from 192.168.1.42 port 42210 ssh2
+Sep 28 00:13:45 secure-srv01 sshd[47860]: Accepted publickey for ubuntu from 192.168.1.42 port 54723 ssh2: RSA SHA256:57eed6261ff9dedb
+Sep 28 00:15:22 secure-srv01 sshd[14748]: Accepted password for alice from 172.16.5.20 port 53058 ssh2
+Sep 28 00:16:36 secure-srv01 sshd[41804]: Accepted publickey for vinay from 10.0.0.55 port 41606 ssh2: RSA SHA256:bcc78406eb9a369c
+Sep 28 00:18:35 secure-srv01 sshd[34087]: Accepted publickey for deploy from 10.0.0.55 port 58065 ssh2: RSA SHA256:d1016e18cd206bfa
+Sep 28 00:21:21 secure-srv01 sshd[35978]: Accepted password for ubuntu from 172.16.5.20 port 47260 ssh2
+Sep 28 00:22:51 secure-srv01 sshd[20298]: Accepted password for alice from 192.168.1.42 port 55903 ssh2
+Sep 28 00:25:29 secure-srv01 sshd[31503]: Received disconnect from 192.168.1.15 port 50528:11: disconnected by user
+Sep 28 00:25:58 secure-srv01 sshd[30652]: Accepted publickey for ubuntu from 10.0.0.12 port 42722 ssh2: RSA SHA256:c7249033597172bd
+Sep 28 00:26:36 secure-srv01 sshd[17401]: Accepted publickey for devops from 192.168.1.15 port 50262 ssh2: RSA SHA256:b32d15ff8cbedfd6
+Sep 28 00:27:10 secure-srv01 sshd[24950]: Failed password for deploy from 172.16.5.20 port 46348 ssh2
+Sep 28 00:27:18 secure-srv01 sshd[24951]: Accepted password for deploy from 172.16.5.20 port 46349 ssh2
+Sep 28 00:27:57 secure-srv01 sshd[10244]: Accepted password for deploy from 10.0.0.12 port 49933 ssh2
+Sep 28 00:28:21 secure-srv01 sshd[36816]: Received disconnect from 172.16.5.20 port 41468:11: disconnected by user
+Sep 28 00:30:18 secure-srv01 sshd[18689]: Accepted password for deploy from 192.168.1.15 port 56056 ssh2
+Sep 28 00:31:13 secure-srv01 sshd[15462]: Accepted password for vinay from 10.0.0.55 port 50237 ssh2
+Sep 28 00:33:15 secure-srv01 sshd[15474]: Failed password for ubuntu from 10.0.0.12 port 45211 ssh2
+Sep 28 00:33:25 secure-srv01 sshd[15475]: Accepted password for ubuntu from 10.0.0.12 port 45212 ssh2
+Sep 28 00:33:44 secure-srv01 sshd[26554]: Accepted publickey for ubuntu from 192.168.1.42 port 54412 ssh2: RSA SHA256:99b76371f91c1b9e
+Sep 28 00:35:10 secure-srv01 sshd[33826]: Accepted publickey for devops from 10.0.0.12 port 51217 ssh2: RSA SHA256:a2d3583ab3dc344c
+Sep 28 00:37:38 secure-srv01 sshd[13360]: Accepted password for alice from 192.168.1.15 port 53142 ssh2
+Sep 28 00:39:07 secure-srv01 sshd[38924]: Received disconnect from 172.16.5.20 port 55039:11: disconnected by user
+Sep 28 00:39:38 secure-srv01 sshd[17070]: Accepted publickey for bob from 10.0.0.12 port 55019 ssh2: RSA SHA256:38e4dc4072665572
+Sep 28 00:41:36 secure-srv01 sshd[13147]: Received disconnect from 192.168.1.42 port 45749:11: disconnected by user
+Sep 28 00:42:10 secure-srv01 sshd[45268]: Accepted password for alice from 172.16.5.20 port 50280 ssh2
+Sep 28 00:43:45 secure-srv01 sshd[10578]: Failed password for devops from 192.168.1.15 port 47881 ssh2
+Sep 28 00:43:55 secure-srv01 sshd[10579]: Accepted password for devops from 192.168.1.15 port 47882 ssh2
+Sep 28 00:46:47 secure-srv01 sshd[31007]: Received disconnect from 10.0.0.55 port 44693:11: disconnected by user
+Sep 28 00:47:32 secure-srv01 sshd[19411]: Accepted publickey for deploy from 10.0.0.55 port 46453 ssh2: RSA SHA256:2fbd9a01d90b5dc4
+Sep 28 00:47:55 secure-srv01 sshd[48054]: Accepted publickey for alice from 10.0.0.12 port 48271 ssh2: RSA SHA256:4bd9a391777fee2b
+Sep 28 00:50:37 secure-srv01 sshd[40191]: Failed password for alice from 172.16.5.20 port 48336 ssh2
+Sep 28 00:50:42 secure-srv01 sshd[40192]: Accepted password for alice from 172.16.5.20 port 48337 ssh2
+Sep 28 00:52:23 secure-srv01 sshd[36268]: Failed password for vinay from 192.168.1.42 port 57971 ssh2
+Sep 28 00:52:32 secure-srv01 sshd[36269]: Accepted password for vinay from 192.168.1.42 port 57972 ssh2
+Sep 28 00:53:30 secure-srv01 sshd[20182]: Accepted password for deploy from 192.168.1.15 port 41437 ssh2
+Sep 28 00:55:58 secure-srv01 sshd[23895]: Failed password for deploy from 172.16.5.20 port 46007 ssh2
+Sep 28 00:56:05 secure-srv01 sshd[23896]: Accepted password for deploy from 172.16.5.20 port 46008 ssh2
+Sep 28 00:57:29 secure-srv01 sshd[27553]: Accepted password for vinay from 172.16.5.20 port 51403 ssh2
+Sep 28 00:59:00 secure-srv01 sshd[29325]: Accepted password for bob from 192.168.1.15 port 40514 ssh2
+Sep 28 00:59:37 secure-srv01 sshd[17117]: Accepted publickey for devops from 10.0.0.55 port 47232 ssh2: RSA SHA256:b78daeda34a06710
+Sep 28 01:01:47 secure-srv01 sshd[33395]: Accepted publickey for vinay from 172.16.5.20 port 40873 ssh2: RSA SHA256:d6ca17c211913371
+Sep 28 01:04:08 secure-srv01 sshd[10449]: Accepted publickey for bob from 192.168.1.15 port 54043 ssh2: RSA SHA256:000bfc4f9a50ab0f
+Sep 28 01:05:08 secure-srv01 sshd[24411]: Accepted publickey for devops from 10.0.0.55 port 58580 ssh2: RSA SHA256:4d624ebb9e24534b
+Sep 28 01:06:25 secure-srv01 sshd[46748]: Accepted password for alice from 192.168.1.42 port 45124 ssh2
+Sep 28 01:08:33 secure-srv01 sshd[49048]: Received disconnect from 10.0.0.12 port 58232:11: disconnected by user
+Sep 28 01:10:25 secure-srv01 sshd[34926]: Failed password for alice from 192.168.1.42 port 48711 ssh2
+Sep 28 01:10:34 secure-srv01 sshd[34927]: Accepted password for alice from 192.168.1.42 port 48712 ssh2
+Sep 28 01:12:47 secure-srv01 sshd[24037]: Accepted publickey for vinay from 10.0.0.12 port 47544 ssh2: RSA SHA256:3c50319cc9ecfaa3
+Sep 28 01:14:56 secure-srv01 sshd[37290]: Failed password for ubuntu from 10.0.0.12 port 48687 ssh2
+Sep 28 01:15:08 secure-srv01 sshd[37291]: Accepted password for ubuntu from 10.0.0.12 port 48688 ssh2
+Sep 28 01:18:05 secure-srv01 sshd[44097]: Failed password for bob from 10.0.0.12 port 42508 ssh2
+Sep 28 01:18:12 secure-srv01 sshd[44098]: Accepted password for bob from 10.0.0.12 port 42509 ssh2
+Sep 28 01:19:44 secure-srv01 sshd[40413]: Accepted publickey for devops from 192.168.1.15 port 45613 ssh2: RSA SHA256:ac5e8bf0c80f0269
+Sep 28 01:20:27 secure-srv01 sshd[40688]: Accepted publickey for bob from 192.168.1.42 port 41169 ssh2: RSA SHA256:024b6531e4409c7e
+Sep 28 01:21:28 secure-srv01 sshd[31428]: Accepted password for vinay from 192.168.1.15 port 47461 ssh2
+Sep 28 01:22:24 secure-srv01 sshd[12681]: Accepted password for bob from 192.168.1.105 port 57116 ssh2
+Sep 28 01:24:04 secure-srv01 sshd[12321]: Accepted password for deploy from 172.16.5.20 port 45458 ssh2
+Sep 28 01:26:29 secure-srv01 sshd[13861]: Accepted password for deploy from 192.168.1.15 port 54283 ssh2
+Sep 28 01:27:37 secure-srv01 sshd[44638]: Accepted publickey for vinay from 192.168.1.105 port 42615 ssh2: RSA SHA256:f7fc363d3e144c62
+Sep 28 01:28:15 secure-srv01 sshd[12120]: Failed password for bob from 172.16.5.20 port 49979 ssh2
+Sep 28 01:28:19 secure-srv01 sshd[12121]: Accepted password for bob from 172.16.5.20 port 49980 ssh2
+Sep 28 01:29:34 secure-srv01 sshd[31728]: Failed password for vinay from 192.168.1.42 port 55996 ssh2
+Sep 28 01:29:41 secure-srv01 sshd[31729]: Accepted password for vinay from 192.168.1.42 port 55997 ssh2
+Sep 28 01:31:59 secure-srv01 sshd[41245]: Accepted publickey for bob from 192.168.1.105 port 40303 ssh2: RSA SHA256:8439bad0622eacaf
+Sep 28 01:34:22 secure-srv01 sshd[22844]: Accepted publickey for devops from 10.0.0.12 port 43205 ssh2: RSA SHA256:201bee30e5a04c30
+Sep 28 01:36:37 secure-srv01 sshd[14391]: Accepted publickey for bob from 10.0.0.12 port 47300 ssh2: RSA SHA256:f65f2d1c8cc0da27
+Sep 28 01:38:25 secure-srv01 sshd[43389]: Accepted publickey for ubuntu from 172.16.5.20 port 54459 ssh2: RSA SHA256:02a645cdd085062e
+Sep 28 01:40:06 secure-srv01 sshd[11748]: Accepted password for bob from 192.168.1.42 port 56478 ssh2
+Sep 28 01:40:25 secure-srv01 sshd[16610]: Accepted password for devops from 192.168.1.15 port 40220 ssh2
+Sep 28 01:42:35 secure-srv01 sshd[12842]: Accepted publickey for ubuntu from 10.0.0.12 port 56613 ssh2: RSA SHA256:a6221a956f7653cf
+Sep 28 01:44:21 secure-srv01 sshd[40356]: Accepted password for alice from 10.0.0.12 port 41531 ssh2
+Sep 28 01:44:54 secure-srv01 sshd[39674]: Received disconnect from 192.168.1.42 port 43752:11: disconnected by user
+Sep 28 01:45:24 secure-srv01 sshd[27018]: Failed password for devops from 192.168.1.42 port 58523 ssh2
+Sep 28 01:45:28 secure-srv01 sshd[27019]: Accepted password for devops from 192.168.1.42 port 58524 ssh2
+Sep 28 01:45:44 secure-srv01 sshd[23774]: Accepted publickey for alice from 192.168.1.42 port 45617 ssh2: RSA SHA256:7b8c90be16e041df
+Sep 28 01:47:53 secure-srv01 sshd[24988]: Accepted password for alice from 172.16.5.20 port 50595 ssh2
+Sep 28 01:49:54 secure-srv01 sshd[41067]: Accepted publickey for bob from 172.16.5.20 port 41881 ssh2: RSA SHA256:5b89b013aad13cfe
+Sep 28 01:52:24 secure-srv01 sshd[45325]: Accepted password for deploy from 192.168.1.15 port 42099 ssh2
+Sep 28 01:54:24 secure-srv01 sshd[32425]: Accepted password for ubuntu from 192.168.1.105 port 42360 ssh2
+Sep 28 01:56:21 secure-srv01 sshd[20965]: Accepted password for alice from 192.168.1.105 port 41729 ssh2
+Sep 28 01:59:08 secure-srv01 sshd[43304]: Failed password for vinay from 172.16.5.20 port 59878 ssh2
+Sep 28 01:59:17 secure-srv01 sshd[43305]: Accepted password for vinay from 172.16.5.20 port 59879 ssh2
+Sep 28 02:01:43 secure-srv01 sshd[36984]: Accepted password for deploy from 192.168.1.42 port 45247 ssh2
+Sep 28 02:03:09 secure-srv01 sshd[48421]: Accepted password for alice from 192.168.1.105 port 55143 ssh2
+Sep 28 02:04:14 secure-srv01 sshd[39738]: Accepted password for alice from 10.0.0.55 port 44566 ssh2
+Sep 28 02:05:30 secure-srv01 sshd[19938]: Accepted password for deploy from 10.0.0.12 port 42338 ssh2
+Sep 28 02:07:43 secure-srv01 sshd[28764]: Failed password for alice from 172.16.5.20 port 44480 ssh2
+Sep 28 02:07:49 secure-srv01 sshd[28765]: Accepted password for alice from 172.16.5.20 port 44481 ssh2
+Sep 28 02:09:08 secure-srv01 sshd[30690]: Accepted publickey for devops from 192.168.1.15 port 46841 ssh2: RSA SHA256:4f1503860acdd04a
+Sep 28 02:09:35 secure-srv01 sshd[49629]: Accepted password for devops from 172.16.5.20 port 59334 ssh2
+Sep 28 02:10:49 secure-srv01 sshd[42968]: Accepted password for deploy from 192.168.1.105 port 41472 ssh2
+Sep 28 02:12:43 secure-srv01 sshd[13519]: Accepted password for ubuntu from 192.168.1.15 port 57932 ssh2
+Sep 28 02:13:46 secure-srv01 sshd[30039]: Accepted password for alice from 192.168.1.105 port 48567 ssh2
+Sep 28 02:16:17 secure-srv01 sshd[24900]: Failed password for devops from 192.168.1.42 port 58153 ssh2
+Sep 28 02:16:23 secure-srv01 sshd[24901]: Accepted password for devops from 192.168.1.42 port 58154 ssh2
+Sep 28 02:18:56 secure-srv01 sshd[33008]: Accepted publickey for devops from 192.168.1.105 port 56094 ssh2: RSA SHA256:506650564669706a
+Sep 28 02:20:32 secure-srv01 sshd[13249]: Failed password for ubuntu from 10.0.0.55 port 41636 ssh2
+Sep 28 02:20:40 secure-srv01 sshd[13250]: Accepted password for ubuntu from 10.0.0.55 port 41637 ssh2
+Sep 28 02:21:42 secure-srv01 sshd[18206]: Received disconnect from 192.168.1.42 port 47871:11: disconnected by user
+Sep 28 02:22:44 secure-srv01 sshd[16908]: Received disconnect from 10.0.0.12 port 50124:11: disconnected by user
+Sep 28 02:23:46 secure-srv01 sshd[30206]: Accepted password for vinay from 10.0.0.12 port 42656 ssh2
+Sep 28 02:26:39 secure-srv01 sshd[23992]: Failed password for alice from 192.168.1.105 port 45001 ssh2
+Sep 28 02:26:51 secure-srv01 sshd[23993]: Accepted password for alice from 192.168.1.105 port 45002 ssh2
+Sep 28 02:27:54 secure-srv01 sshd[37167]: Accepted password for vinay from 192.168.1.15 port 45260 ssh2
+Sep 28 02:28:15 secure-srv01 sshd[30343]: Failed password for devops from 192.168.1.42 port 44617 ssh2
+Sep 28 02:28:24 secure-srv01 sshd[30344]: Accepted password for devops from 192.168.1.42 port 44618 ssh2
+Sep 28 02:30:48 secure-srv01 sshd[20546]: Accepted password for vinay from 192.168.1.105 port 54330 ssh2
+Sep 28 02:32:32 secure-srv01 sshd[11006]: Failed password for deploy from 192.168.1.42 port 42808 ssh2
+Sep 28 02:32:41 secure-srv01 sshd[11007]: Accepted password for deploy from 192.168.1.42 port 42809 ssh2
+Sep 28 02:33:05 secure-srv01 sshd[34923]: Received disconnect from 172.16.5.20 port 55747:11: disconnected by user
+Sep 28 02:35:26 secure-srv01 sshd[45576]: Accepted publickey for alice from 172.16.5.20 port 58976 ssh2: RSA SHA256:0881d5d8ff3dc99e
+Sep 28 02:36:20 secure-srv01 sshd[22489]: Accepted password for vinay from 192.168.1.105 port 45986 ssh2
+Sep 28 02:39:14 secure-srv01 sshd[48431]: Accepted publickey for alice from 192.168.1.15 port 49235 ssh2: RSA SHA256:ddac2fa9d7fea35c
+Sep 28 02:40:10 secure-srv01 sshd[30424]: Accepted publickey for devops from 192.168.1.15 port 54447 ssh2: RSA SHA256:d45208bd20bd2c0c
+Sep 28 02:42:49 secure-srv01 sshd[29434]: Failed password for devops from 172.16.5.20 port 51440 ssh2
+Sep 28 02:43:00 secure-srv01 sshd[29435]: Accepted password for devops from 172.16.5.20 port 51441 ssh2
+Sep 28 02:44:40 secure-srv01 sshd[20009]: Accepted publickey for ubuntu from 192.168.1.15 port 50221 ssh2: RSA SHA256:1e02eaeac470eab5
+Sep 28 02:47:20 secure-srv01 sshd[12090]: Received disconnect from 192.168.1.42 port 43931:11: disconnected by user
+Sep 28 02:48:49 secure-srv01 sshd[45850]: Received disconnect from 192.168.1.15 port 46631:11: disconnected by user
+Sep 28 02:51:45 secure-srv01 sshd[29378]: Accepted publickey for deploy from 172.16.5.20 port 41947 ssh2: RSA SHA256:a1f6542850f9c34c
+Sep 28 02:52:50 secure-srv01 sshd[21019]: Accepted publickey for bob from 192.168.1.42 port 56443 ssh2: RSA SHA256:7d228100f2d45abc
+Sep 28 02:53:37 secure-srv01 sshd[19845]: Accepted publickey for alice from 192.168.1.15 port 47489 ssh2: RSA SHA256:3ee600fe0d2f254e
+Sep 28 02:55:39 secure-srv01 sshd[48561]: Accepted publickey for deploy from 192.168.1.105 port 44380 ssh2: RSA SHA256:900f3dad5c9e6461
+Sep 28 02:58:04 secure-srv01 sshd[30732]: Accepted password for alice from 192.168.1.15 port 42431 ssh2
+Sep 28 03:00:47 secure-srv01 sshd[27505]: Accepted password for ubuntu from 172.16.5.20 port 41190 ssh2
+Sep 28 03:01:17 secure-srv01 sshd[17854]: Received disconnect from 10.0.0.55 port 55652:11: disconnected by user
+Sep 28 03:03:59 secure-srv01 sshd[13073]: Failed password for vinay from 10.0.0.12 port 44504 ssh2
+Sep 28 03:04:11 secure-srv01 sshd[13074]: Accepted password for vinay from 10.0.0.12 port 44505 ssh2
+Sep 28 03:06:26 secure-srv01 sshd[13470]: Accepted publickey for deploy from 10.0.0.12 port 40477 ssh2: RSA SHA256:14fd4e8d334460be

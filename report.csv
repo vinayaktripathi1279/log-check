@@ -1,0 +1,4 @@
+IP,failed attempts,first seen,last seen,severity
+203.0.113.45,25,Sep 27 17:15:03,Sep 27 17:17:42,Critical
+198.51.100.89,14,Sep 27 20:40:08,Sep 27 20:41:38,High
+192.0.2.14,7,Sep 27 23:10:08,Sep 27 23:10:42,Medium

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberGuard - SSH Brute-Force Log Analyzer</title>
+  <meta name="description" content="Interactive SOC Log Analyzer & SSH Brute-Force Detection Tool with real-time sliding window analysis and CSV triage reporting.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="brand-shield">🛡️</div>
+      <div>
+        <h1 class="brand-title">CYBERGUARD // LOG ANALYZER</h1>
+        <p class="brand-subtitle">Linux SSH Brute-Force Threat Detection & Incident Triage Engine</p>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a href="https://github.com/vinayaktripathi1279/log-check" target="_blank" class="btn btn-outline" id="githubRepoLink">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub Repository
+      </a>
+      <button class="btn btn-primary" id="btnExportCsv">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export report.csv
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Top KPI Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">TOTAL LOG EVENTS</span>
+          <span class="kpi-icon">📄</span>
+        </div>
+        <div class="kpi-value" id="kpiTotalEvents">573</div>
+        <div class="kpi-sub">Processed in &lt; 8ms</div>
+      </div>
+
+      <div class="kpi-card warning">
+        <div class="kpi-header">
+          <span class="kpi-label">FAILED AUTH EVENTS</span>
+          <span class="kpi-icon">⚠️</span>
+        </div>
+        <div class="kpi-value" id="kpiFailedLogins">119</div>
+        <div class="kpi-sub" id="kpiFailedPct">20.8% of total volume</div>
+      </div>
+
+      <div class="kpi-card danger">
+        <div class="kpi-header">
+          <span class="kpi-label">BRUTE-FORCE SUSPECTS</span>
+          <span class="kpi-icon">🚨</span>
+        </div>
+        <div class="kpi-value" id="kpiFlaggedIps">3</div>
+        <div class="kpi-sub">Exceeded velocity threshold</div>
+      </div>
+
+      <div class="kpi-card critical">
+        <div class="kpi-header">
+          <span class="kpi-label">PEAK BURST ATTACK RATE</span>
+          <span class="kpi-icon">⚡</span>
+        </div>
+        <div class="kpi-value" id="kpiPeakBurst">25 <span class="unit">/ 3m</span></div>
+        <div class="kpi-sub">Target: 203.0.113.45</div>
+      </div>
+    </section>
+
+    <!-- Controls & Threshold Tuning -->
+    <section class="panel control-panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Detection Threshold Tuning & SIEM Rules</h2>
+        <span class="badge badge-info">Rule: ≥ 5 Failures / 5 Minutes</span>
+      </div>
+      <div class="panel-body controls-grid">
+        <div class="control-item">
+          <label for="inputThreshold">Failure Threshold (Attacks):</label>
+          <div class="input-stepper">
+            <input type="number" id="inputThreshold" value="5" min="2" max="25">
+            <span class="control-hint">Minimum failures before flagging IP</span>
+          </div>
+        </div>
+
+        <div class="control-item">
+          <label for="inputWindow">Sliding Window (Minutes):</label>
+          <div class="input-stepper">
+            <input type="number" id="inputWindow" value="5" min="1" max="60">
+            <span class="control-hint">Duration to count failure bursts</span>
+          </div>
+        </div>
+
+        <div class="control-item">
+          <label>Filter by Severity:</label>
+          <div class="filter-pills" id="severityFilterGroup">
+            <button class="pill active" data-severity="ALL">All (3)</button>
+            <button class="pill pill-critical" data-severity="Critical">Critical</button>
+            <button class="pill pill-high" data-severity="High">High</button>
+            <button class="pill pill-medium" data-severity="Medium">Medium</button>
+          </div>
+        </div>
+
+        <div class="control-actions">
+          <button class="btn btn-secondary" id="btnRegenerateLogs">
+            🔄 Regenerate Random Logs
+          </button>
+          <button class="btn btn-accent" id="btnRunAnalysis">
+            ▶ Re-Analyze Logs
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Results Section -->
+    <div class="dashboard-split">
+      <!-- Left: Suspects Table -->
+      <section class="panel table-panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Flagged Brute-Force Incidents</h2>
+          <span class="badge badge-success" id="tableRecordCount">Showing 3 Flagged IPs</span>
+        </div>
+        <div class="table-container">
+          <table class="cyber-table" id="suspectsTable">
+            <thead>
+              <tr>
+                <th>Attacker IP</th>
+                <th>Failed Attempts</th>
+                <th>Peak Window Burst</th>
+                <th>First Seen</th>
+                <th>Last Seen</th>
+                <th>Targeted Accounts</th>
+                <th>Severity</th>
+              </tr>
+            </thead>
+            <tbody id="suspectsTableBody">
+              <!-- Dynamically Populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Right: Threat Intelligence Breakdown -->
+      <section class="panel intel-panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Threat Classification Metrics</h2>
+        </div>
+        <div class="intel-content">
+          <div class="severity-bars">
+            <div class="sev-bar-item">
+              <div class="sev-bar-meta">
+                <span class="sev-tag critical">CRITICAL (≥ 20)</span>
+                <span class="sev-count" id="countCritical">1 IP (33%)</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill critical" style="width: 33%"></div></div>
+            </div>
+
+            <div class="sev-bar-item">
+              <div class="sev-bar-meta">
+                <span class="sev-tag high">HIGH (10 - 19)</span>
+                <span class="sev-count" id="countHigh">1 IP (33%)</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill high" style="width: 33%"></div></div>
+            </div>
+
+            <div class="sev-bar-item">
+              <div class="sev-bar-meta">
+                <span class="sev-tag medium">MEDIUM (5 - 9)</span>
+                <span class="sev-count" id="countMedium">1 IP (33%)</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill medium" style="width: 33%"></div></div>
+            </div>
+          </div>
+
+          <div class="mitigation-box">
+            <h4>Recommended SOC Actions:</h4>
+            <ul>
+              <li><strong>Firewall Null-route:</strong> Add <code>203.0.113.45</code> & <code>198.51.100.89</code> to iptables drop list.</li>
+              <li><strong>Disable SSH Password Auth:</strong> Enforce SSH Key-only authentication for all accounts.</li>
+              <li><strong>Disable Root SSH:</strong> Set <code>PermitRootLogin no</code> in <code>/etc/ssh/sshd_config</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Live Log Console -->
+    <section class="panel console-panel">
+      <div class="panel-header">
+        <div class="console-title-group">
+          <span class="terminal-dots"><span></span><span></span><span></span></span>
+          <h2 class="panel-title">Raw SSH Auth Log Stream (auth.log)</h2>
+        </div>
+        <div class="console-controls">
+          <label><input type="checkbox" id="checkOnlyFailures" checked> Show Failures Only</label>
+          <span class="log-counter" id="logCounterDisplay">Showing 119 entries</span>
+        </div>
+      </div>
+      <div class="console-screen" id="logStreamScreen">
+        <!-- Dynamically populated log lines -->
+      </div>
+    </section>
+
+    <!-- Deep-Dive / Interviewer Educational Guide -->
+    <section class="panel education-panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Cybersecurity Architectural Deep Dive</h2>
+      </div>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <h3>1. Regex Parsing Architecture</h3>
+          <p>Extracts timestamp, targeted account, and IPv4 without third-party dependencies:</p>
+          <pre><code>^([A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})\s+\S+\s+sshd\[\d+\]:\s+Failed password for\s+(?:invalid user\s+)?(\S+)\s+from\s+([0-9]{1,3}(?:\.[0-9]{1,3}){3})</code></pre>
+        </div>
+        <div class="edu-card">
+          <h3>2. Sliding Window vs Total Count</h3>
+          <p>A legitimate user with 5 typos over a month has 5 failures total. The <strong>5-minute sliding window</strong> evaluates velocity: detecting 5+ failures within 300 seconds prevents false alarms on normal staff.</p>
+        </div>
+        <div class="edu-card">
+          <h3>3. Production SIEM & Fail2ban Analogy</h3>
+          <p>This Python tool mirrors how production SIEMs (Splunk, Elastic) and HIPS daemons (Fail2ban) ingest syslog events, apply velocity rules, and output actionable triage feeds.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Built with ❤️ using Python standard library & Modern Web Standards | Open Source Cybersecurity Portfolio Project</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
