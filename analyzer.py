@@ -219,29 +219,40 @@ def display_terminal_summary(total_lines: int, total_failures: int, suspects: li
 def main():
     """
     Main execution pipeline:
-      1. Parse log file.
-      2. Evaluate each IP against the 5-in-5-minute brute-force threshold.
-      3. Classify severity.
-      4. Export CSV and print terminal summary.
+      1. Parse CLI arguments (allowing any file path and custom thresholds).
+      2. Ingest and parse log file.
+      3. Evaluate each IP against sliding window brute-force rules.
+      4. Classify severity (Low, Medium, High, Critical).
+      5. Export CSV and print terminal summary.
     """
-    log_file = DEFAULT_LOG_FILE if len(sys.argv) < 2 else sys.argv[1]
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="SSH Brute-Force Log Analyzer - Ingest any Linux auth log and detect brute-force activity."
+    )
+    parser.add_argument("logfile", nargs="?", default=DEFAULT_LOG_FILE, help="Path to any auth.log or syslog file")
+    parser.add_argument("-t", "--threshold", type=int, default=FAILURE_THRESHOLD, help="Failure count threshold (default: 5)")
+    parser.add_argument("-w", "--window", type=int, default=WINDOW_MINUTES, help="Sliding window in minutes (default: 5)")
+    parser.add_argument("-o", "--output", default=DEFAULT_REPORT_FILE, help="Output CSV path (default: report.csv)")
+    parser.add_argument("--include-low", "--all", action="store_true", help="Include Low severity IPs (1-4 failures) in report")
+
+    args = parser.parse_args()
 
     # Step 1: Scan and parse the logs
-    total_lines, failed_by_ip = parse_log_file(log_file)
+    total_lines, failed_by_ip = parse_log_file(args.logfile)
     total_failed_events = sum(len(events) for events in failed_by_ip.values())
 
     suspects = []
 
     # Step 2: Analyze each IP address
     for ip, events in failed_by_ip.items():
-        # Sort chronologically by datetime
         events.sort(key=lambda e: e["timestamp"])
         timestamps = [e["timestamp"] for e in events]
 
-        # Check for brute-force burst (5+ failures in any 5-minute window)
-        max_burst = detect_brute_force(timestamps, window_minutes=WINDOW_MINUTES)
+        max_burst = detect_brute_force(timestamps, window_minutes=args.window)
 
-        if max_burst >= FAILURE_THRESHOLD:
+        # Flag if burst exceeds threshold, or if user requested --include-low / --all
+        if max_burst >= args.threshold or args.include_low:
             total_attempts = len(events)
             severity = calculate_severity(total_attempts)
 
@@ -254,12 +265,12 @@ def main():
                 "severity": severity
             })
 
-    # Sort suspects by severity order (Critical -> High -> Medium) then by attempts descending
+    # Sort suspects by severity order (Critical -> High -> Medium -> Low)
     severity_rank = {"Critical": 3, "High": 2, "Medium": 1, "Low": 0}
     suspects.sort(key=lambda s: (severity_rank.get(s["severity"], 0), s["failed_attempts"]), reverse=True)
 
-    # Step 3: Write report.csv
-    write_csv_report(suspects, DEFAULT_REPORT_FILE)
+    # Step 3: Write CSV report
+    write_csv_report(suspects, args.output)
 
     # Step 4: Display terminal summary
     display_terminal_summary(total_lines, total_failed_events, suspects)

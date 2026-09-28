@@ -322,6 +322,56 @@ body {
   color: var(--accent-green);
 }
 
+.pill.pill-low.active {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--accent-blue);
+  color: #93c5fd;
+}
+
+/* Upload Dropzone */
+.dropzone {
+  border: 2px dashed rgba(0, 242, 254, 0.35);
+  background: rgba(6, 9, 15, 0.6);
+  border-radius: 12px;
+  padding: 2.25rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.dropzone:hover, .dropzone.dragover {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.05);
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.2);
+}
+
+.dropzone-icon {
+  font-size: 2.5rem;
+}
+
+.dropzone-text strong {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.dropzone-text span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.dropzone code {
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.1);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
 .control-actions {
   display: flex;
   gap: 0.75rem;
@@ -423,6 +473,12 @@ body {
   background: rgba(16, 185, 129, 0.2);
   color: #6ee7b7;
   border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.badge-low {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.4);
 }
 
 .target-badge {

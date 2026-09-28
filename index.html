@@ -72,6 +72,25 @@
       </div>
     </section>
 
+    <!-- Drag & Drop Log File Upload Area -->
+    <section class="panel upload-panel">
+      <div class="panel-header">
+        <h2 class="panel-title">📁 Ingest & Inspect Any Raw Linux Auth Log</h2>
+        <span class="badge badge-success" id="activeLogBadge">Currently Active: Simulated auth.log</span>
+      </div>
+      <div class="panel-body">
+        <div class="dropzone" id="logDropzone">
+          <input type="file" id="fileInput" accept=".log,.txt,*" style="display: none;">
+          <div class="dropzone-icon">📥</div>
+          <div class="dropzone-text">
+            <strong>Drop any raw <code>auth.log</code> or <code>.log</code> / <code>.txt</code> file from anywhere here</strong>
+            <span>or click to browse your computer</span>
+          </div>
+          <button type="button" class="btn btn-primary" id="btnBrowseFile">Select Log File</button>
+        </div>
+      </div>
+    </section>
+
     <!-- Controls & Threshold Tuning -->
     <section class="panel control-panel">
       <div class="panel-header">
@@ -82,7 +101,7 @@
         <div class="control-item">
           <label for="inputThreshold">Failure Threshold (Attacks):</label>
           <div class="input-stepper">
-            <input type="number" id="inputThreshold" value="5" min="2" max="25">
+            <input type="number" id="inputThreshold" value="5" min="1" max="50">
             <span class="control-hint">Minimum failures before flagging IP</span>
           </div>
         </div>
@@ -98,19 +117,20 @@
         <div class="control-item">
           <label>Filter by Severity:</label>
           <div class="filter-pills" id="severityFilterGroup">
-            <button class="pill active" data-severity="ALL">All (3)</button>
-            <button class="pill pill-critical" data-severity="Critical">Critical</button>
-            <button class="pill pill-high" data-severity="High">High</button>
-            <button class="pill pill-medium" data-severity="Medium">Medium</button>
+            <button class="pill active" data-severity="ALL">All Flagged</button>
+            <button class="pill pill-critical" data-severity="Critical">Critical (≥20)</button>
+            <button class="pill pill-high" data-severity="High">High (10-19)</button>
+            <button class="pill pill-medium" data-severity="Medium">Medium (5-9)</button>
+            <button class="pill pill-low" data-severity="Low">Low (1-4)</button>
           </div>
         </div>
 
         <div class="control-actions">
           <button class="btn btn-secondary" id="btnRegenerateLogs">
-            🔄 Regenerate Random Logs
+            🔄 Use Demo Logs
           </button>
           <button class="btn btn-accent" id="btnRunAnalysis">
-            ▶ Re-Analyze Logs
+            ▶ Re-Analyze
           </button>
         </div>
       </div>

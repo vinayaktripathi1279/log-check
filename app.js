@@ -1,10 +1,15 @@
 /**
  * app.js - CyberGuard Web Demo Engine
- * Implements synthetic log generation, regex parsing, sliding window brute-force detection,
- * and dynamic CSV export in the browser.
+ * Implements:
+ *   - Raw log file upload (drag & drop or file picker) from anywhere
+ *   - Synthetic log generator for demonstration
+ *   - Regex parsing of SSH authentication lines
+ *   - Sliding window brute-force detection
+ *   - Low, Medium, High, and Critical severity categorization
+ *   - CSV export directly in the browser
  */
 
-// Preset Attackers & Legitimate IPs
+// Preset Attackers & Legitimate IPs for the synthetic generator
 const ATTACKERS = [
   { ip: "203.0.113.45", attempts: 25, burstMinutes: 3, label: "Critical Attacker" },
   { ip: "198.51.100.89", attempts: 14, burstMinutes: 2.5, label: "High Attacker" },
@@ -19,13 +24,19 @@ const LEGIT_IPS = [
 const VALID_USERS = ["vinay", "ubuntu", "devops", "deploy", "alice", "bob"];
 const TARGET_USERS = ["root", "admin", "test", "oracle", "guest", "postgres", "user"];
 
-// Regular expression matching syslog SSH failure lines
-const SSH_FAILED_REGEX = /^([A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})\s+\S+\s+sshd\[\d+\]:\s+Failed password for\s+(?:invalid user\s+)?(\S+)\s+from\s+([0-9]{1,3}(?:\.[0-9]{1,3}){3})/;
+// Regex matching SSH authentication failure lines
+// Matches both standard syslog: "Oct 24 10:14:02 secure-srv01 sshd[14205]: Failed password for root from 203.0.113.45 port 42102 ssh2"
+// and optional ISO timestamps or missing hostname
+const SSH_FAILED_REGEX = /([A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2}|\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?).*?sshd\[\d+\]:\s+Failed password for\s+(?:invalid user\s+)?(\S+)\s+from\s+([0-9]{1,3}(?:\.[0-9]{1,3}){3})/;
+
+// Regex matching SSH success lines (for stats)
+const SSH_SUCCESS_REGEX = /([A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2}|\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?).*?sshd\[\d+\]:\s+Accepted (?:password|publickey) for\s+(\S+)\s+from\s+([0-9]{1,3}(?:\.[0-9]{1,3}){3})/;
 
 // Application State
 let currentLogEvents = [];
 let analyzedSuspects = [];
 let currentFilterSeverity = "ALL";
+let currentFileName = "Simulated auth.log";
 
 // Helper: Format Month Day HH:MM:SS
 function formatSyslogTimestamp(date) {
@@ -38,10 +49,29 @@ function formatSyslogTimestamp(date) {
   return `${m} ${d} ${h}:${min}:${s}`;
 }
 
-// Generate Realistic In-Memory Log Events
-function generateLogs() {
+// Parse timestamp from raw string (syslog or ISO)
+function parseTimestamp(tsStr) {
+  const currentYear = new Date().getFullYear();
+  // Try standard syslog: 'Sep 28 10:14:02'
+  const syslogMatch = tsStr.match(/^([A-Z][a-z]{2})\s+(\d+)\s+(\d{2}):(\d{2}):(\d{2})$/);
+  if (syslogMatch) {
+    const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+    const month = months[syslogMatch[1]];
+    const day = parseInt(syslogMatch[2], 10);
+    const hour = parseInt(syslogMatch[3], 10);
+    const min = parseInt(syslogMatch[4], 10);
+    const sec = parseInt(syslogMatch[5], 10);
+    return new Date(currentYear, month, day, hour, min, sec);
+  }
+  // Try ISO or generic date
+  const parsed = new Date(tsStr);
+  return isNaN(parsed.getTime()) ? new Date() : parsed;
+}
+
+// Generate Realistic In-Memory Log Events for Demo
+function generateSyntheticLogs() {
   const events = [];
-  const baseTime = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
+  const baseTime = new Date(Date.now() - 24 * 60 * 60 * 1000);
   const hostname = "secure-srv01";
   let pidCounter = 12000;
 
@@ -49,7 +79,7 @@ function generateLogs() {
   ATTACKERS.forEach((att, idx) => {
     let t = new Date(baseTime.getTime() + (idx * 3 + 2) * 60 * 60 * 1000);
     for (let i = 0; i < att.attempts; i++) {
-      t = new Date(t.getTime() + (Math.floor(Math.random() * 8) + 3) * 1000); // 3-10 sec gap
+      t = new Date(t.getTime() + (Math.floor(Math.random() * 8) + 3) * 1000);
       const user = TARGET_USERS[Math.floor(Math.random() * TARGET_USERS.length)];
       const port = Math.floor(Math.random() * 30000) + 32000;
       const pid = ++pidCounter;
@@ -81,7 +111,6 @@ function generateLogs() {
 
     const roll = Math.random();
     if (roll < 0.45) {
-      // Accepted public key
       events.push({
         timestamp: new Date(normalTime),
         rawTs: formatSyslogTimestamp(normalTime),
@@ -92,7 +121,6 @@ function generateLogs() {
         user: user
       });
     } else if (roll < 0.8) {
-      // Accepted password
       events.push({
         timestamp: new Date(normalTime),
         rawTs: formatSyslogTimestamp(normalTime),
@@ -103,7 +131,6 @@ function generateLogs() {
         user: user
       });
     } else {
-      // Single typo then success
       events.push({
         timestamp: new Date(normalTime),
         rawTs: formatSyslogTimestamp(normalTime),
@@ -126,12 +153,71 @@ function generateLogs() {
     }
   }
 
-  // Chronological sort
   events.sort((a, b) => a.timestamp - b.timestamp);
   return events;
 }
 
-// Sliding Window Detection Algorithm (Identical to analyzer.py)
+// Ingest and Parse any Raw User-Uploaded File
+function parseRawLogText(content, fileName) {
+  const lines = content.split(/\r?\n/);
+  const events = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const failMatch = line.match(SSH_FAILED_REGEX);
+    if (failMatch) {
+      const rawTs = failMatch[1];
+      const user = failMatch[2];
+      const ip = failMatch[3];
+      events.push({
+        timestamp: parseTimestamp(rawTs),
+        rawTs: rawTs,
+        line: line,
+        type: "failed",
+        isAttacker: false, // will be evaluated by velocity
+        ip: ip,
+        user: user
+      });
+      continue;
+    }
+
+    const successMatch = line.match(SSH_SUCCESS_REGEX);
+    if (successMatch) {
+      const rawTs = successMatch[1];
+      const user = successMatch[2];
+      const ip = successMatch[3];
+      events.push({
+        timestamp: parseTimestamp(rawTs),
+        rawTs: rawTs,
+        line: line,
+        type: "success",
+        isAttacker: false,
+        ip: ip,
+        user: user
+      });
+      continue;
+    }
+
+    // Other syslog line (e.g. session closed, disconnects, cron)
+    events.push({
+      timestamp: new Date(),
+      rawTs: "syslog",
+      line: line,
+      type: "other",
+      isAttacker: false,
+      ip: null,
+      user: null
+    });
+  }
+
+  currentFileName = fileName || "uploaded-auth.log";
+  document.getElementById("activeLogBadge").textContent = `Active: ${currentFileName} (${events.length} lines)`;
+  return events;
+}
+
+// Sliding Window Detection Algorithm
 function detectBruteForce(timestamps, windowMinutes) {
   if (!timestamps.length) return 0;
   let maxBurst = 0;
@@ -152,7 +238,7 @@ function detectBruteForce(timestamps, windowMinutes) {
   return maxBurst;
 }
 
-// Severity Calculation
+// Severity Calculation: Critical, High, Medium, Low
 function calculateSeverity(failures) {
   if (failures >= 20) return "Critical";
   if (failures >= 10) return "High";
@@ -169,7 +255,7 @@ function runAnalysis() {
   let totalFailures = 0;
 
   currentLogEvents.forEach(evt => {
-    if (evt.type === "failed") {
+    if (evt.type === "failed" && evt.ip) {
       totalFailures++;
       if (!failedByIp[evt.ip]) failedByIp[evt.ip] = [];
       failedByIp[evt.ip].push(evt);
@@ -183,7 +269,8 @@ function runAnalysis() {
     const timestamps = events.map(e => e.timestamp);
     const peakBurst = detectBruteForce(timestamps, windowMinutes);
 
-    if (peakBurst >= threshold) {
+    // If threshold is lowered, or burst exceeds threshold, or filter is Low
+    if (peakBurst >= threshold || threshold <= 1) {
       const targets = [...new Set(events.map(e => e.user))];
       suspects.push({
         ip: ip,
@@ -214,13 +301,13 @@ function runAnalysis() {
 function updateKpis(totalEvents, totalFailures, suspects) {
   document.getElementById("kpiTotalEvents").textContent = totalEvents;
   document.getElementById("kpiFailedLogins").textContent = totalFailures;
-  const pct = ((totalFailures / totalEvents) * 100).toFixed(1);
+  const pct = totalEvents > 0 ? ((totalFailures / totalEvents) * 100).toFixed(1) : 0;
   document.getElementById("kpiFailedPct").textContent = `${pct}% of total volume`;
   document.getElementById("kpiFlaggedIps").textContent = suspects.length;
 
   const highestBurst = suspects.length ? Math.max(...suspects.map(s => s.peakBurst)) : 0;
   const highestIp = suspects.length ? suspects[0].ip : "None";
-  document.getElementById("kpiPeakBurst").innerHTML = `${highestBurst} <span class="unit">/ 5m</span>`;
+  document.getElementById("kpiPeakBurst").innerHTML = `${highestBurst} <span class="unit">/ window</span>`;
   document.querySelector(".kpi-card.critical .kpi-sub").textContent = `Top: ${highestIp}`;
 }
 
@@ -236,7 +323,7 @@ function renderSuspectsTable() {
   document.getElementById("tableRecordCount").textContent = `Showing ${filtered.length} Flagged IPs`;
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-muted)">No suspects match current threshold or filter.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem; color: var(--text-muted)">No suspects match the current threshold (${document.getElementById("inputThreshold").value}) or filter (${currentFilterSeverity}).</td></tr>`;
     return;
   }
 
@@ -267,6 +354,7 @@ function updateIntelMetrics(suspects) {
   const critical = suspects.filter(s => s.severity === "Critical").length;
   const high = suspects.filter(s => s.severity === "High").length;
   const medium = suspects.filter(s => s.severity === "Medium").length;
+  const low = suspects.filter(s => s.severity === "Low").length;
 
   document.getElementById("countCritical").textContent = `${critical} IP (${Math.round((critical / total) * 100)}%)`;
   document.getElementById("countHigh").textContent = `${high} IP (${Math.round((high / total) * 100)}%)`;
@@ -285,8 +373,8 @@ function renderConsoleStream() {
 
   document.getElementById("logCounterDisplay").textContent = `Showing ${displayList.length} entries`;
 
-  // Render recent 150 items to keep DOM performant
-  displayList.slice(-150).forEach(evt => {
+  // Render recent 200 items to keep DOM performant
+  displayList.slice(-200).forEach(evt => {
     const div = document.createElement("div");
     let cls = "log-line";
     if (evt.isAttacker) cls += " attacker";
@@ -320,7 +408,52 @@ function exportCsv() {
   document.body.removeChild(link);
 }
 
-// Event Listeners
+// Handle File Processing
+function handleFileUpload(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const content = e.target.result;
+    currentLogEvents = parseRawLogText(content, file.name);
+    runAnalysis();
+  };
+  reader.readAsText(file);
+}
+
+// Drag and Drop Event Listeners
+const dropzone = document.getElementById("logDropzone");
+const fileInput = document.getElementById("fileInput");
+const btnBrowse = document.getElementById("btnBrowseFile");
+
+btnBrowse.addEventListener("click", () => fileInput.click());
+dropzone.addEventListener("click", (e) => {
+  if (e.target !== btnBrowse) fileInput.click();
+});
+
+fileInput.addEventListener("change", (e) => {
+  if (e.target.files && e.target.files[0]) {
+    handleFileUpload(e.target.files[0]);
+  }
+});
+
+dropzone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropzone.classList.add("dragover");
+});
+
+dropzone.addEventListener("dragleave", () => {
+  dropzone.classList.remove("dragover");
+});
+
+dropzone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropzone.classList.remove("dragover");
+  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    handleFileUpload(e.dataTransfer.files[0]);
+  }
+});
+
+// Event Listeners for Controls
 document.getElementById("btnExportCsv").addEventListener("click", exportCsv);
 document.getElementById("btnRunAnalysis").addEventListener("click", runAnalysis);
 document.getElementById("inputThreshold").addEventListener("input", runAnalysis);
@@ -328,7 +461,9 @@ document.getElementById("inputWindow").addEventListener("input", runAnalysis);
 document.getElementById("checkOnlyFailures").addEventListener("change", renderConsoleStream);
 
 document.getElementById("btnRegenerateLogs").addEventListener("click", () => {
-  currentLogEvents = generateLogs();
+  currentFileName = "Simulated auth.log";
+  document.getElementById("activeLogBadge").textContent = `Currently Active: Simulated auth.log`;
+  currentLogEvents = generateSyntheticLogs();
   runAnalysis();
 });
 
@@ -341,6 +476,6 @@ document.querySelectorAll("#severityFilterGroup .pill").forEach(btn => {
   });
 });
 
-// Initialization
-currentLogEvents = generateLogs();
+// Initial Run with Synthetic Demo Logs
+currentLogEvents = generateSyntheticLogs();
 runAnalysis();
