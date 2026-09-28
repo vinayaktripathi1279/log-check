@@ -884,10 +884,16 @@ safeOn("btnExportCsv", "click", () => exportCsv());
 safeOn("btnSaveToAuditHub", "click", saveCurrentToAuditHub);
 safeOn("btnRunAnalysis", "click", () => {
   runAnalysis(false);
-  recordAuditLog("THREAT_ANALYSIS", "sliding_window", "SUCCESS", `Evaluated ${currentLogEvents.length} log events`);
+  recordAuditLog("THREAT_ANALYSIS", "sliding_window", "SUCCESS", `Evaluated ${currentLogEvents.length} log events, flagged ${analyzedSuspects.length} threats`);
 });
 safeOn("inputThreshold", "input", () => runAnalysis(false));
+safeOn("inputThreshold", "change", (e) => {
+  recordAuditLog("CONFIG_CHANGE", "threshold", "SUCCESS", `Set failure threshold to ${e.target.value}`);
+});
 safeOn("inputWindow", "input", () => runAnalysis(false));
+safeOn("inputWindow", "change", (e) => {
+  recordAuditLog("CONFIG_CHANGE", "sliding_window", "SUCCESS", `Set sliding window to ${e.target.value} minutes`);
+});
 safeOn("checkOnlyFailures", "change", renderConsoleStream);
 
 document.querySelectorAll("#severityFilterGroup .pill").forEach(btn => {
@@ -896,6 +902,7 @@ document.querySelectorAll("#severityFilterGroup .pill").forEach(btn => {
     e.target.classList.add("active");
     currentFilterSeverity = e.target.dataset.severity;
     renderSuspectsTable();
+    recordAuditLog("FILTER_APPLY", "severity_view", "SUCCESS", `Filtered suspect table by ${currentFilterSeverity}`);
   });
 });
 
