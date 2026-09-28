@@ -305,6 +305,65 @@ body {
   color: var(--text-secondary);
 }
 
+.custom-signin-box {
+  background: #06090f;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.custom-signin-box label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.custom-signin-inputs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.custom-signin-inputs input {
+  flex: 1;
+  background: #111827;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.audit-trail-explainer {
+  background: rgba(0, 242, 254, 0.05);
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  border-radius: 8px;
+  padding: 0.85rem;
+  font-size: 0.825rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.audit-trail-explainer code {
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.1);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+
+.user-profile-badge {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.user-profile-badge:hover {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: var(--accent-cyan);
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;

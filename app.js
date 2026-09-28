@@ -5,6 +5,7 @@
  *   - Sliding window brute-force detection
  *   - Role-Based Access Control (Admin vs SOC Analyst)
  *   - Centralized Admin Security Audit Hub with cross-team inspection & CSV export
+ *   - Live System Audit Trail logging (system_audit.log)
  */
 
 // Users & Roles
@@ -77,7 +78,7 @@ Sep 28 11:35:10 k8s-ingress sshd[4410]: Failed password for admin from 192.0.2.1
   },
   {
     id: "AUD-2026-0889",
-    submitter: "Intern Analyst (Alex)",
+    submitter: "Alex Chen (Intern)",
     submitterId: "alex_intern",
     server: "staging-api-server",
     timestamp: "2026-09-27 18:22 UTC",
@@ -122,6 +123,46 @@ function saveAuditReports() {
   try {
     localStorage.setItem("cyberguard_audit_reports", JSON.stringify(auditReports));
   } catch (e) {}
+}
+
+// System Audit Trail (system_audit.log)
+let systemAuditLogs = [];
+const DEFAULT_SYSTEM_AUDIT_TRAIL = [
+  `2026-09-28 14:10:05 UTC [AUDIT] USER="sarah_soc" ROLE="Senior SOC Analyst" ACTION="USER_LOGIN" RESOURCE="session_auth" STATUS="SUCCESS" DETAILS="Logged in from IP 192.168.1.42"`,
+  `2026-09-28 14:12:30 UTC [AUDIT] USER="sarah_soc" ROLE="Senior SOC Analyst" ACTION="FILE_INGEST" RESOURCE="production-bastion.log" STATUS="SUCCESS" DETAILS="Ingested 49 lines, 42 failures"`,
+  `2026-09-28 14:13:12 UTC [WARN]  USER="sarah_soc" ROLE="Senior SOC Analyst" ACTION="THREAT_ANALYSIS" RESOURCE="5_in_5m_rule" STATUS="ALERT" DETAILS="Detected 3 brute-force attackers (Peak: Critical)"`,
+  `2026-09-28 14:15:20 UTC [AUDIT] USER="sarah_soc" ROLE="Senior SOC Analyst" ACTION="AUDIT_SUBMIT" RESOURCE="AUD-2026-0891" STATUS="SUCCESS" DETAILS="Created audit report for server: production-bastion-01"`,
+  `2026-09-28 14:20:00 UTC [AUDIT] USER="rahul_devops" ROLE="Cloud Infrastructure Lead" ACTION="USER_LOGIN" RESOURCE="session_auth" STATUS="SUCCESS" DETAILS="Logged in from IP 10.0.0.12"`,
+  `2026-09-28 14:22:15 UTC [AUDIT] USER="rahul_devops" ROLE="Cloud Infrastructure Lead" ACTION="FILE_INGEST" RESOURCE="k8s-ingress.log" STATUS="SUCCESS" DETAILS="Ingested 180 lines"`,
+  `2026-09-28 14:24:45 UTC [AUDIT] USER="rahul_devops" ROLE="Cloud Infrastructure Lead" ACTION="AUDIT_SUBMIT" RESOURCE="AUD-2026-0890" STATUS="SUCCESS" DETAILS="Created audit report for cluster: k8s-ingress-cluster-ap-south"`,
+  `2026-09-28 14:30:10 UTC [AUDIT] USER="vinay_admin" ROLE="Super Administrator" ACTION="USER_LOGIN" RESOURCE="session_auth" STATUS="SUCCESS" DETAILS="Administrator session initialized"`,
+  `2026-09-28 14:32:05 UTC [AUDIT] USER="vinay_admin" ROLE="Super Administrator" ACTION="AUDIT_INSPECT" RESOURCE="AUD-2026-0891" STATUS="SUCCESS" DETAILS="Inspected Sarah Jenkins' raw log submission"`,
+  `2026-09-28 14:33:20 UTC [AUDIT] USER="vinay_admin" ROLE="Super Administrator" ACTION="REPORT_DOWNLOAD" RESOURCE="AUD-2026-0891.csv" STATUS="SUCCESS" DETAILS="Downloaded incident triage report CSV"`
+];
+
+try {
+  const storedLogs = localStorage.getItem("cyberguard_system_audit_logs");
+  systemAuditLogs = storedLogs ? JSON.parse(storedLogs) : [...DEFAULT_SYSTEM_AUDIT_TRAIL];
+} catch (e) {
+  systemAuditLogs = [...DEFAULT_SYSTEM_AUDIT_TRAIL];
+}
+
+function recordAuditLog(action, resource, status = "SUCCESS", details = "") {
+  const now = new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC";
+  const sev = status === "ALERT" ? "WARN " : "AUDIT";
+  const entry = `${now} [${sev}] USER="${currentUser.id}" ROLE="${currentUser.role}" ACTION="${action}" RESOURCE="${resource}" STATUS="${status}" DETAILS="${details}"`;
+  systemAuditLogs.unshift(entry);
+  try {
+    localStorage.setItem("cyberguard_system_audit_logs", JSON.stringify(systemAuditLogs));
+  } catch (e) {}
+  renderSystemAuditScreen();
+}
+
+function renderSystemAuditScreen() {
+  const screen = document.getElementById("systemAuditLogScreen");
+  if (screen) {
+    screen.textContent = systemAuditLogs.join("\n");
+  }
 }
 
 // Built-in Sample Attack Scenario
@@ -478,19 +519,39 @@ function exportCsv(data = analyzedSuspects, filename = "report.csv") {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+
+  recordAuditLog("REPORT_DOWNLOAD", filename, "SUCCESS", `Downloaded ${data.length} records`);
 }
 
 // ==========================================
-// ADMIN AUDIT HUB FUNCTIONALITY
+// ADMIN & MULTI-USER AUDIT HUB
 // ==========================================
 function renderAuditHub() {
   const tbody = document.getElementById("auditReportsTableBody");
   tbody.innerHTML = "";
 
-  document.getElementById("auditReportCounter").textContent = auditReports.length;
-  document.getElementById("auditStatsBadge").textContent = `Showing ${auditReports.length} Total Submissions`;
+  const titleEl = document.getElementById("auditHubTitle");
+  const descEl = document.getElementById("auditHubDesc");
+  const badgeEl = document.getElementById("auditStatsBadge");
 
-  let list = [...auditReports];
+  // Filter based on User Role: Admin sees all, Non-Admin sees only their own!
+  let accessibleReports = currentUser.isAdmin
+    ? [...auditReports]
+    : auditReports.filter(r => r.submitterId === currentUser.id);
+
+  if (currentUser.isAdmin) {
+    titleEl.textContent = "👑 Enterprise Security Audit Repository (All Teams)";
+    descEl.textContent = "Super Administrator View: You can inspect any analyst's submitted logs, review incidents, and download reports.";
+    badgeEl.textContent = `Admin Mode: ${accessibleReports.length} Total Submissions`;
+  } else {
+    titleEl.textContent = `📁 My Submitted Security Audits (${currentUser.name})`;
+    descEl.textContent = `Analyst View: Showing reports submitted by you. Sign in as Admin to review reports across all company servers.`;
+    badgeEl.textContent = `${accessibleReports.length} Personal Submissions`;
+  }
+
+  document.getElementById("auditReportCounter").textContent = accessibleReports.length;
+
+  let list = [...accessibleReports];
 
   // Search filter
   const query = document.getElementById("inputAuditSearch").value.toLowerCase().trim();
@@ -513,7 +574,10 @@ function renderAuditHub() {
   }
 
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 2rem; color: var(--text-muted)">No audit reports match your search criteria.</td></tr>`;
+    const emptyMsg = currentUser.isAdmin
+      ? "No audit reports match your search criteria."
+      : `You (${currentUser.name}) haven't submitted any audits yet. Run an analysis and click 'Save to Audit Hub', or sign in as Admin to see all reports.`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 2.5rem; color: var(--text-muted)">${emptyMsg}</td></tr>`;
     return;
   }
 
@@ -557,6 +621,7 @@ function renderAuditHub() {
       const rep = auditReports.find(r => r.id === btn.dataset.id);
       if (rep) {
         exportCsv(rep.suspects, `${rep.id}_${rep.server}_report.csv`);
+        recordAuditLog("REPORT_DOWNLOAD", `${rep.id}.csv`, "SUCCESS", `Exported audit ${rep.id} submitted by ${rep.submitter}`);
       }
     });
   });
@@ -570,14 +635,14 @@ function inspectAuditReport(reportId) {
   const drawer = document.getElementById("auditDetailDrawer");
   drawer.style.display = "block";
 
-  document.getElementById("drawerTitle").textContent = `Inspecting Audit Report: ${rep.id} (${rep.server})`;
+  document.getElementById("drawerTitle").textContent = `Inspecting Audit: ${rep.id} (${rep.server})`;
   document.getElementById("drawerSubmitter").textContent = `${rep.submitter} (${rep.submitterId})`;
   document.getElementById("drawerServer").textContent = rep.server;
   document.getElementById("drawerTime").textContent = rep.timestamp;
   document.getElementById("drawerStatus").textContent = rep.status;
-
   document.getElementById("drawerLogContent").textContent = rep.rawLog;
 
+  recordAuditLog("AUDIT_INSPECT", rep.id, "SUCCESS", `Inspected raw logs submitted by ${rep.submitter} for ${rep.server}`);
   drawer.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -588,7 +653,6 @@ function saveCurrentToAuditHub() {
   }
 
   const serverName = prompt("Enter Server / Cluster Identifier for this Audit Report:", "prod-bastion-gateway") || "unnamed-server";
-
   const newId = `AUD-2026-0${Math.floor(100 + Math.random() * 900)}`;
   const peakSev = analyzedSuspects.length ? analyzedSuspects[0].severity : "Low";
 
@@ -615,49 +679,65 @@ function saveCurrentToAuditHub() {
 
   auditReports.unshift(newReport);
   saveAuditReports();
-  renderAuditHub();
 
-  showNotification(`✅ Successfully saved and submitted report ${newId} to Organization Audit Hub!`, "success");
+  recordAuditLog("AUDIT_SUBMIT", newId, "SUCCESS", `Submitted new security audit for ${serverName} with ${analyzedSuspects.length} threats`);
+
+  showNotification(`✅ Successfully saved and submitted report ${newId} to Audit Hub!`, "success");
   switchToTab("AUDIT_HUB");
 }
 
 function switchToTab(tabName) {
   const viewAnalyzer = document.getElementById("viewAnalyzer");
   const viewAuditHub = document.getElementById("viewAuditHub");
+  const viewAuditTrail = document.getElementById("viewAuditTrail");
+
   const btnAnalyzer = document.getElementById("tabBtnAnalyzer");
   const btnAuditHub = document.getElementById("tabBtnAuditHub");
+  const btnAuditTrail = document.getElementById("tabBtnAuditTrail");
+
+  [viewAnalyzer, viewAuditHub, viewAuditTrail].forEach(el => el.style.display = "none");
+  [btnAnalyzer, btnAuditHub, btnAuditTrail].forEach(el => el.classList.remove("active"));
 
   if (tabName === "ANALYZER") {
     viewAnalyzer.style.display = "flex";
-    viewAuditHub.style.display = "none";
     btnAnalyzer.classList.add("active");
-    btnAuditHub.classList.remove("active");
-  } else {
-    viewAnalyzer.style.display = "none";
+  } else if (tabName === "AUDIT_HUB") {
     viewAuditHub.style.display = "flex";
-    btnAnalyzer.classList.remove("active");
     btnAuditHub.classList.add("active");
     renderAuditHub();
+  } else if (tabName === "AUDIT_TRAIL") {
+    viewAuditTrail.style.display = "flex";
+    btnAuditTrail.classList.add("active");
+    renderSystemAuditScreen();
   }
 }
 
-function setCurrentUser(userKey) {
-  currentUser = USERS[userKey] || USERS["vinay_admin"];
+function setCurrentUser(userKey, customObj = null) {
+  if (customObj) {
+    currentUser = customObj;
+  } else {
+    currentUser = USERS[userKey] || USERS["vinay_admin"];
+  }
+
   document.getElementById("userAvatar").textContent = currentUser.avatar;
   document.getElementById("displayUserName").textContent = currentUser.name;
-  document.getElementById("displayUserRole").textContent = currentUser.role;
+  document.getElementById("displayUserRole").textContent = currentUser.role + " ▾";
 
   document.querySelectorAll(".role-card").forEach(c => {
-    c.classList.toggle("active", c.dataset.user === userKey);
+    c.classList.toggle("active", c.dataset.user === currentUser.id);
   });
 
   document.getElementById("roleModal").classList.remove("active");
 
+  recordAuditLog("USER_LOGIN", "session_auth", "SUCCESS", `User ${currentUser.name} signed in as ${currentUser.role}`);
+
   if (currentUser.isAdmin) {
     showNotification(`Logged in as Administrator (${currentUser.name}). Full audit access granted.`, "success");
   } else {
-    showNotification(`Logged in as ${currentUser.name} (${currentUser.role}).`, "success");
+    showNotification(`Logged in as ${currentUser.name} (${currentUser.role}). Viewing your audits.`, "success");
   }
+
+  renderAuditHub();
 }
 
 // File upload handler
@@ -668,6 +748,7 @@ function handleFileUpload(file) {
     const content = e.target.result;
     currentLogEvents = parseRawLogText(content, file.name);
     runAnalysis(true);
+    recordAuditLog("FILE_INGEST", file.name, "SUCCESS", `Parsed ${currentLogEvents.length} lines`);
     showNotification(`Ingested '${file.name}' (${currentLogEvents.length} log lines). Flagged ${analyzedSuspects.length} brute-force attackers!`, "success");
   };
   reader.readAsText(file);
@@ -708,24 +789,28 @@ fileInput.addEventListener("change", (e) => {
 document.getElementById("btnLoadSampleAttack").addEventListener("click", () => {
   currentLogEvents = parseRawLogText(SAMPLE_ATTACK_TEXT, "sample_attack.log");
   runAnalysis(true);
+  recordAuditLog("PRESET_LOAD", "sample_attack.log", "SUCCESS", "Loaded 3-attacker scenario");
   showNotification("Loaded 'sample_attack.log': 3 external attackers detected!", "success");
 });
 
 document.getElementById("btnLoadSimulatedLog").addEventListener("click", () => {
-  // Generate on the fly
   let generatedText = "";
   for (let i = 0; i < 200; i++) {
     generatedText += `Sep 28 12:00:${String(i%60).padStart(2, "0")} server sshd[${10000+i}]: Failed password for root from 203.0.113.45 port ${30000+i} ssh2\n`;
   }
   currentLogEvents = parseRawLogText(generatedText, "enterprise_simulated.log");
   runAnalysis(true);
+  recordAuditLog("PRESET_LOAD", "enterprise_simulated.log", "SUCCESS", "Loaded 200-line simulated enterprise dataset");
   showNotification("Loaded enterprise simulated dataset.", "success");
 });
 
 // Analysis Controls
 document.getElementById("btnExportCsv").addEventListener("click", () => exportCsv());
 document.getElementById("btnSaveToAuditHub").addEventListener("click", saveCurrentToAuditHub);
-document.getElementById("btnRunAnalysis").addEventListener("click", () => runAnalysis(false));
+document.getElementById("btnRunAnalysis").addEventListener("click", () => {
+  runAnalysis(false);
+  recordAuditLog("THREAT_ANALYSIS", "sliding_window", "SUCCESS", `Evaluated ${currentLogEvents.length} log events`);
+});
 document.getElementById("inputThreshold").addEventListener("input", () => runAnalysis(false));
 document.getElementById("inputWindow").addEventListener("input", () => runAnalysis(false));
 document.getElementById("checkOnlyFailures").addEventListener("change", renderConsoleStream);
@@ -742,6 +827,7 @@ document.querySelectorAll("#severityFilterGroup .pill").forEach(btn => {
 // Navigation Tabs
 document.getElementById("tabBtnAnalyzer").addEventListener("click", () => switchToTab("ANALYZER"));
 document.getElementById("tabBtnAuditHub").addEventListener("click", () => switchToTab("AUDIT_HUB"));
+document.getElementById("tabBtnAuditTrail").addEventListener("click", () => switchToTab("AUDIT_TRAIL"));
 
 // Modal & User switching
 document.getElementById("btnSwitchRole").addEventListener("click", () => {
@@ -752,6 +838,23 @@ document.getElementById("btnCloseModal").addEventListener("click", () => {
 });
 document.querySelectorAll(".role-card").forEach(card => {
   card.addEventListener("click", () => setCurrentUser(card.dataset.user));
+});
+
+document.getElementById("btnSignInCustom").addEventListener("click", () => {
+  const val = document.getElementById("inputCustomUser").value.trim();
+  if (!val) {
+    alert("Please enter a username or analyst ID!");
+    return;
+  }
+  const customUser = {
+    id: val.toLowerCase().replace(/\s+/g, "_"),
+    name: val,
+    role: "Security Analyst",
+    avatar: val.charAt(0).toUpperCase(),
+    isAdmin: false
+  };
+  setCurrentUser(customUser.id, customUser);
+  document.getElementById("inputCustomUser").value = "";
 });
 
 // Audit Hub controls
@@ -787,11 +890,25 @@ document.getElementById("btnLoadAuditIntoAnalyzer").addEventListener("click", ()
     currentLogEvents = parseRawLogText(currentInspectedAudit.rawLog, `${currentInspectedAudit.server}.log`);
     switchToTab("ANALYZER");
     runAnalysis(true);
+    recordAuditLog("AUDIT_RELOAD", currentInspectedAudit.id, "SUCCESS", `Loaded logs into analyzer`);
     showNotification(`Loaded '${currentInspectedAudit.server}' logs from audit ${currentInspectedAudit.id} into Analyzer!`, "success");
   }
+});
+
+document.getElementById("btnDownloadSystemAuditLog").addEventListener("click", () => {
+  const blob = new Blob([systemAuditLogs.join("\n")], { type: "text/plain;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", "system_audit.log");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  recordAuditLog("AUDIT_EXPORT", "system_audit.log", "SUCCESS", "Exported system audit trail");
 });
 
 // Initial startup
 currentLogEvents = parseRawLogText(SAMPLE_ATTACK_TEXT, "sample_attack.log");
 runAnalysis(false);
 renderAuditHub();
+renderSystemAuditScreen();

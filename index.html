@@ -20,33 +20,36 @@
           <h1 class="brand-title">CYBERGUARD // SOC SUITE</h1>
           <span class="badge badge-enterprise">ENTERPRISE AUDIT</span>
         </div>
-        <p class="brand-subtitle">Linux SSH Threat Detection & Organization-Wide Audit Repository</p>
+        <p class="brand-subtitle">Linux Threat Detection & Multi-User Audit Log Trail</p>
       </div>
     </div>
 
-    <!-- Center Tab Switcher: Analyzer vs Admin Audit Hub -->
+    <!-- Center Tab Switcher: Analyzer vs Audit Reports vs System Audit Trail -->
     <div class="nav-tabs">
       <button class="nav-tab active" id="tabBtnAnalyzer">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Log Analyzer Engine
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Log Analyzer
       </button>
       <button class="nav-tab" id="tabBtnAuditHub">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Admin Audit Hub <span class="badge badge-counter" id="auditReportCounter">4</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Audit Reports <span class="badge badge-counter" id="auditReportCounter">4</span>
+      </button>
+      <button class="nav-tab" id="tabBtnAuditTrail">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        System Audit Trail (Log)
       </button>
     </div>
 
     <!-- User / Auth Profile Widget -->
     <div class="nav-actions">
-      <div class="user-profile-badge" id="btnUserMenu">
-        <div class="avatar" id="userAvatar">A</div>
+      <div class="user-profile-badge" id="btnSwitchRole" title="Click to Sign In or Switch Account">
+        <div class="avatar" id="userAvatar">V</div>
         <div class="user-meta">
           <span class="user-name" id="displayUserName">Vinay (Admin)</span>
-          <span class="user-role" id="displayUserRole">Super Administrator</span>
+          <span class="user-role" id="displayUserRole">Super Administrator ▾</span>
         </div>
-        <button class="btn btn-xs btn-outline" id="btnSwitchRole" title="Switch User Role">Switch Account</button>
       </div>
-      <a href="https://github.com/vinayaktripathi1279/log-check" target="_blank" class="btn btn-outline" id="githubRepoLink">
+      <a href="https://github.com/vinayaktripathi1279/log-check" target="_blank" class="btn btn-outline" id="githubRepoLink" title="View Source on GitHub">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
       </a>
     </div>
@@ -55,42 +58,59 @@
   <!-- Live Status Notification Banner -->
   <div class="notification-banner" id="notifBanner">
     <span class="notif-icon" id="notifIcon">✅</span>
-    <span class="notif-text" id="notifText">Admin Session Active: You can analyze logs and inspect all organization audit reports.</span>
+    <span class="notif-text" id="notifText">Admin Session: Vinay (Administrator). Full cross-team audit access enabled.</span>
   </div>
 
-  <!-- Role Switcher Modal -->
+  <!-- Sign In / Role Selection Modal -->
   <div class="modal-overlay" id="roleModal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Select Active Account & Role</h3>
+        <h3>🔐 Enterprise Sign In & Role Switcher</h3>
         <button class="modal-close" id="btnCloseModal">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-sub">Switching accounts simulates how regular SOC analysts vs Security Administrators see and manage audit reports.</p>
+        <p class="modal-sub">Sign in with different accounts to test role-based access: Admins can inspect everyone's reports and logs, while Analysts only see their own.</p>
         <div class="role-cards-grid">
+          <!-- Admin Account -->
           <div class="role-card active" data-user="vinay_admin">
             <div class="role-icon">👑</div>
             <div class="role-details">
               <strong>Vinay Tripathi (Admin)</strong>
-              <span>Role: Super Administrator</span>
-              <p>Full privileges: View and download all analysts' audit reports, inspect submitted logs, and approve incident remediations.</p>
+              <span class="badge badge-critical" style="margin: 0.2rem 0;">Super Administrator</span>
+              <p>Full permissions: Inspect any analyst's raw logs, download all CSV reports, view system audit trail.</p>
             </div>
+            <button class="btn btn-xs btn-primary">Sign In as Admin</button>
           </div>
+
+          <!-- Non-Admin Analyst 1 -->
           <div class="role-card" data-user="sarah_soc">
             <div class="role-icon">👩‍💻</div>
             <div class="role-details">
               <strong>Sarah Jenkins</strong>
-              <span>Role: Senior SOC Analyst</span>
-              <p>Can analyze servers, generate audit reports, and submit them to the admin hub for review.</p>
+              <span class="badge badge-info" style="margin: 0.2rem 0;">Senior SOC Analyst</span>
+              <p>Analyst role: Ingest server logs, flag brute force, submit audits for Bastion hosts.</p>
             </div>
+            <button class="btn btn-xs btn-outline">Sign In as Sarah</button>
           </div>
+
+          <!-- Non-Admin Analyst 2 -->
           <div class="role-card" data-user="rahul_devops">
             <div class="role-icon">⚙️</div>
             <div class="role-details">
               <strong>Rahul Sharma</strong>
-              <span>Role: Cloud Infrastructure Lead</span>
-              <p>Responsible for Kubernetes & production bastion hosts log audits.</p>
+              <span class="badge badge-medium" style="margin: 0.2rem 0;">DevOps & Cloud Lead</span>
+              <p>Auditor role: Manages Kubernetes ingress clusters and cloud workloads.</p>
             </div>
+            <button class="btn btn-xs btn-outline">Sign In as Rahul</button>
+          </div>
+        </div>
+
+        <!-- Custom Username Sign In -->
+        <div class="custom-signin-box">
+          <label>Or Sign In as Any Custom User ID:</label>
+          <div class="custom-signin-inputs">
+            <input type="text" id="inputCustomUser" placeholder="e.g. alex_intern or security_analyst_2">
+            <button type="button" class="btn btn-secondary btn-sm" id="btnSignInCustom">Sign In</button>
           </div>
         </div>
       </div>
@@ -104,7 +124,7 @@
       <div class="ingest-header">
         <div class="ingest-title">
           <span class="dot-live"></span>
-          <h2>Log Ingestion & Real-Time Engine</h2>
+          <h2>Log Ingestion & Sliding Window Engine</h2>
           <span class="badge badge-success" id="activeLogBadge">Active: sample_attack.log</span>
         </div>
         <div class="quick-scenarios">
@@ -316,30 +336,30 @@
     </section>
   </main>
 
-  <!-- VIEW 2: ADMIN AUDIT HUB -->
+  <!-- VIEW 2: AUDIT REPORTS HUB -->
   <main class="container" id="viewAuditHub" style="display: none;">
     <section class="panel">
       <div class="panel-header">
         <div>
-          <h2 class="panel-title">👑 Enterprise Security Audit Repository</h2>
-          <p class="panel-desc">As Administrator, you can review security audit submissions from all analysts, inspect their raw auth logs, and download incident reports.</p>
+          <h2 class="panel-title" id="auditHubTitle">👑 Enterprise Security Audit Repository</h2>
+          <p class="panel-desc" id="auditHubDesc">Showing all audit reports submitted across the organization. Inspect raw logs or download CSV reports.</p>
         </div>
         <div class="admin-actions">
-          <span class="badge badge-info" id="auditStatsBadge">Showing 4 Total Submissions</span>
-          <button class="btn btn-sm btn-secondary" id="btnSeedSampleReports">🔄 Refresh Sample Audits</button>
+          <span class="badge badge-info" id="auditStatsBadge">Showing 4 Reports</span>
+          <button class="btn btn-sm btn-secondary" id="btnSeedSampleReports">🔄 Reset Default Reports</button>
         </div>
       </div>
 
       <!-- Audit Search & Filter Bar -->
       <div class="audit-filters-bar">
         <div class="audit-search">
-          <input type="text" id="inputAuditSearch" placeholder="Search by Analyst, Server Name, or Attacker IP...">
+          <input type="text" id="inputAuditSearch" placeholder="Search by Audit ID (e.g. AUD-0891), Analyst, or Server...">
         </div>
         <div class="audit-filter-tags">
           <button class="pill active" data-audit-filter="ALL">All Reports</button>
-          <button class="pill pill-critical" data-audit-filter="Critical">Has Critical (2)</button>
-          <button class="pill pill-high" data-audit-filter="High">Has High (1)</button>
-          <button class="pill" data-audit-filter="Resolved">Resolved (1)</button>
+          <button class="pill pill-critical" data-audit-filter="Critical">Critical</button>
+          <button class="pill pill-high" data-audit-filter="High">High</button>
+          <button class="pill" data-audit-filter="Resolved">Resolved</button>
         </div>
       </div>
 
@@ -350,9 +370,9 @@
             <tr>
               <th>Audit ID</th>
               <th>Analyst / Submitter</th>
-              <th>Server & Cluster</th>
-              <th>Log Lines</th>
-              <th>Threats Flagged</th>
+              <th>Target Server</th>
+              <th>Log Volume</th>
+              <th>Flagged Attackers</th>
               <th>Peak Severity</th>
               <th>Status</th>
               <th>Actions</th>
@@ -366,10 +386,10 @@
     </section>
 
     <!-- Inspection Modal / Detail Drawer (Inside Hub) -->
-    <section class="panel" id="auditDetailDrawer" style="display: none;">
+    <section class="panel" id="auditDetailDrawer" style="display: none; margin-top: 1rem;">
       <div class="panel-header">
-        <h3 class="panel-title" id="drawerTitle">Inspecting Audit Report: AUD-2026-001</h3>
-        <button class="btn btn-xs btn-outline" id="btnCloseDrawer">Close Inspection</button>
+        <h3 class="panel-title" id="drawerTitle">Inspecting Audit Report: AUD-2026-0891</h3>
+        <button class="btn btn-xs btn-outline" id="btnCloseDrawer">✕ Close Inspection</button>
       </div>
       <div class="panel-body drawer-body">
         <div class="drawer-meta-grid">
@@ -383,9 +403,31 @@
           <button class="btn btn-secondary btn-sm" id="btnLoadAuditIntoAnalyzer">🔍 Open Logs in Analyzer</button>
         </div>
         <div class="drawer-log-box">
-          <h4>Submitted Raw Log Snapshot:</h4>
+          <h4>Submitted Raw Log Snapshot (Submitted by this user):</h4>
           <pre class="console-screen" id="drawerLogContent"></pre>
         </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- VIEW 3: SYSTEM AUDIT TRAIL (LOG) -->
+  <main class="container" id="viewAuditTrail" style="display: none;">
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">📜 System Audit Trail (system_audit.log)</h2>
+          <p class="panel-desc">Real-time application audit trail recording every user login, file ingest, threat alert, report creation, and admin log inspection.</p>
+        </div>
+        <div class="admin-actions">
+          <button class="btn btn-sm btn-primary" id="btnDownloadSystemAuditLog">📥 Download system_audit.log</button>
+        </div>
+      </div>
+
+      <div class="panel-body" style="padding: 1.25rem;">
+        <div class="audit-trail-explainer">
+          <p><strong>💡 What is this?</strong> In cybersecurity, while <code>auth.log</code> tracks SSH connections to the server, <strong><code>system_audit.log</code></strong> is the compliance audit trail that monitors <em>what users and analysts do inside the security system</em>. It answers who logged in, what logs they uploaded, and what reports were downloaded.</p>
+        </div>
+        <pre class="console-screen" id="systemAuditLogScreen" style="height: 380px;"></pre>
       </div>
     </section>
   </main>
