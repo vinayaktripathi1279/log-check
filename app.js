@@ -478,14 +478,17 @@ function updateIntelMetrics(suspects) {
 
 function renderConsoleStream() {
   const screen = document.getElementById("logStreamScreen");
-  const onlyFailures = document.getElementById("checkOnlyFailures").checked;
+  if (!screen) return;
+  const checkbox = document.getElementById("checkOnlyFailures");
+  const onlyFailures = checkbox ? checkbox.checked : true;
   screen.innerHTML = "";
 
   const displayList = onlyFailures
     ? currentLogEvents.filter(e => e.type === "failed")
     : currentLogEvents;
 
-  document.getElementById("logCounterDisplay").textContent = `Showing ${displayList.length} entries`;
+  const counter = document.getElementById("logCounterDisplay");
+  if (counter) counter.textContent = `Showing ${displayList.length} entries`;
 
   displayList.slice(-200).forEach(evt => {
     const div = document.createElement("div");
