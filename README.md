@@ -1,11 +1,11 @@
 # 🛡️ SSH Log Analyzer & Brute-Force Detector
 
-[![Vercel Demo](https://img.shields.io/badge/Vercel-Live%20Demo-000?style=for-the-badge&logo=vercel)](https://ssh-log-analyzer-faim2fcd2-vinayaktripathi1279s-projects.vercel.app)
+[![Vercel Demo](https://img.shields.io/badge/Vercel-Live%20Demo-000?style=for-the-badge&logo=vercel)](https://ssh-log-analyzer-vinayaktripathi1279s-projects.vercel.app)
 [![Render Demo](https://img.shields.io/badge/Render-Live%20Demo-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://ssh-log-analyzer.onrender.com)
 [![Python](https://img.shields.io/badge/Python-3.8+-3776ab?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-> **🚀 Live Vercel Demo:** [https://ssh-log-analyzer-faim2fcd2-vinayaktripathi1279s-projects.vercel.app](https://ssh-log-analyzer-faim2fcd2-vinayaktripathi1279s-projects.vercel.app)  
+> **🚀 Live Vercel Demo:** [https://ssh-log-analyzer-vinayaktripathi1279s-projects.vercel.app](https://ssh-log-analyzer-vinayaktripathi1279s-projects.vercel.app)  
 > **⚡ Live Render Demo:** [https://ssh-log-analyzer.onrender.com](https://ssh-log-analyzer.onrender.com)  
 > **🐙 GitHub Repository:** [https://github.com/vinayaktripathi1279/log-check](https://github.com/vinayaktripathi1279/log-check)
 
